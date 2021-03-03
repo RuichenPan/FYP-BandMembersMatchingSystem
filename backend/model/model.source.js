@@ -2,15 +2,13 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export default mongoose.model(
-  'user',
+  'source',
   new Schema(
     {
-      username: { type: String, default: '' },
-      email: { type: String, default: '' },
-      password: { type: String, default: '' },
-      salt: { type: String, default: '' },
-      image: { type: String, default: '' },
-      video: { type: Array, default: [] },
+      user_id: { type: String, default: '' },
+      type: { type: Number, default: 1, comment: '1 video, 2 album' },
+      url: { type: String, default: '' },
+      desc: { type: String, default: '' },
       create_time: { type: Number, default: Date.now() },
     },
     {

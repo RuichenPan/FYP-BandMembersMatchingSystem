@@ -4,7 +4,6 @@ import path from 'path';
 
 import cfg from './cfg';
 import UserService from './service/UserService';
-import socketio from 'socket.io';
 import SocketService from './service/SocketService';
 
 const app = express();
@@ -42,8 +41,6 @@ router(app);
 
 // create mongodb connection
 const MongoDbConn = () => {
-  // mongoose.Promise = global.Promise;
-
   mongoose.connect(cfg.dbConn, { useUnifiedTopology: true, useNewUrlParser: true }, function (err) {
     if (err) throw err;
     UserService.log('Connected to mongodb success');

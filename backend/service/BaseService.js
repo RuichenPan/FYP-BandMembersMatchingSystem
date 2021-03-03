@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
  *
  * @class BaseService
  */
-module.exports = class BaseService {
+export default class BaseService {
   constructor(modal) {
     this.modal = modal;
   }
@@ -251,4 +251,4 @@ module.exports = class BaseService {
   success(msg) {
     return { code: 200, data: msg };
   }
-};
+}
