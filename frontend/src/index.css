@@ -1,0 +1,16 @@
+.indexPageCss {
+  position: relative;
+  padding-top: 80px;
+  height: calc(100vh - 0px);
+}
+
+.gCenter,
+.g-center {
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+}
+
+.text-center {
+  text-align: center;
+}

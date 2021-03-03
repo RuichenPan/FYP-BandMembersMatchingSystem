@@ -1,0 +1,12 @@
+.input-group-text {
+  width: 120px;
+  margin-right: -10px;
+  text-align: right;
+}
+
+input {
+  border: 1px solid #f0f0f0;
+  padding-left: 10px;
+  width: 200px;
+  height: 38px;
+}
