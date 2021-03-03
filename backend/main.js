@@ -5,6 +5,7 @@ import path from 'path';
 import cfg from './cfg';
 import UserService from './service/UserService';
 import socketio from 'socket.io';
+import SocketService from './service/SocketService';
 
 const app = express();
 app.use(express.json());
@@ -42,7 +43,7 @@ router(app);
 // create mongodb connection
 const MongoDbConn = () => {
   // mongoose.Promise = global.Promise;
-   
+
   mongoose.connect(cfg.dbConn, { useUnifiedTopology: true, useNewUrlParser: true }, function (err) {
     if (err) throw err;
     UserService.log('Connected to mongodb success');
@@ -50,23 +51,11 @@ const MongoDbConn = () => {
 };
 
 const server = require('http').createServer(app);
-const io = socketio(server, { path: '/chat', cors: { origin: '*' } });
-const socketMap = {};
-io.on('connection', (socket) => {
-  UserService.log('------------------', io.engine.clientsCount, socket.id);
-  socketMap[socket.id] = socket;
-  socket.on('msg', (data) => {
-    UserService.log('data-->', data);
-    // socket.emit('msg', { msg: data, ts: new Date().getTime() });
-    Object.values(socketMap).forEach((client) => {
-      client.emit('msg', { id: client.id, msg: data.msg, ts: new Date().getTime() });
-    });
-  });
-
-});
+const ss = new SocketService(server);
 
 const port = process.env.PORT || 5300;
 server.listen(port, () => {
   MongoDbConn();
+  ss.initStart();
   UserService.log(`http://localhost:${port}`);
 });
