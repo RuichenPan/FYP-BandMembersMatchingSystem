@@ -5,11 +5,11 @@ import path from 'path';
 import cfg from './cfg';
 import UserService from './service/UserService';
 import SocketService from './service/SocketService';
+import router from './api';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-const router = require('./api/index');
 
 // set static directory
 app.use(express.static(path.join(__dirname, 'public')));
