@@ -1,5 +1,5 @@
-const { ModelComment } = require('../model');
-const { default: BaseService } = require('./BaseService');
+import { ModelComment } from '../model';
+import BaseService from './BaseService';
 
 class CommentService extends BaseService {
   constructor() {
