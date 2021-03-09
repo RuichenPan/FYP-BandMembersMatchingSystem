@@ -5,13 +5,12 @@ export default mongoose.model(
   'comment',
   new Schema(
     {
-      to_user_id: { type: String, default: '' },
-      to_username: { type: String, default: '' },
-      to_msg: { type: String, default: '' },
-      to_create_time: { type: Number, default: Date.now() },
-      reply_user_id: { type: String, default: '' },
-      reply_username: { type: String, default: '' },
-      reply_msg: { type: String, default: '' },
+      user_id:  { type: String, default: '' },
+      comment_user_id: { type: String, default: '' },
+      comment_username: { type: String, default: '' },
+      comment_content: { type: String, default: '' },
+      create_time: { type: Number, default: Date.now() },
+      reply_content: { type: String, default: '' },
       reply_create_time: { type: Number, default: 0 },
     },
     {

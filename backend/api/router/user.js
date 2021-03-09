@@ -30,7 +30,7 @@ router
       const item = await UserService.SignIn(request.body);
       response.json(item);
     } catch (ex) {
-      response.status(400).json({ code: 400, msg: ex.msg || ex.message });
+      response.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
   // user signup

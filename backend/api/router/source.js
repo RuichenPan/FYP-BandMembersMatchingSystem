@@ -15,6 +15,6 @@ router
     try {
       res.json({ code: 200, data: { method: req.headers.method } });
     } catch (ex) {
-      res.status(400).json({ code: 400, msg: ex.message || ex });
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   });
