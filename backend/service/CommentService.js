@@ -35,6 +35,7 @@ class CommentService extends BaseService {
       comment_user_id: user_id.id,
       comment_username: userInfo.username,
       comment_content: content,
+      comment_avatar: userInfo.image,
       reply_content: '',
       reply_create_time: 0,
     };
@@ -56,7 +57,7 @@ class CommentService extends BaseService {
       this.failure('reply content can no be empty.');
     }
 
-    const info = await this.findByIdAndUpdate(comment_id, { reply_content: content, reply_create_time: Date.now() });
+    const info = await this.findByIdAndUpdate(comment_id, { reply_avatar: userInfo.image, reply_content: content, reply_create_time: Date.now() });
     return this.success(info);
   }
 }
