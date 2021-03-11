@@ -24,7 +24,7 @@ router
   })
   .post('/:user_id', async (req, res) => {
     try {
-      const { user_id } = req.params;
+      const { user_id } = req.params; 
       const { body, userInfo } = req;
       const info = await CommentService.addComment({ user_id, body, userInfo });
       res.json(info);

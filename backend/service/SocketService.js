@@ -19,4 +19,9 @@ export default class SocketService {
       });
     });
   }
+
+  socket_msg(client,data){
+    
+  }
+
 }

@@ -5,12 +5,13 @@ export default mongoose.model(
   'favorite',
   new Schema(
     {
-      user_id: { type: String, comment: 'UserID' },
-      username: { type: String, comment: 'UserName' },
-      favorite_user_id: { type: String, comment: 'FavoriteUserID' },
-      favorite_username: { type: String, comment: 'FavoriteUserName' },
-      create_time: { type: Number, comment: 'CreateTime', default: Date.now },
-      update_time: { type: Number, comment: 'UpdateTime', default: Date.now },
+      user_id: { type: String, default: '' },
+      username: { type: String, default: '' },
+      favorite_user_id: { type: String, default: '' },
+      favorite_username: { type: String, default: '' },
+      favorite_avatar: { type: String, default: '' },
+      create_time: { type: Number, default: Date.now },
+      update_time: { type: Number, default: Date.now },
     },
     {
       toJSON: {

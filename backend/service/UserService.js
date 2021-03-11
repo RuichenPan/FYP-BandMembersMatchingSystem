@@ -26,12 +26,12 @@ class UserService extends BaseService {
     if (!password) {
       this.failure('password can not be empty');
     }
-  
+
     const info = await this.findOne({ username });
     if (!info) {
       this.failure('invalid username or password');
     }
-    
+
     // check passowrd
     if (info.password !== bcrypt.hashSync(password, info.salt)) {
       this.failure('invalid username or password');
@@ -41,7 +41,7 @@ class UserService extends BaseService {
     delete info.password;
     delete info.create_time;
     delete info.update_time;
-  
+
     const token = jwt.sign({ info }, cfg.jwtKey, { expiresIn: '24h' });
 
     return this.success({ ...info, token });
@@ -100,7 +100,7 @@ class UserService extends BaseService {
       this.failure('user name is exists');
     }
 
-    data.salt = bcrypt.genSaltSync(10); 
+    data.salt = bcrypt.genSaltSync(10);
     data.password = bcrypt.hashSync(data.password, data.salt);
 
     // save to db
@@ -109,6 +109,20 @@ class UserService extends BaseService {
     delete info.salt;
     delete info.password;
     return this.success(info);
+  }
+
+  /**
+   * get user list
+   *
+   * @param {*} { page, size }
+   * @returns
+   * @memberof UserService
+   */
+  async list({ page, size }) {
+    const list = await this.find({}, {}, { limit: size, skip: (page - 1) * size });
+    const total = await this.count();
+    const totalPage = Math.ceil(total / size);
+    return this.success({ page, size, list, total, totalPage });
   }
 }
 
