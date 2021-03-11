@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ModelUser from '../model/model.user';
 import BaseService from './BaseService';
+import { ConfigService } from '.';
 import cfg from '../cfg';
+import SourceService from './SourceService';
 
 class UserService extends BaseService {
   constructor() {
@@ -17,7 +19,7 @@ class UserService extends BaseService {
    * @returns
    * @memberof UserService
    */
-  async SignIn(data) {
+  async signIn(data) {
     const { username, password } = data;
     if (!username) {
       this.failure('username can not be empty');
@@ -74,7 +76,7 @@ class UserService extends BaseService {
    * @return {*}
    * @memberof UserService
    */
-  async SignUp(data) {
+  async signUp(data) {
     const { username, email, password } = data;
 
     if (!username) {
@@ -123,6 +125,21 @@ class UserService extends BaseService {
     const total = await this.count();
     const totalPage = Math.ceil(total / size);
     return this.success({ page, size, list, total, totalPage });
+  }
+
+  /**
+   * update user profile information
+   *
+   * @param {*} { userInfo, body, videos, images }
+   * @returns
+   * @memberof UserService
+   */
+  async updateProfile({ userInfo, body, files }) {
+    const { id: user_id, avatar } = userInfo;
+    await this.findByIdAndUpdate(user_id, body);
+    const sourceDocs = files.map((file) => ({ user_id, type: file.fieldname === 'image' ? 'album' : 'video', url: `public/uploads/${file.filename}` }));
+    await SourceService.create(sourceDocs);
+    return this.success('update success');
   }
 }
 

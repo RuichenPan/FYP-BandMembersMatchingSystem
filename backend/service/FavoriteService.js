@@ -32,7 +32,7 @@ class FavoriteService extends BaseService {
       username: userInfo.username,
       favorite_user_id: user_id,
       favorite_username: uInfo.username,
-      favorite_avatar: uInfo.image,
+      favorite_avatar: uInfo.avatar,
     };
     const info = await this.save(doc);
     return this.success(info);

@@ -5,9 +5,11 @@ module.exports = mongoose.model(
   'config',
   new Schema(
     {
-      key: { type: String, default: '' },
+      name: { type: String, default: '' },
       value: { type: String, default: '' },
       password: { type: String, default: '' },
+      sort: { type: Number, default: 0 },
+      desc: { type: String, default: '' },
     },
     {
       toJSON: {

@@ -9,8 +9,9 @@ export default mongoose.model(
       email: { type: String, default: '' },
       password: { type: String, default: '' },
       salt: { type: String, default: '' },
-      image: { type: String, default: '' },
-      video: { type: Array, default: [] },
+      avatar: { type: String, default: '' },
+      i_am_a: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },
+      music_style: { type: String, default: '', comment: 'Hard Rock, Pop Music, Thrash Metal, Death Metal, Punk, Electronic Music, Jazz, Blues' },
       create_time: { type: Number, default: Date.now() },
     },
     {

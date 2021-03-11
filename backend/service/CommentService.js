@@ -8,7 +8,6 @@ class CommentService extends BaseService {
   }
 
   async list({ page = 1, size = 20, user_id } = {}) {
-    
     const list = await this.find({ user_id }, {}, { limit: 20, skip: (page - 1) * size });
     const total = await this.count({ user_id });
     const data = {
@@ -36,7 +35,7 @@ class CommentService extends BaseService {
       comment_user_id: user_id.id,
       comment_username: userInfo.username,
       comment_content: content,
-      comment_avatar: userInfo.image,
+      comment_avatar: userInfo.avatar,
       reply_content: '',
       reply_create_time: 0,
     };

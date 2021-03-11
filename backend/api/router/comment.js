@@ -7,7 +7,7 @@ router
   .use(async (req, res, next) => {
     const { userInfo } = req;
     if (!userInfo) {
-      response.status(403).json({ code: 403, msg: 'Authorization not allowed' });
+      res.status(403).json({ code: 403, msg: 'Authorization not allowed' });
       return;
     }
     next();
