@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import './index.css';
 import InputItem from '../../components/InputItem/InputItem';
+import SubLogo from '../subLogo/subLogo';
 
 import { UserContext } from '../../contexts/userContext';
 
@@ -24,25 +25,21 @@ const Login = (props) => {
   // Submit function (Log in user)
   const handleSubmit = async (e) => {
     await context.signIn(user);
-    if (context.userInfo.error) {
-      setError(context.userInfo.error);
+    const { state } = context;
+
+    if (state.error) {
+      setError(state.error);
       setTimeout(() => {
         setError('');
       }, 2000);
+
+      return;
     }
   };
 
   return (
     <div className="loginCss container">
-      <div className="row">
-        <div className="col-2">
-          <img src={image1} width="80%" alt="" />
-        </div>
-        <div className="col-1"></div>
-        <div className="col-8">
-          <img src={image2} width="80%" alt="" />
-        </div>
-      </div>
+      <SubLogo></SubLogo>
       <div className="g-center">
         <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
           <h1 className="text-center">

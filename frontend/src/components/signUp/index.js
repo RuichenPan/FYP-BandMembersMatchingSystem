@@ -2,9 +2,8 @@ import React, { useState, useContext } from 'react';
 import 'firebase/auth';
 import InputItem from '../../components/InputItem/InputItem';
 import { UserContext } from '../../contexts/userContext';
+import SubLogo from '../subLogo/subLogo';
 
-const image1 = require('../../images/login-01.png');
-const image2 = require('../../images/login-02.png');
 const image3 = require('../../images/login-03.png');
 
 const Signup = (props) => {
@@ -24,8 +23,8 @@ const Signup = (props) => {
   const handleSubmit = async (e) => {
     await context.signUp(user);
 
-    if (context.userInfo.error) {
-      setError(context.userInfo.error);
+    if (context.state.error) {
+      setError(context.state.error);
       setTimeout(() => {
         setError('');
       }, 2000);
@@ -34,15 +33,7 @@ const Signup = (props) => {
 
   return (
     <div className="loginCss container">
-      <div className="row">
-        <div className="col-2">
-          <img src={image1} width="80%" alt="" />
-        </div>
-        <div className="col-1"></div>
-        <div className="col-8">
-          <img src={image2} width="80%" alt="" />
-        </div>
-      </div>
+      <SubLogo />
       <div className="g-center">
         <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
           <h1 className="text-center">

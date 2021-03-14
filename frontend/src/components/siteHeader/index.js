@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../globals/fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,18 +6,26 @@ import './siteHeader.css';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useUser } from 'reactfire';
-import { useFirebaseApp } from 'reactfire';
 import 'firebase/auth';
 
-const SiteHeader = () => {
+import { UserContext } from '../../contexts/userContext';
+
+const SiteHeader = (props) => {
+  const context = useContext(UserContext);
+
   const user = useUser().data;
-  const firebase = useFirebaseApp();
 
   // Log out function
   const handleClick = () => {
-    firebase.auth().signOut();
+    // const p = props;
+    context.logout();
+
     alert('Logout！');
   };
+
+  useEffect(() => {
+    console.log('删除了');
+  }, []);
 
   const menu = (
     <Menu>

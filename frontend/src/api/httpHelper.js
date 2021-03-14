@@ -28,6 +28,10 @@ class HttpHelper {
       method,
       headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
     };
+    const token = this.token;
+    if (token) {
+      opt.headers.token = token;
+    }
     const query = this.getQuery(params);
     const _url = query ? `${url}?${query}` : url;
     if (data) {
@@ -118,6 +122,43 @@ class HttpHelper {
       return;
     }
     return JSON.parse(JSON.stringify(data));
+  }
+
+  setStorage(key, value) {
+    if (!value) {
+      window.localStorage.removeItem(key);
+      return;
+    }
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getStorage(key) {
+    const info = window.localStorage.getItem(key);
+    if (!info) {
+      return null;
+    }
+    try {
+      return JSON.parse(key);
+    } catch (ex) {
+      console.log(ex);
+      this.setStorage(key, null);
+      return null;
+    }
+  }
+
+  set userInfo(value) {
+    this.setStorage('REACT_USER_INFO', value);
+  }
+  get userInfo() {
+    return this.getStorage('REACT_USER_INFO');
+  }
+
+  set token(value) {
+    this.setStorage('REACT_TOKEN', value);
+  }
+
+  get token() {
+    return this.getStorage('REACT_TOKEN');
   }
 }
 

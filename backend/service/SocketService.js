@@ -1,4 +1,5 @@
 import socketio from 'socket.io';
+import ChatService from './ChatService';
 
 export default class SocketService {
   constructor(server) {
@@ -9,7 +10,8 @@ export default class SocketService {
 
   initStart() {
     this.serverSocket.on('connection', (socket) => {
-      socketMap[socket.id] = socket;
+      this.socketMap[socket.id] = socket;
+      ChatService.log(this.serverSocket.engine.clientsCount, socket.id);
       socket.on('msg', (data) => {
         UserService.log('data-->', data);
         // socket.emit('msg', { msg: data, ts: new Date().getTime() });
@@ -17,11 +19,12 @@ export default class SocketService {
           client.emit('msg', { id: client.id, msg: data.msg, ts: new Date().getTime() });
         });
       });
+
+      socket.on('message', (data) => {
+        ChatService.log('accept data:', data);
+      });
     });
   }
 
-  socket_msg(client,data){
-    
-  }
-
+  socket_msg(client, data) {}
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { CommentService, UserService } from '../../service';
+import { CommentService, ConfigService, UserService } from '../../service';
 const router = express.Router();
 module.exports = router;
 
@@ -17,6 +17,19 @@ router
       const { page = 1, size = 20 } = req.query;
       const info = await UserService.list({ page: Number(page), size: Number(size) });
       res.json(info);
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.message || ex });
+    }
+  })
+  .get('/config/:name', async (req, res) => {
+    try {
+      const { name } = req.params;
+      if (!name) {
+        res.json({ code: 200, data: [] });
+      } else {
+        const info = await ConfigService.find({ name }, {}, { sort: { sort: 1 } });
+        res.json(info);
+      }
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });
     }

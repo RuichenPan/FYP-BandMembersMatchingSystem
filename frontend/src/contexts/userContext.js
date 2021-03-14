@@ -16,6 +16,17 @@ const reducer = (state = {}, action) => {
     case ConstTypeMap.USER_ERROR:
       state.error = payload;
       break;
+    case ConstTypeMap.USER_CONFIG_MUSIC_STYLE:
+      state.musicStyles = payload;
+      break;
+    case ConstTypeMap.USER_CONFIG_I_AM_A:
+      state.IAmA = payload;
+      break;
+    case ConstTypeMap.USER_LOGOUT:
+      Object.keys(state).forEach((fieldName) => {
+        delete state[fieldName];
+      });
+      break;
     default:
       state.a = true;
       break;
@@ -25,6 +36,11 @@ const reducer = (state = {}, action) => {
 
 const UserContentProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, {});
+
+  const switchPage = (url, params) => {
+    const query = HttpHelper.getQuery();
+    props.history.push(query ? `${url}?${query}` : url, params);
+  };
 
   /**
    * user signUp
@@ -52,12 +68,51 @@ const UserContentProvider = (props) => {
    */
   const signIn = async (data) => {
     try {
-      const info = await HttpHelper.apiPost('/user/signin', data);
+      const bodyData = HttpHelper.clone(data);
+      bodyData.password = HttpHelper.md5(bodyData.password);
+      const info = await HttpHelper.apiPost('/user/signin', bodyData);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
-      return info;
+      //save token and userInfo  to localstorage
+      const { token } = info;
+      HttpHelper.token = token;
+      HttpHelper.userInfo = info;
+      switchPage('profile');
     } catch (ex) {
       dispatch({ type: ConstTypeMap.USER_ERROR, payload: ex.message || ex });
     }
+  };
+
+  /**
+   * logout
+   */
+  const logout = () => {
+    HttpHelper.token = null;
+    HttpHelper.userInfo = null;
+    dispatch({ type: ConstTypeMap.USER_LOGOUT });
+    switchPage('/login');
+  };
+
+  /***
+   * get music style record
+   */
+  const musicStyle = async () => {
+    const info = await HttpHelper.apiGet('/open/config/music_style');
+    dispatch({ type: ConstTypeMap.USER_CONFIG_MUSIC_STYLE, payload: info });
+    return info;
+  };
+
+  /**
+   * get i am a record
+   */
+  const i_am_a = async () => {
+    const info = await HttpHelper.apiGet('/open/config/i_am_a');
+    dispatch({ type: ConstTypeMap.USER_CONFIG_I_AM_A, payload: info });
+    return info;
+  };
+
+  const getConfigInfo = async () => {
+    await musicStyle();
+    await i_am_a();
   };
 
   const updateProfile = async (data) => {
@@ -70,7 +125,7 @@ const UserContentProvider = (props) => {
     }
   };
 
-  return <UserContext.Provider value={{ userInfo: state, signUp, signIn, updateProfile }}>{props.children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ ...props, state, switchPage, logout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>{props.children}</UserContext.Provider>;
 };
 
 export default UserContentProvider;
