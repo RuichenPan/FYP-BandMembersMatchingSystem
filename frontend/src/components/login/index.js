@@ -5,8 +5,6 @@ import SubLogo from '../subLogo/subLogo';
 
 import { UserContext } from '../../contexts/userContext';
 
-const image1 = require('../../images/login-01.png');
-const image2 = require('../../images/login-02.png');
 const image3 = require('../../images/login-03.png');
 
 const Login = (props) => {

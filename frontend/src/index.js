@@ -38,8 +38,7 @@ const LikeActors = lazy(() => import('./pages/ILikePage'));
 const SignUp = lazy(() => import('./components/signUp'));
 const Login = lazy(() => import('./components/login'));
 const ProfilePage = lazy(() => import('./pages/profilePage'));
-
-console.log('socket:', socket);
+const CheckEmailPage = lazy(() => import('./pages/checkEmailPage'));
 
 var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
@@ -74,6 +73,7 @@ const App = () => {
                       <Route exact path="/signup" component={SignUp} />
                       <Route exact path="/login" component={Login} />
                       <Route exact path="/profile" component={ProfilePage} />
+                      <Route exact path="/emailcheck" component={CheckEmailPage} />
                       <Route exact path="/movies/:id" component={MoviePage} />
                       <Route exact path="/actor/:id" component={ActorPage} />
 

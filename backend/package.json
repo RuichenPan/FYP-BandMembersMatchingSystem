@@ -15,6 +15,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.13",
     "@babel/register": "^7.12.13",
+    "@sendgrid/mail": "^7.4.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "bcrypt": "^5.0.0",
     "crypto": "^1.0.1",

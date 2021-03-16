@@ -42,6 +42,13 @@ const UserContentProvider = (props) => {
     props.history.push(query ? `${url}?${query}` : url, params);
   };
 
+  const alertMsg = (msg) => {
+    if (!msg) {
+      return;
+    }
+    window.alert(msg);
+  };
+
   /**
    * user signUp
    *
@@ -54,6 +61,8 @@ const UserContentProvider = (props) => {
       bodyData.password = HttpHelper.md5(bodyData.password);
       const info = await HttpHelper.apiPost('/user/signup', bodyData);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
+      alertMsg('successful');
+      switchPage('login');
       return info;
     } catch (ex) {
       dispatch({ type: ConstTypeMap.USER_ERROR, payload: ex.message || ex });
@@ -80,6 +89,16 @@ const UserContentProvider = (props) => {
     } catch (ex) {
       dispatch({ type: ConstTypeMap.USER_ERROR, payload: ex.message || ex });
     }
+  };
+
+  /**
+   * check email 
+   *
+   * @param {*} data
+   */
+  const checkEmail = async (data) => {
+    await HttpHelper.apiPut('/user/checkEmail', {}, data);
+    dispatch({ type: ConstTypeMap.USER_CHECK_EMAIL, payload: {} });
   };
 
   /**
@@ -125,7 +144,7 @@ const UserContentProvider = (props) => {
     }
   };
 
-  return <UserContext.Provider value={{ ...props, state, switchPage, logout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>{props.children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ ...props, state, checkEmail, switchPage, logout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>{props.children}</UserContext.Provider>;
 };
 
 export default UserContentProvider;

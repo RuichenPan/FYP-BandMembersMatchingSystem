@@ -11,7 +11,22 @@ router
       res.status(400).json({ code: 400, msg: ex.message || ex });
     }
   })
-
+  .post('/sendemail', async (req, res) => {
+    try {
+      const info = await UserService.sendEmail(req.body);
+      res.json({ code: 200, data: info });
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.message || ex });
+    }
+  })
+  .get('/sendemail/:email', async (req, res) => {
+    try {
+      const info = await UserService.checkEmail(req.params.email);
+      res.json({ code: 200, data: info });
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.message || ex });
+    }
+  })
   .get('/home', async (req, res) => {
     try {
       const { page = 1, size = 20 } = req.query;

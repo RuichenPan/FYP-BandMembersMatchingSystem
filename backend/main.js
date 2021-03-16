@@ -41,9 +41,13 @@ router(app);
 
 // create mongodb connection
 const MongoDbConn = () => {
-  mongoose.connect(cfg.dbConn, { useUnifiedTopology: true, useNewUrlParser: true }, function (err) {
-    if (err) throw err;
+  const opt = { useUnifiedTopology: true, useNewUrlParser: true };
+  mongoose.connect(cfg.dbConn, opt, (err) => {
+    if (err) {
+      throw err;
+    }
     UserService.log('Connected to mongodb success');
+    UserService.initSendGrid();
   });
 };
 

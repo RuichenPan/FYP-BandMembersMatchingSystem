@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ModelUser from '../model/model.user';
 import BaseService from './BaseService';
+import SendGrid from '@sendgrid/mail';
 import { ConfigService } from '.';
 import cfg from '../cfg';
 import SourceService from './SourceService';
@@ -10,6 +11,93 @@ class UserService extends BaseService {
   constructor() {
     super(ModelUser);
     this.TableName = ModelUser.modelName;
+  }
+
+  /**
+   * init sendgrid config
+   *
+   * @memberof UserService
+   */
+  async initSendGrid() {
+    const { value } = await ConfigService.findOne({ name: 'SendGrid' });
+    this.log(value);
+    SendGrid.setApiKey(value);
+  }
+
+  /**
+   *
+   *
+   * @param {*} [{ to, title, content }={}]
+   * @returns
+   * @memberof UserService
+   */
+  async sendEmail({ to, title, content } = {}) {
+    if (!to) {
+      return this.failure('Please enter email address');
+    }
+    if (!title) {
+      return this.failure('Email subject is not empty');
+    }
+    if (!content) {
+      return this.failure('Email content is not empty');
+    }
+    try {
+      this.log('Send email:', to);
+      const msg = { to, from: 'ruichenpan221@gmail.com', subject: title, html: `<div>${content}</div>` };
+      const result = await SendGrid.send(msg);
+      this.log('Send email success:', to);
+      return result;
+    } catch (ex) {
+      this.log(ex);
+      return this.failure(ex);
+    }
+  }
+
+  /**
+   *
+   *
+   * @param {*} to
+   * @param {*} token
+   * @returns
+   * @memberof UserService
+   */
+  async verificationEmail(to, token) {
+    const [isItExpired, info] = await this.CheckToken(token);
+    if (isItExpired) {
+      this.failure('expired');
+    }
+    if (to !== info.to) {
+      this.failure('Incorrect email');
+    }
+    this.log(to, info.to);
+    const uInfo = await this.findOne({ email: to });
+    if (!uInfo) {
+      this.failure('Incorrect email');
+    }
+    const row = await this.updateOne({ email: to }, { state: 2 });
+    return this.success(row);
+  }
+
+  async signUpSendEmail(to) {
+    const token = jwt.sign({ info: { to } }, cfg.jwtKey, { expiresIn: '24h' });
+
+    const url = `${cfg.webSite}/emailCheck?email=${to}&token=${encodeURIComponent(token)}`;
+    const html = `
+    <div style="text-align: center; display: -webkit-box;-webkit-box-align: center;-webkit-box-pack: center;">
+    <div style="border: 1px solid #f0f0f0; border-radius: 5px; padding: 10px;">
+      <div>
+      Click here <a href="${url}" target="_blank">
+        Email Verification
+        </a>
+      </div>
+      <div>
+        ${url}
+      </div>
+    </div>
+  </div>
+    `;
+
+    return await this.sendEmail({ to, title: 'Email verification', content: html });
   }
 
   /**
@@ -107,6 +195,7 @@ class UserService extends BaseService {
 
     // save to db
     const info = await this.create(data);
+    this.signUpSendEmail(email);
 
     delete info.salt;
     delete info.password;

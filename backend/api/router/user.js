@@ -18,11 +18,11 @@ const upload = multer({
 
 module.exports = router;
 router
-  .use(async (request, res, next) => {
-    const { userInfo, url } = request;
-
-    const excludeUrl = ['/signin', '/signup', '/test', '/'];
-    if (excludeUrl.includes(url)) {
+  .use(async (req, res, next) => {
+    const { userInfo, url } = req;
+ 
+    const excludeUrl = ['/signin', '/signup', '/test', '/', '/checkemail'];
+    if (excludeUrl.includes(url.toLowerCase())) {
       await next();
       return;
     }
@@ -35,28 +35,38 @@ router
     await next();
   })
   // user login
-  .post('/signin', async (request, res) => {
+  .post('/signin', async (req, res) => {
     try {
-      const item = await UserService.signIn(request.body);
+      const item = await UserService.signIn(req.body);
       res.json(item);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
   // user signup
-  .post('/signup', async (request, res) => {
+  .post('/signup', async (req, res) => {
     try {
-      const item = await UserService.signUp(request.body || {});
+      const item = await UserService.signUp(req.body || {});
       res.json(item);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
   // update user profile information
-  .put('/profile', upload.any(), async (request, res) => {
+  .put('/profile', upload.any(), async (req, res) => {
     try {
-      const { videos, images, body, userInfo, files } = request;
+      const { videos, images, body, userInfo, files } = req;
       const info = await UserService.updateProfile({ files, videos, images, body, userInfo });
+      res.json(info);
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
+
+  .put('/checkemail', async (req, res) => {
+    try {
+      const { email, token } = req.body;
+      const info = await UserService.verificationEmail(email, token);
       res.json(info);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });

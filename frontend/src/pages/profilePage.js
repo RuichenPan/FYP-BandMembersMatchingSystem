@@ -23,21 +23,20 @@ const PorfilePage = (props) => {
     const api = async () => {
       await context.getConfigInfo();
       update();
+
+      context.socket.auth.token = HttpHelper.token;
+      context.socket.disconnect().connect();
+      context.socket.on('msg', (data) => {
+        console.log('data:', data);
+      });
     };
     api();
-
-
-    context.socket.auth.token = HttpHelper.token;
-    context.socket.disconnect().connect();
-    context.socket.on('msg', (data) => {
-      console.log('data:', data);
-    });
-  }, []);
+  });
 
   const handleSocket = () => {
     sendData({ msg });
   };
-  
+
   return (
     <div className="container">
       <SubLogo />
