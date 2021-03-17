@@ -23,7 +23,6 @@ const PorfilePage = (props) => {
     const api = async () => {
       await context.getConfigInfo();
       update();
-
       context.socket.auth.token = HttpHelper.token;
       context.socket.disconnect().connect();
       context.socket.on('msg', (data) => {
@@ -31,7 +30,7 @@ const PorfilePage = (props) => {
       });
     };
     api();
-  });
+  }, [context]);
 
   const handleSocket = () => {
     sendData({ msg });

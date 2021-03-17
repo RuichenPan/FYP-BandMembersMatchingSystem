@@ -8,18 +8,19 @@ const CheckEmailPage = (props) => {
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
   const context = useContext(UserContext);
-  const state = context.state;
+
+  const { location } = props.history;
+  const { search } = location;
 
   useEffect(() => {
     const callApi = async () => {
-      const { search } = props.history.location;
       const data = Util.parseQuery(search);
       setEmail(data.email);
       await context.checkEmail(data);
       setMsg('Email activation successfully');
     };
     callApi();
-  }, [state.checkEmail]);
+  }, [search, context]);
 
   return (
     <div className="container">
