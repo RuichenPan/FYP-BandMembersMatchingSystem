@@ -9,6 +9,7 @@ export default mongoose.model(
       email: { type: String, default: '' },
       password: { type: String, default: '' },
       salt: { type: String, default: '' },
+      gender: { type: String, default: 'Male', comment: 'male, female' },
       avatar: { type: String, default: '' },
       state: { type: Number, default: 1, comment: '1 : verification, 2: normal' },
       i_am_a: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },
