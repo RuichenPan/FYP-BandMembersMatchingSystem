@@ -15,7 +15,7 @@ import UserContentProvider from './contexts/userContext';
 const history = createBrowserHistory({ basename: '/' });
 const SignUp = lazy(() => import('./components/signUp'));
 const Login = lazy(() => import('./components/login'));
-const ProfilePage = lazy(() => import('./pages/profilePage'));
+const ProfilePage = lazy(() => import('./pages/profilePage/profilePage'));
 const CheckEmailPage = lazy(() => import('./pages/checkEmailPage'));
 
 var host = window.location.host;
@@ -36,7 +36,6 @@ const App = () => {
               <Route exact path="/login" component={Login} />
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/emailcheck" component={CheckEmailPage} />
-
               <Route exact path="/" component={HomePage} />
               <Redirect exact from="*" to="/" />
             </Switch>

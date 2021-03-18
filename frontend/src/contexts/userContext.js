@@ -22,6 +22,9 @@ const reducer = (state = {}, action) => {
     case ConstTypeMap.USER_CONFIG_I_AM_A:
       state.IAmA = payload;
       break;
+    case ConstTypeMap.USER_FAVORITES:
+      state.favorites = true;
+      break;
     case ConstTypeMap.USER_LOGOUT:
       Object.keys(state).forEach((fieldName) => {
         delete state[fieldName];
@@ -92,7 +95,7 @@ const UserContentProvider = (props) => {
   };
 
   /**
-   * check email 
+   * check email
    *
    * @param {*} data
    */
@@ -104,7 +107,7 @@ const UserContentProvider = (props) => {
   /**
    * logout
    */
-  const logout = () => {
+  const onLogout = () => {
     HttpHelper.token = null;
     HttpHelper.userInfo = null;
     dispatch({ type: ConstTypeMap.USER_LOGOUT });
@@ -144,7 +147,15 @@ const UserContentProvider = (props) => {
     }
   };
 
-  return <UserContext.Provider value={{ ...props, state, checkEmail, switchPage, logout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>{props.children}</UserContext.Provider>;
+  const onFavorites = async (data) => {
+    dispatch({ type: ConstTypeMap.USER_FAVORITES, payload: data });
+  };
+
+  return (
+    <UserContext.Provider value={{ ...props, state, checkEmail, onFavorites, switchPage, onLogout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>
+      {props.children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserContentProvider;

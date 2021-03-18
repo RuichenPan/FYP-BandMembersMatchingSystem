@@ -6,5 +6,5 @@ export default {
   USER_ERROR: 'REACT_USER_ERROR', //                                                 user sign in
   USER_CONFIG_MUSIC_STYLE: 'REACT_USER_CONFIG_MUSIC_STYLE', //
   USER_CONFIG_I_AM_A: 'REACT_USER_CONFIG_I_AM_A', //
-  
+  USER_FAVORITES: 'REACT_USER_FAVORITES', //
 };

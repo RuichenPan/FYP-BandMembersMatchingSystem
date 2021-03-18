@@ -14,3 +14,67 @@
 .text-center {
   text-align: center;
 }
+
+.col1 {
+  flex: 1;
+}
+
+.col2 {
+  flex: 2;
+}
+
+.col3 {
+  flex: 3;
+}
+
+.col4 {
+  flex: 4;
+}
+
+.border-color-f0 {
+  border: 1px solid #f0f0f0;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-bt-5,
+.padding-tb-5 {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.padding-lr-5,
+.padding-rl-5 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.margin-top_5 {
+  margin-top: -5px;
+}
+
+.margin-top-0 {
+  margin-top: 0px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.handle {
+  cursor: pointer;
+}

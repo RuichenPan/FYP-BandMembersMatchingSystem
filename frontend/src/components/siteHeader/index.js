@@ -1,6 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Dropdown, Divider } from 'antd';
 import { UserContext } from '../../contexts/userContext';
 import './siteHeader.css';
 
@@ -17,7 +15,7 @@ const SiteHeader = (props) => {
 
   // Log out function
   const handleClick = () => {
-    context.logout();
+    context.onLogout();
     alert('Logout！');
   };
 
@@ -30,7 +28,9 @@ const SiteHeader = (props) => {
           <ItemRow title="Home" onClick={() => context.switchPage('/')} />
           <ItemRow title="Login" onClick={() => context.switchPage('login')} />
           <ItemRow title="Sign Up" onClick={() => context.switchPage('signup')} />
+          <div className="col1"></div>
           <ItemRow title="Logout" onClick={() => handleClick()} />
+          <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
           <ul className="navbar-nav navbar navbar-light"></ul>
         </div>
       </div>
