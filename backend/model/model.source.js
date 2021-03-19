@@ -6,7 +6,7 @@ export default mongoose.model(
   new Schema(
     {
       user_id: { type: String, default: '' },
-      type: { type: Number, default: 1, comment: '1 video, 2 album' },
+      type: { type: String, default: 1, comment: '1 video, 2 album' },
       url: { type: String, default: '' },
       desc: { type: String, default: '' },
       create_time: { type: Number, default: Date.now() },

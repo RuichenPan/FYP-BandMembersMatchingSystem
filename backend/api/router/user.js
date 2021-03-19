@@ -1,8 +1,10 @@
-import express from 'express';
+import express, { response } from 'express';
 import multer from 'multer';
 import path from 'path';
 import UserService from '../../service/UserService';
 const router = express.Router();
+
+const a = multer({ dest: path.join(__dirname, '../../', 'public', 'uploads/') });
 
 const upload = multer({
   dest: path.join(__dirname, '../../', 'public', 'uploads/'),
@@ -20,7 +22,7 @@ module.exports = router;
 router
   .use(async (req, res, next) => {
     const { userInfo, url } = req;
- 
+
     const excludeUrl = ['/signin', '/signup', '/test', '/', '/checkemail'];
     if (excludeUrl.includes(url.toLowerCase())) {
       await next();
@@ -52,6 +54,25 @@ router
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
+
+  .post('/upload', upload.single('file'), async (req, res) => {
+    try {
+      res.json(UserService.success({ path: req.file.filename }));
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
+
+  // get user info
+  .get('/info', async (req, res) => {
+    try {
+      const info = await UserService.findById(req.userInfo.id);
+      res.json(UserService.success(info));
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
+
   // update user profile information
   .put('/profile', upload.any(), async (req, res) => {
     try {

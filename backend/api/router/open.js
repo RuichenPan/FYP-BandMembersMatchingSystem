@@ -1,5 +1,5 @@
 import express from 'express';
-import { CommentService, ConfigService, UserService } from '../../service';
+import { CommentService, ConfigService, SourceService, UserService } from '../../service';
 const router = express.Router();
 module.exports = router;
 
@@ -58,5 +58,17 @@ router
       res.json(info);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });
+    }
+  })
+  .get('/:type/:user_id', async (req, res) => {
+    try {
+      const { type, user_id } = req.params;
+      const page = Number(req.query.page);
+      const size = Number(req.query.size);
+
+      const info = await SourceService.list({ type, page, size, user_id });
+      res.json(info);
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   });

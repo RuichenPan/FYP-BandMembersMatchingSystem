@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // set static directory
+console.log(`(path.join(__dirname, 'public')`, path.join(__dirname, 'public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Cross domain processing

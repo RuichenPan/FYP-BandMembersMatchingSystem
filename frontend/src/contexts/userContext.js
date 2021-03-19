@@ -8,8 +8,9 @@ const reducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case ConstTypeMap.USER_SING_UP:
-      state.userInfo = payload;
+      state.signUp = payload;
       break;
+    case ConstTypeMap.USER_INFO:
     case ConstTypeMap.USER_SING_IN:
       state.userInfo = payload;
       break;
@@ -52,6 +53,8 @@ const UserContentProvider = (props) => {
     window.alert(msg);
   };
 
+  HttpHelper.initFunction({ switchPage, alertMsg });
+
   /**
    * user signUp
    *
@@ -62,7 +65,7 @@ const UserContentProvider = (props) => {
     try {
       const bodyData = HttpHelper.clone(data);
       bodyData.password = HttpHelper.md5(bodyData.password);
-      const info = await HttpHelper.apiPost('/user/signup', bodyData);
+      const info = await HttpHelper.apiPost('/api/user/signup', bodyData);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
       alertMsg('successful');
       switchPage('login');
@@ -82,7 +85,7 @@ const UserContentProvider = (props) => {
     try {
       const bodyData = HttpHelper.clone(data);
       bodyData.password = HttpHelper.md5(bodyData.password);
-      const info = await HttpHelper.apiPost('/user/signin', bodyData);
+      const info = await HttpHelper.apiPost('/api/user/signin', bodyData);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
       //save token and userInfo  to localstorage
       const { token } = info;
@@ -100,7 +103,7 @@ const UserContentProvider = (props) => {
    * @param {*} data
    */
   const checkEmail = async (data) => {
-    await HttpHelper.apiPut('/user/checkEmail', {}, data);
+    await HttpHelper.apiPut('/api/user/checkEmail', {}, data);
     dispatch({ type: ConstTypeMap.USER_CHECK_EMAIL, payload: {} });
   };
 
@@ -118,7 +121,7 @@ const UserContentProvider = (props) => {
    * get music style record
    */
   const musicStyle = async () => {
-    const info = await HttpHelper.apiGet('/open/config/music_style');
+    const info = await HttpHelper.apiGet('/api/open/config/music_style');
     dispatch({ type: ConstTypeMap.USER_CONFIG_MUSIC_STYLE, payload: info });
     return info;
   };
@@ -127,7 +130,7 @@ const UserContentProvider = (props) => {
    * get i am a record
    */
   const i_am_a = async () => {
-    const info = await HttpHelper.apiGet('/open/config/i_am_a');
+    const info = await HttpHelper.apiGet('/api/open/config/i_am_a');
     dispatch({ type: ConstTypeMap.USER_CONFIG_I_AM_A, payload: info });
     return info;
   };
@@ -137,9 +140,9 @@ const UserContentProvider = (props) => {
     await i_am_a();
   };
 
-  const updateProfile = async (data) => {
+  const onUpdateProfile = async (data) => {
     try {
-      const info = await HttpHelper.apiPut('/user/profile', data);
+      const info = await HttpHelper.apiPut('/api/user/profile', {}, data);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
       return info;
     } catch (ex) {
@@ -147,12 +150,61 @@ const UserContentProvider = (props) => {
     }
   };
 
-  const onFavorites = async (data) => {
+  const addFavorites = async (data) => {
     dispatch({ type: ConstTypeMap.USER_FAVORITES, payload: data });
   };
 
+  const getUserInfo = async () => {
+    try {
+      const userInfo = await HttpHelper.apiGet('/api/user/info');
+      dispatch({ type: ConstTypeMap.USER_INFO, payload: userInfo });
+      return userInfo;
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const onUpload = async (file) => {
+    try {
+      const fileInfo = await HttpHelper.apiUpload('/api/user/upload', { file });
+      return fileInfo;
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const onAlbum = async ({ page = 1, size = 10, user_id }) => {
+    const info = await HttpHelper.apiGet(`/api/open/album/${user_id}`, { page, size });
+    return info;
+  };
+
+  const onVideo = async ({ page = 1, size = 10, user_id }) => {
+    const info = await HttpHelper.apiGet(`/api/open/video/${user_id}`, { page, size });
+    return info;
+  };
+
   return (
-    <UserContext.Provider value={{ ...props, state, checkEmail, onFavorites, switchPage, onLogout, musicStyle, i_am_a, getConfigInfo, signUp, signIn, updateProfile }}>
+    <UserContext.Provider
+      value={{
+        ...props,
+        state,
+        userInfo: state.userInfo,
+        onUpload,
+        onAlbum,
+        onVideo,
+        checkEmail,
+        getUserInfo,
+        addFavorites,
+        switchPage,
+        onLogout,
+        musicStyle,
+        i_am_a,
+        getConfigInfo,
+        signUp,
+        signIn,
+        onUpdateProfile,
+      }}
+    >
       {props.children}
     </UserContext.Provider>
   );

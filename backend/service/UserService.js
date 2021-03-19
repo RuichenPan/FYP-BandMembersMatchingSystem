@@ -223,11 +223,19 @@ class UserService extends BaseService {
    * @returns
    * @memberof UserService
    */
-  async updateProfile({ userInfo, body, files }) {
-    const { id: user_id, avatar } = userInfo;
+  async updateProfile({ userInfo, body, files = [] }) {
+    const { id: user_id } = userInfo;
+    console.log(user_id, body);
+    delete body.id;
     await this.findByIdAndUpdate(user_id, body);
     const sourceDocs = files.map((file) => ({ user_id, type: file.fieldname === 'image' ? 'album' : 'video', url: `public/uploads/${file.filename}` }));
-    await SourceService.create(sourceDocs);
+    const sourceDocs2 = body.files.map((row) => ({ user_id, type: row.type, url: row.url }));
+    if (sourceDocs && sourceDocs.length > 0) {
+      await SourceService.create(sourceDocs);
+    }
+    if (sourceDocs2 && sourceDocs2.length > 0) {
+      await SourceService.create(sourceDocs2);
+    }
     return this.success('update success');
   }
 }

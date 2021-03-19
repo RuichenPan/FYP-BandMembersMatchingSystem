@@ -22,7 +22,7 @@ const Card = (props) => {
             </span>
           </div>
           <div className="col1 ">
-            <span className="handle" onClick={() => props.onFavorites && props.onFavorites()}>
+            <span className="handle" onClick={() => props.addFavorites && props.addFavorites()}>
               I Want You
             </span>
           </div>

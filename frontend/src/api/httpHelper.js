@@ -1,8 +1,12 @@
 import cryptoJS from 'crypto-js';
 
-const baseUrl = 'http://127.0.0.1:5300/api';
+const baseUrl = 'http://127.0.0.1:5300';
 
 class HttpHelper {
+  get WebSite() {
+    return baseUrl;
+  }
+
   /**
    * convert params to url queryString
    *
@@ -12,8 +16,11 @@ class HttpHelper {
    */
   getQuery(params) {
     return Object.keys(params || {})
-      .map((key) => `key=>${params[key]}`)
+      .map((key) => `${key}=${params[key]}`)
       .join('&');
+  }
+  initFunction(context) {
+    this.context = context;
   }
 
   /**
@@ -29,6 +36,7 @@ class HttpHelper {
       headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
     };
     const token = this.token;
+
     if (token) {
       opt.headers.token = token;
     }
@@ -45,6 +53,10 @@ class HttpHelper {
           const { status } = response;
 
           if (status > 300) {
+            if (status === 403) {
+              this.context.alertMsg(body.msg);
+              this.context.switchPage('/login');
+            }
             reject(body.msg);
           } else {
             resolve(body.data || body);
@@ -104,6 +116,41 @@ class HttpHelper {
     return this.__request({ method: 'delete', url, params });
   }
 
+  apiUpload(url, data) {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    return new Promise((resolve, reject) => {
+      fetch(`${baseUrl}${url}`, {
+        method: 'post',
+        body: formData,
+        headers: {
+          token: this.token,
+        },
+      })
+        .then(async (response) => {
+          const body = await response.json();
+          const { status } = response;
+
+          if (status > 300) {
+            if (status === 403) {
+              this.context.alertMsg(body.msg);
+              this.context.switchPage('/login');
+            }
+            reject(body.msg);
+          } else {
+            resolve(body.data || body);
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+
+          reject(ex.message);
+        });
+    });
+  }
   /**
    * MD5
    *
@@ -138,7 +185,7 @@ class HttpHelper {
       return null;
     }
     try {
-      return JSON.parse(key);
+      return JSON.parse(info);
     } catch (ex) {
       console.log(ex);
       this.setStorage(key, null);

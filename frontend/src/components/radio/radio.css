@@ -1,0 +1,52 @@
+.radio-wrap {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+  }
+  
+  .radio-wrap:active {
+    background-color: rgb(221, 221, 221);
+  }
+  
+  .radio-wrap .left {
+    display: inline-block;
+  
+  }
+  
+  .radio-wrap .left .circle {
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+    box-sizing: border-box;
+    border: 1px solid #c5c9cd;
+    border-radius: 50%;
+    background-color: #ffffff;
+    position: relative;
+  }
+  
+  .radio-wrap .left .active {
+    background-color: #1eb94a;
+  
+  }
+  
+  .radio-wrap .left .active .fork {
+    height: 12px;
+    width: 5px;
+    top: 40%;
+    left: 50%;
+    position: absolute;
+    border-right: 1.5px solid #ffffff;
+    border-bottom: 1.5px solid #ffffff;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  
+  .radio-wrap .left .label {
+    vertical-align: top;
+    margin-left: 10px;
+    display: inline-block;
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+  }
+  
