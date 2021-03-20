@@ -1,4 +1,6 @@
 import CryptoJS from 'crypto-js';
+import path from 'path';
+import fs from 'fs';
 
 /**
  * Operation database base class
@@ -286,6 +288,25 @@ export default class BaseService {
     } catch (ex) {
       this.log(ex);
       return Promise.reject({ msg: `[${this.TableName}]update error :${ex.message}` });
+    }
+  }
+
+  /**
+   * delete resource file
+   *
+   * @param {*} url
+   * @memberof BaseService
+   */
+   unlinkSync(url) {
+    try {
+      const filePath = path.join(__dirname, '../', 'public', 'uploads', url);
+      console.log(filePath);
+      if (fs.existsSync(filePath)) {
+        // remove file
+        fs.unlinkSync(filePath);
+      }
+    } catch (ex) {
+      this.log(ex);
     }
   }
 

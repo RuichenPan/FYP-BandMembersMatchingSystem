@@ -1,12 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import HttpHelper from '../../api/httpHelper';
+import Album from '../../components/album/album';
 import Card from '../../components/card/card';
 import Radio from '../../components/radio/radio';
 import RadioGroup from '../../components/radio/radio-group';
 import SubLogo from '../../components/subLogo/subLogo';
+import Video from '../../components/video/video';
 import { UserContext } from '../../contexts/userContext';
 
 const PorfilePage = (props) => {
+  // eslint-disable-next-line
+  const [times, setTimes] = useState(0);
   const context = useContext(UserContext);
   const [msg, setMsg] = useState('');
   const [uInfo, setUpdateUserInfo] = useState({});
@@ -19,7 +23,7 @@ const PorfilePage = (props) => {
   const getVideo = async (page, size, user_id) => {
     await context.onVideo({ page, size, user_id });
   };
-  
+
   const getAlbum = async (page, size, user_id) => {
     await context.onAlbum({ page, size, user_id });
   };
@@ -27,11 +31,17 @@ const PorfilePage = (props) => {
   useEffect(() => {
     // get config info
     const api = async () => {
-      await context.getConfigInfo();
-      await context.getUserInfo();
-      setUpdateUserInfo({ ...context.state.userInfo });
-      getVideo(1, 10, context.state.userInfo.id);
-      getAlbum(1, 10, context.state.userInfo.id);
+      try {
+        await context.getConfigInfo();
+        await context.getUserInfo();
+        if (context.state.userInfo) {
+          await getVideo(1, 10, context.state.userInfo.id);
+          await getAlbum(1, 10, context.state.userInfo.id);
+        }
+        setUpdateUserInfo({ ...context.state.userInfo });
+      } catch (ex) {
+        console.log(ex);
+      }
 
       context.socket.auth.token = HttpHelper.token;
       context.socket.disconnect().connect();
@@ -40,30 +50,26 @@ const PorfilePage = (props) => {
       });
     };
     api();
+    // eslint-disable-next-line
   }, [context]);
 
   const handleSocket = () => {
     sendData({ msg });
   };
 
-  const handleChange = (field, value) => {
+  const handleChange = async (field, value) => {
     if (props.isView) {
       return;
     }
     const newObj = { ...uInfo };
     newObj[field] = value;
     setUpdateUserInfo({ ...newObj });
-    context.onUpdateProfile(newObj);
+    await context.onUpdateProfile(newObj);
   };
 
   const handleUploadFile = async (e) => {
     const fileInfo = await context.onUpload(e.target.files[0]);
     handleChange('avatar', fileInfo.path);
-  };
-
-  const handleUploadFileAlbum = async (type, e) => {
-    const fileInfo = await context.onUpload(e.target.files[0]);
-    handleChange('files', [{ type, url: fileInfo.path }]);
   };
 
   const { musicStyles = [], IAmA = [], userInfo = {} } = context.state;
@@ -79,7 +85,7 @@ const PorfilePage = (props) => {
         <div className="col-3">
           <Card />
         </div>
-        <div className="col-8">
+        <div className="col-9">
           <div className="row">
             <div className="col-2 text-right">Portrait:</div>
             <div className="col-8 ">
@@ -147,32 +153,34 @@ const PorfilePage = (props) => {
 
           <div className="row margin-top-40">
             <div className="col-2">Album</div>
-            <div>
-              <input type="file" accept="image/*" onChange={handleUploadFileAlbum.bind(this, 'album')} />
+            <div className="col-10">
+              <Album
+                small
+                {...props}
+                onUpload={async (type, e) => {
+                  const fileInfo = await context.onUpload(e.target.files[0]);
+                  await handleChange('files', [{ type, url: fileInfo.path }]);
+                  await getAlbum(1, 10, context.state.userInfo.id);
+                  setTimes(Date.now());
+                }}
+              />
             </div>
           </div>
 
           <div className="row margin-top-40">
             <div className="col-2">Video</div>
-            <div>
-              <input type="file" accept="video/*" onChange={handleUploadFileAlbum.bind(this, 'video')} />
-            </div>
-          </div>
-          {/* 
-          <div className="row">
             <div className="col-10">
-            <nav aria-label="Page navigation example">
-              <ul className="pagination">
-                <li className="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li className="page-item"><a class="page-link" href="#">1</a></li>
-                <li className="page-item"><a class="page-link" href="#">2</a></li>
-                <li className="page-item"><a class="page-link" href="#">3</a></li>
-                <li className="page-item"><a class="page-link" href="#">Next</a></li>
-              </ul>
-            </nav>
+              <Video
+                small
+                onUpload={async (type, e) => {
+                  const fileInfo = await context.onUpload(e.target.files[0]);
+                  await handleChange('files', [{ type, url: fileInfo.path }]);
+                  await getVideo(1, 10, context.state.userInfo.id);
+                  setTimes(Date.now());
+                }}
+              />
             </div>
           </div>
-        */}
         </div>
       </div>
     </div>
@@ -180,3 +188,17 @@ const PorfilePage = (props) => {
 };
 
 export default PorfilePage;
+
+// <div className="row">
+//   <div className="col-10">
+//   <nav aria-label="Page navigation example">
+//     <ul className="pagination">
+//       <li className="page-item"><a class="page-link" href="#">Previous</a></li>
+//       <li className="page-item"><a class="page-link" href="#">1</a></li>
+//       <li className="page-item"><a class="page-link" href="#">2</a></li>
+//       <li className="page-item"><a class="page-link" href="#">3</a></li>
+//       <li className="page-item"><a class="page-link" href="#">Next</a></li>
+//     </ul>
+//   </nav>
+//   </div>
+// </div>

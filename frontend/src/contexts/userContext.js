@@ -31,6 +31,22 @@ const reducer = (state = {}, action) => {
         delete state[fieldName];
       });
       break;
+    case ConstTypeMap.VIDEO_LIST:
+      state.video = payload;
+      break;
+    case ConstTypeMap.ALBUM_LIST:
+      state.album = payload;
+      break;
+    case ConstTypeMap.SOURCE_DELETE_ALBUM:
+      const tmpAlbum = state.album.list;
+      tmpAlbum.splice(payload, 1);
+      state.album.list = tmpAlbum;
+      break;
+    case ConstTypeMap.SOURCE_DELETE_VIDEO:
+      const tmpVideo = state.video.list;
+      tmpVideo.splice(payload, 1);
+      state.video.list = tmpVideo;
+      break;
     default:
       state.a = true;
       break;
@@ -175,11 +191,21 @@ const UserContentProvider = (props) => {
 
   const onAlbum = async ({ page = 1, size = 10, user_id }) => {
     const info = await HttpHelper.apiGet(`/api/open/album/${user_id}`, { page, size });
+    dispatch({ type: ConstTypeMap.ALBUM_LIST, payload: info });
     return info;
   };
 
   const onVideo = async ({ page = 1, size = 10, user_id }) => {
     const info = await HttpHelper.apiGet(`/api/open/video/${user_id}`, { page, size });
+    dispatch({ type: ConstTypeMap.VIDEO_LIST, payload: info });
+    return info;
+  };
+
+  const onSourceDelete = async (item, index, type) => {
+    const { user_id, id } = item;
+    const info = await HttpHelper.apiDelete(`/api/source/${user_id}/${id}`);
+
+    dispatch({ type: type === 'video' ? ConstTypeMap.SOURCE_DELETE_VIDEO : ConstTypeMap.SOURCE_DELETE_ALBUM, payload: index });
     return info;
   };
 
@@ -189,6 +215,7 @@ const UserContentProvider = (props) => {
         ...props,
         state,
         userInfo: state.userInfo,
+        onSourceDelete,
         onUpload,
         onAlbum,
         onVideo,

@@ -225,7 +225,7 @@ class UserService extends BaseService {
    */
   async updateProfile({ userInfo, body, files = [] }) {
     const { id: user_id } = userInfo;
-    console.log(user_id, body);
+
     delete body.id;
     await this.findByIdAndUpdate(user_id, body);
     const sourceDocs = files.map((file) => ({ user_id, type: file.fieldname === 'image' ? 'album' : 'video', url: `public/uploads/${file.filename}` }));

@@ -18,7 +18,17 @@ router
       const page = Number(req.query.page);
       const size = Number(req.query.size);
       const info = await SourceService.list({ type, page, size, user_id });
-      res.json({ code: 200, data: info });
+      res.json(info);
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
+  .delete('/:user_id/:id', async (req, res) => {
+    try {
+      const { user_id, id } = req.params;
+      const info = await SourceService.deleteSource({ user_id, id, userInfo: req.userInfo });
+      res.json(info);
+      // const
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
