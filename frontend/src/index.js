@@ -9,14 +9,13 @@ import './index.css';
 import HomePage from './pages/homePage';
 import SiteHeader from './components/siteHeader';
 import { createBrowserHistory } from 'history';
-
 import UserContentProvider from './contexts/userContext';
-
 const history = createBrowserHistory({ basename: '/' });
 const SignUp = lazy(() => import('./components/signUp'));
 const Login = lazy(() => import('./components/login'));
 const ProfilePage = lazy(() => import('./pages/profilePage/profilePage'));
 const CheckEmailPage = lazy(() => import('./pages/checkEmailPage'));
+const FavoritesPage = lazy(() => import('./pages/favoritesPage'));
 
 var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
@@ -27,7 +26,7 @@ var socket = io(host, { path: '/chat', auth: { token: '' } });
 const App = () => {
   return (
     <Router history={history}>
-      <div className="indexPageCss container-fluid">
+      <div className="indexPageCss container">
         <UserContentProvider history={history} socket={socket}>
           <Suspense fallback={<h1>Loading page....</h1>}>
             <SiteHeader />
@@ -36,6 +35,7 @@ const App = () => {
               <Route exact path="/login" component={Login} />
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/emailcheck" component={CheckEmailPage} />
+              <Route exact path="/favorites" component={FavoritesPage} />
               <Route exact path="/" component={HomePage} />
               <Redirect exact from="*" to="/" />
             </Switch>

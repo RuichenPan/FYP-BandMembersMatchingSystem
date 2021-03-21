@@ -1,243 +1,212 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import ModelUser from '../model/model.user';
-import BaseService from './BaseService';
-import SendGrid from '@sendgrid/mail';
-import { ConfigService } from '.';
-import cfg from '../cfg';
-import SourceService from './SourceService';
+import cryptoJS from 'crypto-js';
 
-class UserService extends BaseService {
-  constructor() {
-    super(ModelUser);
-    this.TableName = ModelUser.modelName;
+const baseUrl = 'http://127.0.0.1:5300';
+
+class HttpHelper {
+  get WebSite() {
+    return baseUrl;
   }
 
   /**
-   * init sendgrid config
+   * convert params to url queryString
    *
-   * @memberof UserService
-   */
-  async initSendGrid() {
-    const { value } = await ConfigService.findOne({ name: 'SendGrid' });
-    this.log(value);
-    SendGrid.setApiKey(value);
-  }
-
-  /**
-   *
-   *
-   * @param {*} [{ to, title, content }={}]
+   * @param {*} params
    * @returns
-   * @memberof UserService
+   * @memberof HttpHelper
    */
-  async sendEmail({ to, title, content } = {}) {
-    if (!to) {
-      return this.failure('Please enter email address');
-    }
-    if (!title) {
-      return this.failure('Email subject is not empty');
-    }
-    if (!content) {
-      return this.failure('Email content is not empty');
-    }
-    try {
-      this.log('Send email:', to);
-      const msg = { to, from: 'ruichenpan221@gmail.com', subject: title, html: `<div>${content}</div>` };
-      const result = await SendGrid.send(msg);
-      this.log('Send email success:', to);
-      return result;
-    } catch (ex) {
-      this.log(ex);
-      return this.failure(ex);
-    }
+  getQuery(params) {
+    return Object.keys(params || {})
+      .map((key) => `${key}=${params[key] || ''}`)
+      .join('&');
+  }
+  initFunction(context) {
+    this.context = context;
   }
 
   /**
    *
    *
-   * @param {*} to
-   * @param {*} token
+   * @param {*} { method, url, params, data, headers }
    * @returns
-   * @memberof UserService
+   * @memberof HttpHelper
    */
-  async verificationEmail(to, token) {
-    const [isItExpired, info] = await this.CheckToken(token);
-    if (isItExpired) {
-      this.failure('expired');
+  async __request({ method, url, params, data, headers }) {
+    const opt = {
+      method,
+      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+    };
+    const token = this.token;
+
+    if (token) {
+      opt.headers.token = token;
     }
-    if (to !== info.to) {
-      this.failure('Incorrect email');
-    }
-    this.log(to, info.to);
-    const uInfo = await this.findOne({ email: to });
-    if (!uInfo) {
-      this.failure('Incorrect email');
-    }
-    const row = await this.updateOne({ email: to }, { state: 2 });
-    return this.success(row);
-  }
-
-  async signUpSendEmail(to) {
-    const token = jwt.sign({ info: { to } }, cfg.jwtKey, { expiresIn: '24h' });
-
-    const url = `${cfg.webSite}/emailCheck?email=${to}&token=${encodeURIComponent(token)}`;
-    const html = `
-    <div style="text-align: center; display: -webkit-box;-webkit-box-align: center;-webkit-box-pack: center;">
-    <div style="border: 1px solid #f0f0f0; border-radius: 5px; padding: 10px;">
-      <div>
-      Click here <a href="${url}" target="_blank">
-        Email Verification
-        </a>
-      </div>
-      <div>
-        ${url}
-      </div>
-    </div>
-  </div>
-    `;
-
-    return await this.sendEmail({ to, title: 'Email verification', content: html });
-  }
-
-  /**
-   * user login
-   *
-   * @param {*} data
-   * @returns
-   * @memberof UserService
-   */
-  async signIn(data) {
-    const { username, password } = data;
-    if (!username) {
-      this.failure('username can not be empty');
+    const query = this.getQuery(params);
+    const _url = query ? `${url}?${query}` : url;
+    if (data) {
+      opt.body = JSON.stringify(data);
     }
 
-    if (!password) {
-      this.failure('password can not be empty');
-    }
-
-    const info = await this.findOne({ username });
-    if (!info) {
-      this.failure('invalid username or password');
-    }
-
-    // check passowrd
-    if (info.password !== bcrypt.hashSync(password, info.salt)) {
-      this.failure('invalid username or password');
-    }
-
-    delete info.salt;
-    delete info.password;
-    delete info.create_time;
-    delete info.update_time;
-
-    const token = jwt.sign({ info }, cfg.jwtKey, { expiresIn: '24h' });
-
-    return this.success({ ...info, token });
-  }
-
-  /**
-   * check token
-   *
-   * @param {*} token
-   * @returns
-   * @memberof UserService
-   */
-  async CheckToken(token) {
     return new Promise((resolve, reject) => {
-      jwt.verify(token, cfg.jwtKey, function (err, decoded) {
-        if (err) {
-          resolve([true, null]);
-        } else {
-          resolve([false, decoded.info]);
-        }
-      });
-      return false;
+      fetch(`${baseUrl}${_url}`, opt)
+        .then(async (response) => {
+          const body = await response.json();
+          const { status } = response;
+
+          if (status > 300) {
+            if (status === 403) {
+              this.context.alertMsg(body.msg);
+              this.context.switchPage('/login');
+            }
+            reject(body.msg);
+          } else {
+            resolve(body.data || body);
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+
+          reject(ex.message);
+        });
     });
   }
 
   /**
-   * user signup
+   * api get resource request
    *
+   * @param {*} url
+   * @param {*} params
+   * @returns
+   * @memberof HttpHelper
+   */
+  apiGet(url, params) {
+    return this.__request({ method: 'get', url, params });
+  }
+  /**
+   * api post submit request
+   *
+   * @param {*} url
    * @param {*} data
-   * @return {*}
-   * @memberof UserService
+   * @returns
+   * @memberof HttpHelper
    */
-  async signUp(data) {
-    const { username, email, password } = data;
-
-    if (!username) {
-      this.failure('username can not be empty');
-    }
-
-    if (!email) {
-      this.failure('email can not be empty');
-    }
-
-    if (!/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(email)) {
-      this.failure('email Incorrect format');
-    }
-
-    if (!password) {
-      this.failure('password can not be empty');
-    }
-
-    //judge user is exists
-    const isExists = await this.findOne({ username });
-
-    if (isExists) {
-      this.failure('user name is exists');
-    }
-
-    data.salt = bcrypt.genSaltSync(10);
-    data.password = bcrypt.hashSync(data.password, data.salt);
-
-    // save to db
-    const info = await this.create(data);
-    this.signUpSendEmail(email);
-
-    delete info.salt;
-    delete info.password;
-    return this.success(info);
+  apiPost(url, data) {
+    return this.__request({ method: 'post', url, data });
+  }
+  /**
+   * api put request
+   *
+   * @param {*} url
+   * @param {*} params
+   * @param {*} data
+   * @returns
+   * @memberof HttpHelper
+   */
+  apiPut(url, params, data) {
+    return this.__request({ method: 'put', url, params, data });
+  }
+  /**
+   * api delete request
+   *
+   * @param {*} url
+   * @param {*} params
+   * @returns
+   * @memberof HttpHelper
+   */
+  apiDelete(url, params) {
+    return this.__request({ method: 'delete', url, params });
   }
 
+  apiUpload(url, data) {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    return new Promise((resolve, reject) => {
+      fetch(`${baseUrl}${url}`, {
+        method: 'post',
+        body: formData,
+        headers: {
+          token: this.token,
+        },
+      })
+        .then(async (response) => {
+          const body = await response.json();
+          const { status } = response;
+
+          if (status > 300) {
+            if (status === 403) {
+              this.context.alertMsg(body.msg);
+              this.context.switchPage('/login');
+            }
+            reject(body.msg);
+          } else {
+            resolve(body.data || body);
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+
+          reject(ex.message);
+        });
+    });
+  }
   /**
-   * get user list
+   * MD5
    *
-   * @param {*} { page, size }
+   * @param {*} val
    * @returns
-   * @memberof UserService
+   * @memberof HttpHelper
    */
-  async list({ page, size }) {
-    const list = await this.find({}, {}, { limit: size, skip: (page - 1) * size });
-    const total = await this.count();
-    const totalPage = Math.ceil(total / size);
-    return this.success({ page, size, list, total, totalPage });
+  md5(val) {
+    if (!val) {
+      return;
+    }
+    return cryptoJS.MD5(val).toString();
+  }
+  clone(data) {
+    if (!data) {
+      return;
+    }
+    return JSON.parse(JSON.stringify(data));
   }
 
-  /**
-   * update user profile information
-   *
-   * @param {*} { userInfo, body, videos, images }
-   * @returns
-   * @memberof UserService
-   */
-  async updateProfile({ userInfo, body, files = [] }) {
-    const { id: user_id } = userInfo;
+  setStorage(key, value) {
+    if (!value) {
+      window.localStorage.removeItem(key);
+      return;
+    }
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
 
-    delete body.id;
-    await this.findByIdAndUpdate(user_id, body);
-    const sourceDocs = files.map((file) => ({ user_id, type: file.fieldname === 'image' ? 'album' : 'video', url: `public/uploads/${file.filename}` }));
-    const sourceDocs2 = body.files.map((row) => ({ user_id, type: row.type, url: row.url }));
-    if (sourceDocs && sourceDocs.length > 0) {
-      await SourceService.create(sourceDocs);
+  getStorage(key) {
+    const info = window.localStorage.getItem(key);
+    if (!info) {
+      return null;
     }
-    if (sourceDocs2 && sourceDocs2.length > 0) {
-      await SourceService.create(sourceDocs2);
+    try {
+      return JSON.parse(info);
+    } catch (ex) {
+      console.log(ex);
+      this.setStorage(key, null);
+      return null;
     }
-    return this.success('update success');
+  }
+
+  set userInfo(value) {
+    this.setStorage('REACT_USER_INFO', value);
+  }
+  get userInfo() {
+    return this.getStorage('REACT_USER_INFO');
+  }
+
+  set token(value) {
+    this.setStorage('REACT_TOKEN', value);
+  }
+
+  get token() {
+    return this.getStorage('REACT_TOKEN');
   }
 }
 
-export default new UserService();
+export default new HttpHelper();

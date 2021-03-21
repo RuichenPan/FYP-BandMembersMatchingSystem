@@ -12,10 +12,10 @@ router
     }
     next();
   })
-  .get('/', async (req, res) => {
+  .get('/mine', async (req, res) => {
     try {
       const { id: user_id } = req.userInfo;
-      const { page = 1, size = 10 } = req.query;
+      const { page = 1, size = 30 } = req.query;
       const info = await FavoriteService.list({ page, size, user_id });
       res.json(info);
     } catch (ex) {
@@ -25,7 +25,7 @@ router
   .post('/:user_id', async (req, res) => {
     try {
       const { user_id } = req.params;
-      const info = await FavoriteService.add({ body: req.body, user_id, userInfo: req.userInfo });
+      const info = await FavoriteService.add({ user_id, userInfo: req.userInfo });
       res.json(info);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });
@@ -33,8 +33,9 @@ router
   })
   .delete('/:id', async (req, res) => {
     try {
-      const { id } = req.userInfo;
-      await FavoriteService.findByIdAndDelete(id);
+      const { id } = req.query;
+      const { user_id } = req.userInfo;
+      await FavoriteService.deleteOne({ _id: id, user_id });
       res.json(FavoriteService.success('delete success'));
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });

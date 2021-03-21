@@ -36,8 +36,8 @@ const Login = (props) => {
   };
 
   return (
-    <div className="loginCss container">
-      <SubLogo></SubLogo>
+    <div className="loginCss ">
+      <SubLogo />
       <div className="g-center">
         <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
           <h1 className="text-center">

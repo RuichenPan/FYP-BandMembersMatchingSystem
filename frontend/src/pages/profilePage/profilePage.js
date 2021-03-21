@@ -75,7 +75,7 @@ const PorfilePage = (props) => {
   const { musicStyles = [], IAmA = [], userInfo = {} } = context.state;
 
   return (
-    <div className="container">
+    <div >
       <SubLogo />
       <div className="row">
         <input value={msg} onChange={(e) => setMsg(e.target.value)} />

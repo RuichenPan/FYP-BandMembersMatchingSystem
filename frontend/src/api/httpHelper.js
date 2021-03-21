@@ -16,7 +16,7 @@ class HttpHelper {
    */
   getQuery(params) {
     return Object.keys(params || {})
-      .map((key) => `${key}=${params[key]}`)
+      .map((key) => `${key}=${params[key] || ''}`)
       .join('&');
   }
   initFunction(context) {

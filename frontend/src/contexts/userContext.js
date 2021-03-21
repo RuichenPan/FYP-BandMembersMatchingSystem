@@ -1,61 +1,13 @@
 import React, { useReducer, createContext } from 'react';
 import ConstTypeMap from './typeMap';
 import HttpHelper from '../api/httpHelper';
+import UserReducer from './userReducers';
+import Util from '../util';
 
 export const UserContext = createContext(null);
 
-const reducer = (state = {}, action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case ConstTypeMap.USER_SING_UP:
-      state.signUp = payload;
-      break;
-    case ConstTypeMap.USER_INFO:
-    case ConstTypeMap.USER_SING_IN:
-      state.userInfo = payload;
-      break;
-    case ConstTypeMap.USER_ERROR:
-      state.error = payload;
-      break;
-    case ConstTypeMap.USER_CONFIG_MUSIC_STYLE:
-      state.musicStyles = payload;
-      break;
-    case ConstTypeMap.USER_CONFIG_I_AM_A:
-      state.IAmA = payload;
-      break;
-    case ConstTypeMap.USER_FAVORITES:
-      state.favorites = true;
-      break;
-    case ConstTypeMap.USER_LOGOUT:
-      Object.keys(state).forEach((fieldName) => {
-        delete state[fieldName];
-      });
-      break;
-    case ConstTypeMap.VIDEO_LIST:
-      state.video = payload;
-      break;
-    case ConstTypeMap.ALBUM_LIST:
-      state.album = payload;
-      break;
-    case ConstTypeMap.SOURCE_DELETE_ALBUM:
-      const tmpAlbum = state.album.list;
-      tmpAlbum.splice(payload, 1);
-      state.album.list = tmpAlbum;
-      break;
-    case ConstTypeMap.SOURCE_DELETE_VIDEO:
-      const tmpVideo = state.video.list;
-      tmpVideo.splice(payload, 1);
-      state.video.list = tmpVideo;
-      break;
-    default:
-      state.a = true;
-      break;
-  }
-  return state;
-};
-
 const UserContentProvider = (props) => {
-  const [state, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(UserReducer, {});
 
   const switchPage = (url, params) => {
     const query = HttpHelper.getQuery();
@@ -107,6 +59,9 @@ const UserContentProvider = (props) => {
       const { token } = info;
       HttpHelper.token = token;
       HttpHelper.userInfo = info;
+
+      Util.userNofity.next(info);
+
       switchPage('profile');
     } catch (ex) {
       dispatch({ type: ConstTypeMap.USER_ERROR, payload: ex.message || ex });
@@ -151,11 +106,18 @@ const UserContentProvider = (props) => {
     return info;
   };
 
+  /**
+   * get config information
+   */
   const getConfigInfo = async () => {
     await musicStyle();
     await i_am_a();
   };
 
+  /**
+   *
+   * @param {*} data
+   */
   const onUpdateProfile = async (data) => {
     try {
       const info = await HttpHelper.apiPut('/api/user/profile', {}, data);
@@ -170,6 +132,9 @@ const UserContentProvider = (props) => {
     dispatch({ type: ConstTypeMap.USER_FAVORITES, payload: data });
   };
 
+  /**
+   * get current user information
+   */
   const getUserInfo = async () => {
     try {
       const userInfo = await HttpHelper.apiGet('/api/user/info');
@@ -180,6 +145,10 @@ const UserContentProvider = (props) => {
     }
   };
 
+  /**
+   * update file
+   * @param {*} file
+   */
   const onUpload = async (file) => {
     try {
       const fileInfo = await HttpHelper.apiUpload('/api/user/upload', { file });
@@ -189,18 +158,32 @@ const UserContentProvider = (props) => {
     }
   };
 
+  /**
+   * get album list
+   * @param {*} param0
+   */
   const onAlbum = async ({ page = 1, size = 10, user_id }) => {
     const info = await HttpHelper.apiGet(`/api/open/album/${user_id}`, { page, size });
     dispatch({ type: ConstTypeMap.ALBUM_LIST, payload: info });
     return info;
   };
 
+  /**
+   * get video list
+   * @param {*} param0
+   */
   const onVideo = async ({ page = 1, size = 10, user_id }) => {
     const info = await HttpHelper.apiGet(`/api/open/video/${user_id}`, { page, size });
     dispatch({ type: ConstTypeMap.VIDEO_LIST, payload: info });
     return info;
   };
 
+  /**
+   * delete resource file
+   * @param {*} item
+   * @param {*} index
+   * @param {*} type
+   */
   const onSourceDelete = async (item, index, type) => {
     const { user_id, id } = item;
     const info = await HttpHelper.apiDelete(`/api/source/${user_id}/${id}`);
@@ -209,13 +192,47 @@ const UserContentProvider = (props) => {
     return info;
   };
 
+  /**
+   * get home data
+   * @param {*} param0
+   */
+  const onHomeData = async ({ page = 1, size = 20, keyworld } = {}) => {
+    const info = await HttpHelper.apiGet('/api/open/home', { page, size, keyworld });
+    dispatch({ type: ConstTypeMap.HOME_USER_LIST, payload: info });
+    return info;
+  };
+
+  /**
+   * i want you
+   * @param {*} id
+   */
+  const onAddFavorites = async (user_id) => {
+    const info = await HttpHelper.apiPost(`/api/favorite/${user_id}`);
+    dispatch({ type: ConstTypeMap.I_WANT_YOU, payload: info });
+    return info;
+  };
+
+  /**
+   * get i want you list
+   */
+  const onGetFavoritesList = async () => {
+    const info = await HttpHelper.apiGet('/api/favorite/mine');
+    console.log(info);
+    dispatch({ type: ConstTypeMap.FAVORITES_MINE, payload: info });
+    return info;
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...props,
         state,
+        alertMsg,
         userInfo: state.userInfo,
+        onGetFavoritesList,
         onSourceDelete,
+        onAddFavorites,
+        onHomeData,
         onUpload,
         onAlbum,
         onVideo,

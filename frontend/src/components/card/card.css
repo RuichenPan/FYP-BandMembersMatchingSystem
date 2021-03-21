@@ -1,9 +1,14 @@
 .card-info {
   padding: 5px;
   border: 1px solid #f0f0f0;
-  min-width: 300px;
+  width: calc(25% - 10px);
+  margin: 0px 5px 15px 0px;
 }
 
 .card-info .row {
   margin: auto;
+}
+
+.card-info .profile-image {
+  height: 300px;
 }

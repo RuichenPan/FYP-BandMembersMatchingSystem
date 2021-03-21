@@ -17,7 +17,8 @@
     "react-hook-form": "^3.29.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "reactfire": "^3.0.0-rc.0"
+    "reactfire": "^3.0.0-rc.0",
+    "rxjs": "^6.6.6"
   },
   "scripts": {
     "storybook": "start-storybook -s ./public -p 6006 -c ./.storybook",

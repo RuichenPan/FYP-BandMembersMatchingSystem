@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import { Subject } from 'rxjs';
+
 export function excerpt(string) {
   const truncate = _.truncate;
   return truncate(string, {
@@ -21,4 +23,7 @@ export default class Util {
     });
     return result;
   }
+
+  static userNofity = new Subject();
+
 }

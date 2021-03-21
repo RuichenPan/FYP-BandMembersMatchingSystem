@@ -29,8 +29,8 @@ router
   })
   .get('/home', async (req, res) => {
     try {
-      const { page = 1, size = 20 } = req.query;
-      const info = await UserService.list({ page: Number(page), size: Number(size) });
+      const { page = 1, size = 20, keyworld } = req.query;
+      const info = await UserService.list({ page: Number(page), size: Number(size), keyworld });
       res.json(info);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });

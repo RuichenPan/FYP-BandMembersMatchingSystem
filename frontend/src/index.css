@@ -1,6 +1,6 @@
 .indexPageCss {
   position: relative;
-  padding-top: 80px;
+  padding-top: 50px;
   height: calc(100vh - 0px);
 }
 
@@ -159,4 +159,13 @@
 .album-body .album-item-small {
   position: relative;
   width: calc(25% - 5px);
+}
+
+
+
+
+/*********************************************/
+.home-body {
+  display: flex;
+  flex-wrap: wrap;
 }
