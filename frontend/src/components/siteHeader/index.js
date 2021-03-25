@@ -53,7 +53,7 @@ const SiteHeader = (props) => {
           {userInfo && <div className="btn btn-light">Webclome {userInfo.username}</div>}
           <ItemRow title="Logout" onClick={() => handleClick()} />
           <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
-          <ul className="navbar-nav navbar navbar-light"></ul>
+          
         </div>
       </div>
     </div>

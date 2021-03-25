@@ -66,7 +66,7 @@ router
   // get user info
   .get('/info', async (req, res) => {
     try {
-      const info = await UserService.findById(req.userInfo.id);
+      const info = await UserService.findOne({ _id: req.userInfo.id }, { password: 0, salt: 0, update_time: 0, create_time: 0 });
       res.json(UserService.success(info));
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });

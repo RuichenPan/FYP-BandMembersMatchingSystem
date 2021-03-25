@@ -20,7 +20,7 @@ class FavoriteService extends BaseService {
     const total = await this.count({ user_id });
 
     const ids = list.map((row) => row.favorite_user_id);
-    this.log('ids:', ids);
+    // this.log('ids:', ids);
     const userList = await UserService.find({ _id: { $in: [...ids] } }, { password: 0, salt: 0 });
 
     const data = { page, size, total, list: userList, totalPage: Math.ceil(total / size) };
@@ -34,7 +34,6 @@ class FavoriteService extends BaseService {
     }
 
     // judge is exists
-
     const tmp = await this.findOne({ user_id: userInfo.id, favorite_user_id: user_id });
     if (tmp > 0) {
       return this.success(tmp);

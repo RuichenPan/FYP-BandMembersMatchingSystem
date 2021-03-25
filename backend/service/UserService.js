@@ -233,7 +233,7 @@ class UserService extends BaseService {
     delete body.id;
     await this.findByIdAndUpdate(user_id, body);
     const sourceDocs = files.map((file) => ({ user_id, type: file.fieldname === 'image' ? 'album' : 'video', url: `public/uploads/${file.filename}` }));
-    const sourceDocs2 = body.files.map((row) => ({ user_id, type: row.type, url: row.url }));
+    const sourceDocs2 = (body.files || []).map((row) => ({ user_id, type: row.type, url: row.url }));
     if (sourceDocs && sourceDocs.length > 0) {
       await SourceService.create(sourceDocs);
     }
@@ -241,6 +241,18 @@ class UserService extends BaseService {
       await SourceService.create(sourceDocs2);
     }
     return this.success('update success');
+  }
+
+  /**
+   * get user info
+   * @param {*} user_id
+   */
+  async getUserInfo(user_id) {
+    const info = await this.findById(user_id, { password: 0, salt: 0 });
+    info.album = await SourceService.find({ user_id, type: 'album' });
+    info.video = await SourceService.find({ user_id, type: 'video' });
+
+    return this.success(info);
   }
 }
 

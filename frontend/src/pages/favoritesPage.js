@@ -4,24 +4,40 @@ import { UserContext } from '../contexts/userContext';
 
 const FavoritesPage = (props) => {
   const [, setTimes] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fList, setFList] = useState([]);
   const context = useContext(UserContext);
-  useEffect(() => {
-    const callApi = async () => {
-      await context.onGetFavoritesList();
-      setTimes(Date.now());
-    };
 
-    callApi();
+  const initData = async () => {
+    await context.onGetFavoritesList();
+    const { list } = context.state.favorite_mine || {};
+    setFList(list);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    initData();
   }, [context]);
 
-  const { list } = context.state.favorite_mine || {};
-  console.log('context.state:', context.state);
+  // const { list } = context.state.favorite_mine || {};
+  console.log('isLoading:', isLoading);
   return (
-    <div className="favorite-body">
-      {list &&
-        list.map((row, index) => {
-          return <Card key={index} info={row} />;
-        })}
+    <div>
+      {fList && fList.length > 0 ? (
+        <div className="favorite-body">
+          {fList.map((row, index) => {
+            return <Card key={index} info={row} collection onUpdate={() => initData()} />;
+          })}
+        </div>
+      ) : (
+        !isLoading && (
+          <div className="row margin-top-40">
+            <div className="col1 text-center ggs-font-size-">
+              <h1>The favorite is empty, add it quickly</h1>
+            </div>
+          </div>
+        )
+      )}
     </div>
   );
 };

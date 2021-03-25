@@ -60,6 +60,14 @@ router
       res.status(400).json({ code: 400, msg: ex.message || ex });
     }
   })
+  .get('/person/:user_id', async (req, res) => {
+    try {
+      const info = await UserService.getUserInfo(req.params.user_id);
+      res.json(info);
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
   .get('/:type/:user_id', async (req, res) => {
     try {
       const { type, user_id } = req.params;

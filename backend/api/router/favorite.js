@@ -31,11 +31,11 @@ router
       res.status(400).json({ code: 400, msg: ex.message || ex });
     }
   })
-  .delete('/:id', async (req, res) => {
+  .delete('/:favorite_user_id', async (req, res) => {
     try {
-      const { id } = req.query;
-      const { user_id } = req.userInfo;
-      await FavoriteService.deleteOne({ _id: id, user_id });
+      const { favorite_user_id } = req.params;
+      const { id: user_id } = req.userInfo;
+      await FavoriteService.deleteOne({ user_id, favorite_user_id });
       res.json(FavoriteService.success('delete success'));
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.message || ex });

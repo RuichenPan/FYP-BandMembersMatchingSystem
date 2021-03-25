@@ -12,6 +12,8 @@
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
     "firebase": "^8.1.2",
+    "ol": "^6.5.0",
+    "ol-popup": "^4.0.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-hook-form": "^3.29.4",

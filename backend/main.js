@@ -29,7 +29,7 @@ app.use(async (req, res, next) => {
     if (token) {
       const [isExpired, info] = await UserService.CheckToken(token);
       if (!isExpired) {
-        UserService.log(JSON.stringify(info));
+        // UserService.log(JSON.stringify(info));
         req.userInfo = info;
       }
     }

@@ -13,6 +13,9 @@ const UserContentProvider = (props) => {
     const query = HttpHelper.getQuery();
     props.history.push(query ? `${url}?${query}` : url, params);
   };
+  const goBack = () => {
+    props.history.goBack();
+  };
 
   const alertMsg = (msg) => {
     if (!msg) {
@@ -213,6 +216,16 @@ const UserContentProvider = (props) => {
   };
 
   /**
+   * delete i want you
+   * @param {*} id
+   */
+  const onDeleteFavorites = async (user_id) => {
+    const info = await HttpHelper.apiDelete(`/api/favorite/${user_id}`);
+    dispatch({ type: ConstTypeMap.I_WANT_YOU_DELETE, payload: info });
+    return info;
+  };
+
+  /**
    * get i want you list
    */
   const onGetFavoritesList = async () => {
@@ -222,14 +235,44 @@ const UserContentProvider = (props) => {
     return info;
   };
 
+  /**
+   * get select person information
+   * @param {*} user_id
+   */
+  const onGetPersonDetail = async (user_id) => {
+    const info = await HttpHelper.apiGet('/api/open/person/' + user_id);
+    console.log('info:', JSON.stringify(info));
+    dispatch({ type: ConstTypeMap.HOME_PERSON_DETAIL, payload: info });
+    return info;
+  };
+
+  /**
+   * get map serach address
+   *
+   * @param {*} q
+   * @return {*}
+   */
+  const onMapSearch = async (q) => {
+    if (!q) {
+      alertMsg('Please enter keyword');
+      return;
+    }
+    const info = await HttpHelper.apiGet('/api/map/address/detail?q=' + q);
+    console.log('serach map result:', info);
+    dispatch({ type: ConstTypeMap.MAP_SERACH_ADDRESS, payload: info });
+    return info;
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...props,
         state,
-        alertMsg,
+        onMapSearch,
         userInfo: state.userInfo,
+        onGetPersonDetail,
         onGetFavoritesList,
+        onDeleteFavorites,
         onSourceDelete,
         onAddFavorites,
         onHomeData,
@@ -239,7 +282,6 @@ const UserContentProvider = (props) => {
         checkEmail,
         getUserInfo,
         addFavorites,
-        switchPage,
         onLogout,
         musicStyle,
         i_am_a,
@@ -247,6 +289,9 @@ const UserContentProvider = (props) => {
         signUp,
         signIn,
         onUpdateProfile,
+        alertMsg,
+        switchPage,
+        goBack,
       }}
     >
       {props.children}

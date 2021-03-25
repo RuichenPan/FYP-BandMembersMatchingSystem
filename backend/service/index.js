@@ -5,5 +5,6 @@ import SocketService from './SocketService';
 import SourceService from './SourceService';
 import UserService from './UserService';
 import FavoriteService from './FavoriteService';
+import MapService from './MapService';
 
-export { UserService, FavoriteService, SourceService, ConfigService, ChatService, CommentService, SocketService };
+export { UserService, FavoriteService, MapService, SourceService, ConfigService, ChatService, CommentService, SocketService };

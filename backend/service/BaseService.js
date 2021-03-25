@@ -84,8 +84,8 @@ export default class BaseService {
     this.log(JSON.stringify(data));
   }
 
-  async findById(id) {
-    const info = await this.modal.findById(id);
+  async findById(id, options) {
+    const info = await this.modal.findById(id, options || {});
     return info ? JSON.parse(JSON.stringify(info)) : null;
   }
 
@@ -297,7 +297,7 @@ export default class BaseService {
    * @param {*} url
    * @memberof BaseService
    */
-   unlinkSync(url) {
+  unlinkSync(url) {
     try {
       const filePath = path.join(__dirname, '../', 'public', 'uploads', url);
       console.log(filePath);

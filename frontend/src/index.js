@@ -13,9 +13,11 @@ import UserContentProvider from './contexts/userContext';
 const history = createBrowserHistory({ basename: '/' });
 const SignUp = lazy(() => import('./components/signUp'));
 const Login = lazy(() => import('./components/login'));
-const ProfilePage = lazy(() => import('./pages/profilePage/profilePage'));
+const ProfilePage = lazy(() => import('./pages/profilePage'));
 const CheckEmailPage = lazy(() => import('./pages/checkEmailPage'));
 const FavoritesPage = lazy(() => import('./pages/favoritesPage'));
+const MapPage = lazy(() => import('./pages/mapPage'));
+const PersonDetailPage = lazy(() => import('./pages/personDetailPage'));
 
 var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
@@ -36,6 +38,8 @@ const App = () => {
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/emailcheck" component={CheckEmailPage} />
               <Route exact path="/favorites" component={FavoritesPage} />
+              <Route exact path="/map" component={MapPage} />
+              <Route exact path="/person" component={PersonDetailPage} />
               <Route exact path="/" component={HomePage} />
               <Redirect exact from="*" to="/" />
             </Switch>

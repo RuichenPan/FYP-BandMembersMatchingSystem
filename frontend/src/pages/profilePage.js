@@ -1,18 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
-import HttpHelper from '../../api/httpHelper';
-import Album from '../../components/album/album';
-import Card from '../../components/card/card';
-import Radio from '../../components/radio/radio';
-import RadioGroup from '../../components/radio/radio-group';
-import SubLogo from '../../components/subLogo/subLogo';
-import Video from '../../components/video/video';
-import { UserContext } from '../../contexts/userContext';
+import HttpHelper from '../api/httpHelper';
+import Album from '../components/album/album';
+import Radio from '../components/radio/radio';
+import RadioGroup from '../components/radio/radio-group';
+import SubLogo from '../components/subLogo/subLogo';
+import Video from '../components/video/video';
+import { UserContext } from '../contexts/userContext';
 
 const PorfilePage = (props) => {
   // eslint-disable-next-line
-  const [times, setTimes] = useState(0);
+  const [, setTimes] = useState(0);
   const context = useContext(UserContext);
-  const [msg, setMsg] = useState('');
   const [uInfo, setUpdateUserInfo] = useState({});
 
   const sendData = (data) => {
@@ -54,7 +52,7 @@ const PorfilePage = (props) => {
   }, [context]);
 
   const handleSocket = () => {
-    sendData({ msg });
+    sendData({ msg: 'test' + new Date() });
   };
 
   const handleChange = async (field, value) => {
@@ -75,17 +73,14 @@ const PorfilePage = (props) => {
   const { musicStyles = [], IAmA = [], userInfo = {} } = context.state;
 
   return (
-    <div >
+    <div>
       <SubLogo />
-      <div className="row">
+      {/* <div className="row">
         <input value={msg} onChange={(e) => setMsg(e.target.value)} />
         <button onClick={handleSocket}>connect</button>
-      </div>
-      <div className="row">
-        <div className="col-3">
-          <Card />
-        </div>
-        <div className="col-9">
+      </div> */}
+      <div className="row margin-top-20">
+        <div className="col1">
           <div className="row">
             <div className="col-2 text-right">Portrait:</div>
             <div className="col-8 ">
@@ -95,20 +90,34 @@ const PorfilePage = (props) => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row margin-top-10 algin-center">
             <div className="col-2 text-right">Name:</div>
-            <div className="col-8 ">
+            <div className="col-4 ">
               <span className="padding-left-10">{userInfo.username}</span>
+            </div>
+
+            <div className="col-2 text-right">Gender:</div>
+            <div className="col-4 ">
+              <RadioGroup row onChange={handleChange.bind(this, 'gender')} active={uInfo.gender}>
+                {['Male', 'Female'].map((item) => {
+                  return (
+                    <Radio key={item} value={item}>
+                      {item}
+                    </Radio>
+                  );
+                })}
+              </RadioGroup>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-2 text-right">Gender:</div>
-            <div className="col-10 ">
-              <span className="padding-left-10">{userInfo.gender}</span>
+          <div className="row margin-top-10 align-center">
+            <div className="col-2 text-right">Address:</div>
+            <div className="row col-10 ">
+              <input type="text" className="input margin-right-10" />
+              {uInfo.id && <div className="handle icon icon-position" onClick={() => context.switchPage('map/?' + uInfo.id)}></div>}
             </div>
           </div>
-          <div className="row">
+          <div className="row margin-top-10">
             <div className="col-2 text-right">I am a:</div>
             <div className="col-10 ">
               <RadioGroup row onChange={handleChange.bind(this, 'i_am_a')} active={uInfo.i_am_a}>
@@ -118,7 +127,7 @@ const PorfilePage = (props) => {
                       <Radio key={item.value} value={item.value}>
                         {item.value}
                         {'Other' === item.value && (
-                          <div className="margin-top-10">
+                          <div className="margin-top-0">
                             <input
                               value={uInfo.i_am_a_other || ''}
                               disabled={item.value !== uInfo.i_am_a}
@@ -152,7 +161,7 @@ const PorfilePage = (props) => {
           </div>
 
           <div className="row margin-top-40">
-            <div className="col-2">Album</div>
+            <div className="col-2 text-right">Album:</div>
             <div className="col-10">
               <Album
                 small
@@ -168,7 +177,7 @@ const PorfilePage = (props) => {
           </div>
 
           <div className="row margin-top-40">
-            <div className="col-2">Video</div>
+            <div className="col-2 text-right">Video:</div>
             <div className="col-10">
               <Video
                 small

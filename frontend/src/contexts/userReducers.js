@@ -57,6 +57,12 @@ const UserReducer = (state = {}, action) => {
       state.favorite_mine = payload;
       break;
 
+    case ConstTypeMap.HOME_PERSON_DETAIL:
+      state.personDetail = payload;
+      break;
+    case ConstTypeMap.MAP_SERACH_ADDRESS:
+      state.mapAddress = payload;
+      break;
     default:
       state.a = true;
       break;
