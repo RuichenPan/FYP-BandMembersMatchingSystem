@@ -263,12 +263,25 @@ const UserContentProvider = (props) => {
     return info;
   };
 
+  /**
+   * reverse lan lon
+   *
+   * @param {*} { lat, lon }
+   * @return {*}
+   */
+  const onMapReverse = async ({ lat, lon }) => {
+    const info = await HttpHelper.apiGet(`/api/map/reverse?lat=${lat}&lon=${lon}`);
+    dispatch({ type: ConstTypeMap.MAP_REVERSE_GPS_GET_ADDRESS, payload: info });
+    return info;
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...props,
         state,
         onMapSearch,
+        onMapReverse,
         userInfo: state.userInfo,
         onGetPersonDetail,
         onGetFavoritesList,

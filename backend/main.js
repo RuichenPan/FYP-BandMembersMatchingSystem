@@ -61,3 +61,8 @@ server.listen(port, () => {
   ss.initStart();
   UserService.log(`http://localhost:${port}`);
 });
+
+process.on('unhandledRejection', (reason, p) => {
+  UserService.log(reason);
+  UserService.log(p);
+});

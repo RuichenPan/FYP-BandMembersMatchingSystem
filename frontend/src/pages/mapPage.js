@@ -3,46 +3,39 @@ import { UserContext } from '../contexts/userContext';
 import Util from '../util';
 import 'ol/ol.css';
 import { Tile } from 'ol/layer';
-
 import { OSM } from 'ol/source';
 import { Map, View } from 'ol';
-
 import { toLonLat, fromLonLat } from 'ol/proj';
-
-import { Fill, Icon, Stroke, Style } from 'ol/style.js';
+import { Icon, Style } from 'ol/style.js';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point.js';
 import Overlay from 'ol/Overlay.js';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
+import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 const MapPage = (props) => {
-  const [, setTime] = useState(0);
   const [q, setKeyword] = useState('xinyu');
-  const [address, setAddress] = useState([]);
+  const [addressList, setAddressList] = useState([]);
+  const [currentAddress, setCurrentAddress] = useState({});
+  const [resversGps] = useState(new Subject());
+  const [isEdit, setIsEdit] = useState(false);
 
-  const [olview, setOlView] = useState(new View({ center: [0, 0], zoom: 10, minZoom: 2, maxZoom: 20 }));
-  const [baseLayer, setBaseLayer] = useState(new Tile({ source: new OSM() }));
-  const [map, setMap] = useState({});
+  const [olview] = useState(new View({ center: [0, 0], zoom: 13, minZoom: 2, maxZoom: 18 }));
+  const [baseLayer] = useState(new Tile({ source: new OSM() }));
+  const [, setMap] = useState({});
   const [vectorSource, setVectorSource] = useState({});
+  const [latLon, setLatLon] = useState({ lat: 53.27503, lon: -7.49372 });
 
   const context = useContext(UserContext);
 
   const initData = async () => {
     const item = Util.parseQuery(props.history.location.search);
     console.log(item);
-  };
-
-  const initPopup = (map) => {
-    var element = document.getElementById('popup');
-
-    var popup = new Overlay({
-      element: element,
-      positioning: 'bottom-center',
-      stopEvent: false,
-      offset: [0, -50],
-    });
-    map.addOverlay(popup);
+    if (item.isEdit == '1') {
+      setIsEdit(true);
+    }
   };
 
   const initMap = () => {
@@ -53,11 +46,8 @@ const MapPage = (props) => {
     const map = new Map({ target: document.querySelector('#map'), view: olview, layers: [baseLayer, vectorLayer] });
     setMap(map);
     setVectorSource(vectorSource);
-    var element = document.getElementById('popup');
-
-    var popup = new Overlay({ element: element, positioning: 'bottom-center', stopEvent: false, offset: [0, -50] });
-
-    // initPopup(map);
+    const element = document.getElementById('popup');
+    const popup = new Overlay({ element: element, positioning: 'bottom-center', stopEvent: false, offset: [0, -50] });
 
     // display popup on click
     map.on('click', function (evt) {
@@ -67,24 +57,8 @@ const MapPage = (props) => {
       if (feature) {
         var coordinates = feature.getGeometry().getCoordinates();
         popup.setPosition(coordinates);
-        // $(element).popover({ placement: 'top', html: true, content: feature.get('name') });
-        // $(element).popover('show');
       } else {
-        // $(element).popover('destroy');
       }
-    });
-
-    // change mouse cursor when over marker
-    map.on('pointermove', function (e) {
-      if (e.dragging) {
-        // $(element).popover('destroy');
-
-        return;
-      }
-      // console.log(e);
-      var pixel = map.getEventPixel(e.originalEvent);
-      var hit = map.hasFeatureAtPixel(pixel);
-      map.getTarget().style.cursor = hit ? 'pointer' : '';
     });
 
     map.on('moveend', (e) => {
@@ -93,49 +67,70 @@ const MapPage = (props) => {
         return val.toFixed(6);
       });
       const [lon, lat] = ll;
-    
-      const london = new Feature({ geometry: new Point(fromLonLat([lon, lat])) });
-      london.setStyle(new Style({ image: new Icon({ color: '#4271AE', crossOrigin: '', src: 'https://download.xiaotuni.cn/marker-icon.png' }) }));
-      vectorSource.clear();
-      vectorSource.addFeature(london);
+      updateMarkerPosition({ lat, lon }, vectorSource);
     });
+
+    handleSelect(latLon);
   };
 
   useEffect(() => {
     initData();
-    handleSearch();
+    initMap();
 
-    setTimeout(() => {
-      initMap();
-    }, 1000);
-    // setTime(new Date().getTime());
+    resversGps.pipe(debounceTime(2000)).subscribe((data) => {
+      console.log(new Date().toLocaleString(), data);
+      reverseGPS(data);
+    });
+
+    return () => {
+      console.log('unsubscribe');
+      resversGps.unsubscribe();
+    };
   }, [context]);
 
   const handleSearch = async () => {
     await context.onMapSearch(q);
-    setAddress(context.state.mapAddress);
+    setAddressList(context.state.mapAddress);
   };
 
-  const aaa = (item) => {
-    if (!vectorSource || !vectorSource.clear) {
+  const reverseGPS = async ({ lat, lon }) => {
+    await context.onMapReverse({ lat, lon });
+    setCurrentAddress(context.state.reverseGpsAddress);
+    const { display_name } = context.state.reverseGpsAddress;
+    setKeyword(display_name);
+    console.log(context.state.reverseGpsAddress);
+  };
+
+  const updateMarkerPosition = (item, source) => {
+    const vs = source || vectorSource;
+    if (!vs || !vs.clear) {
       return;
     }
     const { lat, lon } = item;
+
+    setLatLon({ lat, lon });
     const london = new Feature({ geometry: new Point(fromLonLat([lon, lat])) });
     london.setStyle(new Style({ image: new Icon({ color: '#4271AE', crossOrigin: '', src: 'https://download.xiaotuni.cn/marker-icon.png' }) }));
-    vectorSource.clear();
-    vectorSource.addFeature(london);
+    vs.clear();
+    vs.addFeature(london);
+    resversGps.next({ lat, lon });
   };
 
   const handleSelect = (item) => {
-    console.log(item);
     const { lat, lon } = item;
-    aaa(item);
+    updateMarkerPosition(item);
+    setCurrentAddress(item);
+    olview.animate({ center: fromLonLat([lon, lat]), duration: 1000 });
 
-    olview.animate({
-      center: fromLonLat([lon, lat]),
-      duration: 1000,
-    });
+    console.log(item);
+  };
+
+  const handleSaveAddress = async () => {
+    const { lat, lon } = latLon;
+    const { display_name = '' } = currentAddress || {};
+    const data = { lat, lon, address: q || display_name || '' };
+    await context.onUpdateProfile(data);
+    context.alertMsg('update success');
   };
 
   return (
@@ -147,29 +142,45 @@ const MapPage = (props) => {
         </div>
       </div>
 
-      <div className="row ">
-        <div className="col1 row">
-          <input type="text" className="margin-right-10" value={q || ''} placeholder="Please enter address" onChange={(e) => setKeyword(e.target.value.trim())} />
-          <button className="margin-left-10 btn btn-light" onClick={handleSearch}>
-            Search
-          </button>
+      {isEdit && (
+        <div className="row align-center">
+          <div className="col2 row">
+            <input type="text" className="margin-right-10" value={q || ''} placeholder="Please enter address" onChange={(e) => setKeyword(e.target.value.trim())} />
+            <button className="margin-left-10 btn btn-light" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
+
+          <div className="col0 margin-left-10" style={{ width: '130px' }}>
+            Lat: {latLon.lat}
+          </div>
+          <div className="col0" style={{ width: '130px' }}>
+            Lon: {latLon.lon}
+          </div>
+          <div className="col0">
+            <button className="btn btn-light" onClick={handleSaveAddress}>
+              Save Address
+            </button>
+          </div>
+          <div className="col1"></div>
         </div>
-        <div className="col1"></div>
-      </div>
+      )}
 
       <div className="row margin-top-5">
-        <div className="col1">
-          {address &&
-            address.map((item, index) => {
-              return (
-                <div key={index} className="handle map-sarch-item ">
-                  <div onClick={() => handleSelect(item)}>
-                    {item.display_name} {item.type}
+        {isEdit && (
+          <div className="col1">
+            {addressList &&
+              addressList.map((item, index) => {
+                return (
+                  <div key={index} className="handle map-sarch-item ">
+                    <div onClick={() => handleSelect(item)}>
+                      {item.display_name} {item.type}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-        </div>
+                );
+              })}
+          </div>
+        )}
         <div className="col2">
           <div id="map" tabIndex={0} style={{ height: '500px' }}></div>
           <div id="popup"></div>
