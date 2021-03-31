@@ -16,12 +16,11 @@ import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 const MapPage = (props) => {
-  const [q, setKeyword] = useState('xinyu');
+  const [q, setKeyword] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [currentAddress, setCurrentAddress] = useState({});
   const [resversGps] = useState(new Subject());
   const [isEdit, setIsEdit] = useState(false);
-
   const [olview] = useState(new View({ center: [0, 0], zoom: 13, minZoom: 2, maxZoom: 18 }));
   const [baseLayer] = useState(new Tile({ source: new OSM() }));
   const [, setMap] = useState({});
@@ -61,16 +60,30 @@ const MapPage = (props) => {
       }
     });
 
+    let i = 0;
+    const item = Util.parseQuery(props.history.location.search);
+
     map.on('moveend', (e) => {
+      console.log('-----------');
       const connr = e.map.getView().getCenter();
       const ll = toLonLat(connr).map(function (val) {
         return val.toFixed(6);
       });
       const [lon, lat] = ll;
-      updateMarkerPosition({ lat, lon }, vectorSource);
+      if (item.isEdit == '1' || !i) {
+        updateMarkerPosition({ lat, lon }, vectorSource);
+        i++;
+      }
     });
 
-    handleSelect(latLon);
+    const urlParams1 = Util.parseQuery(props.history.location.search);
+    console.log(latLon, Object.assign({}, latLon, urlParams1));
+    const llData = {
+      lat: urlParams1.lat || latLon.lat,
+      lon: urlParams1.lon || latLon.lon,
+    };
+
+    handleSelect(llData, vectorSource);
   };
 
   useEffect(() => {
@@ -83,7 +96,6 @@ const MapPage = (props) => {
     });
 
     return () => {
-      console.log('unsubscribe');
       resversGps.unsubscribe();
     };
   }, [context]);
@@ -113,6 +125,7 @@ const MapPage = (props) => {
     london.setStyle(new Style({ image: new Icon({ color: '#4271AE', crossOrigin: '', src: 'https://download.xiaotuni.cn/marker-icon.png' }) }));
     vs.clear();
     vs.addFeature(london);
+
     resversGps.next({ lat, lon });
   };
 
@@ -121,8 +134,6 @@ const MapPage = (props) => {
     updateMarkerPosition(item);
     setCurrentAddress(item);
     olview.animate({ center: fromLonLat([lon, lat]), duration: 1000 });
-
-    console.log(item);
   };
 
   const handleSaveAddress = async () => {

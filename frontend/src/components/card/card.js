@@ -19,7 +19,7 @@ const Card = (props) => {
   };
 
   const handleFavorites = async () => {
-    console.log('handleAddFavorites:');
+   
     const { onUpdate, collection, info } = props;
     if (collection) {
       await context.onDeleteFavorites(info.id);
@@ -31,7 +31,7 @@ const Card = (props) => {
     setTimes(Date.now());
     onUpdate && onUpdate();
   };
-  const { id, avatar } = props.info || {};
+  const { id, avatar, lat, lon } = props.info || {};
   let avatar_url = avatar ? `${httpHelper.WebSite}/uploads/${avatar}` : defaultAvatar;
   console.log('avatar_url:', avatar_url, 'avatar:', !avatar);
 
@@ -49,7 +49,7 @@ const Card = (props) => {
         </div>
 
         <div className="col0 ">
-          <div className="icon icon-position handle"></div>
+          <div className="icon icon-position handle" onClick={() => context.switchPage(`/map?id=${id}&lat=${lat}&lon=${lon}`)}></div>
         </div>
       </div>
       <div>

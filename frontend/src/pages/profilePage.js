@@ -114,7 +114,7 @@ const PorfilePage = (props) => {
             <div className="col-2 text-right">Address:</div>
             <div className="row col-10 ">
               <input type="text" className="input margin-right-10" disabled value={uInfo.address || ''} />
-              {uInfo.id && <div className="handle icon icon-position" onClick={() => context.switchPage('map/?isEdit=1&' + uInfo.id)}></div>}
+              {uInfo.id && <div className="handle icon icon-position" onClick={() => context.switchPage(`map/?lat=${uInfo.lat || ''}&lon=${uInfo.lon || ''}&isEdit=1&id=${uInfo.id}`)}></div>}
             </div>
           </div>
           <div className="row margin-top-10">
