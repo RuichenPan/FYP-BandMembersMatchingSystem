@@ -53,8 +53,8 @@ class HttpHelper {
           const { status } = response;
 
           if (status > 300) {
+            this.context.alertMsg(body.msg);
             if (status === 403) {
-              this.context.alertMsg(body.msg);
               this.context.switchPage('/login');
             }
             reject(body.msg);

@@ -1,9 +1,7 @@
 import React, { useContext, useState } from 'react';
 import './card.css';
-import defaultAvatar from '../../images/default-avatar.jpg';
-import httpHelper from '../../api/httpHelper';
 import { UserContext } from '../../contexts/userContext';
-import Image from '../Image/image';
+import MyImage from '../MyImage/MyImage';
 
 const Card = (props) => {
   const context = useContext(UserContext);
@@ -13,13 +11,13 @@ const Card = (props) => {
   };
   const handleInformation = () => {
     console.log('handleInformation');
+    context.switchPage('person');
   };
   const handleChat = () => {
     console.log('handleChat');
   };
 
   const handleFavorites = async () => {
-   
     const { onUpdate, collection, info } = props;
     if (collection) {
       await context.onDeleteFavorites(info.id);
@@ -32,8 +30,6 @@ const Card = (props) => {
     onUpdate && onUpdate();
   };
   const { id, avatar, lat, lon } = props.info || {};
-  let avatar_url = avatar ? `${httpHelper.WebSite}/uploads/${avatar}` : defaultAvatar;
-  console.log('avatar_url:', avatar_url, 'avatar:', !avatar);
 
   return (
     <div className="card-info">
@@ -49,19 +45,19 @@ const Card = (props) => {
         </div>
 
         <div className="col0 ">
-          <div className="icon icon-position handle" onClick={() => context.switchPage(`/map?id=${id}&lat=${lat}&lon=${lon}`)}></div>
+          <div className="icon icon-position handle" onClick={() => context.switchPage(`/map?id=${id}&lat=${lat || ''}&lon=${lon || ''}`)}></div>
         </div>
       </div>
       <div>
         <div className="profile-image">
-          <Image avatar={avatar} />
+          <MyImage avatar={avatar} />
         </div>
       </div>
       <div className="row text-center">
-        <div className="col1 margin-5 btn btn-light" onClick={handleInformation}>
-          Info
+        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/album?id=${id}`)}>
+          Album
         </div>
-        <div className="col1 margin-5 btn btn-light" onClick={handleVideo}>
+        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/video?id=${id}`)}>
           Video
         </div>
         <div className="col1 margin-5 btn btn-light" onClick={handleChat}>

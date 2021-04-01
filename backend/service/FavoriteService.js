@@ -35,7 +35,7 @@ class FavoriteService extends BaseService {
 
     // judge is exists
     const tmp = await this.findOne({ user_id: userInfo.id, favorite_user_id: user_id });
-    if (tmp > 0) {
+    if (tmp) {
       return this.success(tmp);
     }
     const doc = {

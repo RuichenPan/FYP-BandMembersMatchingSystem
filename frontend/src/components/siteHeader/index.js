@@ -50,10 +50,15 @@ const SiteHeader = (props) => {
             </>
           )}
           <div className="col1"></div>
-          {userInfo && <div className="btn btn-light">Webclome {userInfo.username}</div>}
-          <ItemRow title="Logout" onClick={() => handleClick()} />
-          <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
-          
+          {userInfo ? (
+            <>
+              <div className="btn btn-light">Webclome {userInfo.username}</div>
+              <ItemRow title="Logout" onClick={() => handleClick()} />
+              <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
+            </>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </div>

@@ -18,6 +18,8 @@ const CheckEmailPage = lazy(() => import('./pages/checkEmailPage'));
 const FavoritesPage = lazy(() => import('./pages/favoritesPage'));
 const MapPage = lazy(() => import('./pages/mapPage'));
 const PersonDetailPage = lazy(() => import('./pages/personDetailPage'));
+const VideoPage = lazy(() => import('./pages/videoPage'));
+const AlbumPage = lazy(() => import('./pages/albumPage'));
 
 var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
@@ -40,6 +42,8 @@ const App = () => {
               <Route exact path="/favorites" component={FavoritesPage} />
               <Route exact path="/map" component={MapPage} />
               <Route exact path="/person" component={PersonDetailPage} />
+              <Route exact path="/album" component={AlbumPage} />
+              <Route exact path="/video" component={VideoPage} />
               <Route exact path="/" component={HomePage} />
               <Redirect exact from="*" to="/" />
             </Switch>

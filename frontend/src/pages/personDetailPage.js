@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Image from '../components/Image/image';
+import MyImage from '../components/MyImage/MyImage';
+import GoBack from '../components/GoBack/GoBack';
+import Comment from '../components/Comment/Comment';
 import { UserContext } from '../contexts/userContext';
 import Util from '../util';
 
@@ -9,29 +11,35 @@ const PersonDetailPage = (props) => {
   const [info, setInfo] = useState({});
 
   const initDetail = async () => {
-    const parasm = Util.parseQuery(props.history.location.search);
+    const parasm = Util.parseQuery();
     const { id: user_id } = parasm;
     await context.onGetPersonDetail(user_id);
-
     setInfo(context.state.personDetail);
-    console.log(parasm);
   };
   useEffect(() => {
     initDetail();
   }, [context]);
-  const { username, address, avatar } = info;
-  console.log('username:', username);
+
+  const { username, avatar } = info;
+
   return (
     <div className="person-detail-body">
-      <div className="row">
-        <div className="col1"></div>
-        <div className="col0 btn btn-light" onClick={context.goBack}>
-          Back
-        </div>
-      </div>
+      <GoBack />
       <div className="row">
         <div className="person-portrait">
-          <Image avatar={avatar} />
+          <MyImage avatar={avatar} />
+          <div className="row margin-top-10 text-center">
+            <div className="col1 ">
+              <span className="btn btn-light" onClick={() => context.switchPage(`album`, { id: info.id })}>
+                Album
+              </span>
+            </div>
+            <div className="col1">
+              <span className="btn btn-light" onClick={() => context.switchPage(`video`, { id: info.id })}>
+                Video
+              </span>
+            </div>
+          </div>
         </div>
         <div className="col1 padding-left-10">
           <div className="row margin-bottom-10">
@@ -44,7 +52,7 @@ const PersonDetailPage = (props) => {
           </div>
           <div className="row margin-bottom-10">
             <div className="person-label">Address:</div>
-            <div className="col1">
+            <div className="col1 handle" onClick={() => context.switchPage('map', { id: info.id, lat: info.lat || '', lon: info.lon || '' })}>
               <span className="margin-right-10">{info.address}</span>
               <div className=" icon icon-position"></div>
             </div>
@@ -60,6 +68,10 @@ const PersonDetailPage = (props) => {
           <div className="row margin-bottom-10">
             <div className="person-label">I Am A:</div>
             <div className="col1">{info.i_am_a}</div>
+          </div>
+
+          <div className=" margin-bottom-30" desc="Comment">
+            <Comment user_id={info.id} />
           </div>
         </div>
       </div>

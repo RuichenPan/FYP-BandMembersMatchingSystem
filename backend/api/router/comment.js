@@ -16,15 +16,15 @@ router
     try {
       const { user_id } = req.params;
       const { page, size } = req.query;
-      const list = await CommentService.list({ page: Number(page), size: Number(size), user_id });
-      res.json({ code: 200, data: list });
+      const info = await CommentService.list({ page: Number(page), size: Number(size), user_id });
+      res.json(info);
     } catch (ex) {
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
   .post('/:user_id', async (req, res) => {
     try {
-      const { user_id } = req.params; 
+      const { user_id } = req.params;
       const { body, userInfo } = req;
       const info = await CommentService.addComment({ user_id, body, userInfo });
       res.json(info);
@@ -32,8 +32,17 @@ router
       res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
     }
   })
-  .put('/reply/id', async (re, res) => {
+  .delete('/:comment_id', async (req, res) => {
     try {
+      const { comment_id } = req.params;
+      await CommentService.findByIdAndDelete(comment_id);
+      res.json(CommentService.success('delete success'));
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.msg || ex.message || ex });
+    }
+  })
+  .put('/reply/:id', async (req, res) => {
+    try { 
       const { id: comment_id } = req.params;
       const { body, userInfo } = req;
       const info = await CommentService.replyComment({ comment_id, body, userInfo });

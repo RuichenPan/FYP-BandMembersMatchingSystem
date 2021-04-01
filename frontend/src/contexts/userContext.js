@@ -10,7 +10,8 @@ const UserContentProvider = (props) => {
   const [state, dispatch] = useReducer(UserReducer, {});
 
   const switchPage = (url, params) => {
-    const query = HttpHelper.getQuery();
+    const query = HttpHelper.getQuery(params);
+
     props.history.push(query ? `${url}?${query}` : url, params);
   };
   const goBack = () => {
@@ -230,7 +231,6 @@ const UserContentProvider = (props) => {
    */
   const onGetFavoritesList = async () => {
     const info = await HttpHelper.apiGet('/api/favorite/mine');
-    console.log(info);
     dispatch({ type: ConstTypeMap.FAVORITES_MINE, payload: info });
     return info;
   };
@@ -241,7 +241,6 @@ const UserContentProvider = (props) => {
    */
   const onGetPersonDetail = async (user_id) => {
     const info = await HttpHelper.apiGet('/api/open/person/' + user_id);
-    console.log('info:', JSON.stringify(info));
     dispatch({ type: ConstTypeMap.HOME_PERSON_DETAIL, payload: info });
     return info;
   };
@@ -275,11 +274,63 @@ const UserContentProvider = (props) => {
     return info;
   };
 
+  /**
+   * get commnt list by user id
+   *
+   * @param {*} { page, size, user_id }
+   * @return {*}
+   */
+  const onGetCommentList = async ({ page, size, user_id }) => {
+    const info = await HttpHelper.apiGet('/api/comment/' + user_id, { page, size });
+    dispatch({ type: ConstTypeMap.COMMENT_GET_LIST, payload: info });
+    return info;
+  };
+
+  /**
+   * add user comment
+   *
+   * @param {*} { user_id, content }
+   * @return {*}
+   */
+  const onAddComment = async ({ user_id, content }) => {
+    const info = await HttpHelper.apiPost('/api/comment/' + user_id, { content });
+    dispatch({ type: ConstTypeMap.COMMENT_ADD, payload: info });
+    return info;
+  };
+
+  /**
+   * reply comment
+   *
+   * @param {*} { comment_id, content }
+   * @return {*}
+   */
+  const onReplyComment = async ({ comment_id, content }) => {
+    const info = await HttpHelper.apiPut('/api/comment/reply/' + comment_id, {}, { content });
+    dispatch({ type: ConstTypeMap.COMMENT_REPLY, payload: info });
+    return info;
+  };
+
+  /**
+   * delete comment
+   *
+   * @param {*} comment_id
+   * @return {*}
+   */
+  const onDeleteComment = async (comment_id) => {
+    const info = await HttpHelper.apiDelete('/api/comment/' + comment_id);
+    dispatch({ type: ConstTypeMap.COMMENT_Delete, payload: info });
+    return info;
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...props,
         state,
+        onDeleteComment,
+        onReplyComment,
+        onGetCommentList,
+        onAddComment,
         onMapSearch,
         onMapReverse,
         userInfo: state.userInfo,
