@@ -20,6 +20,7 @@ const MapPage = lazy(() => import('./pages/mapPage'));
 const PersonDetailPage = lazy(() => import('./pages/personDetailPage'));
 const VideoPage = lazy(() => import('./pages/videoPage'));
 const AlbumPage = lazy(() => import('./pages/albumPage'));
+const ChatPage = lazy(() => import('./pages/chatPage'));
 
 var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
@@ -44,6 +45,7 @@ const App = () => {
               <Route exact path="/person" component={PersonDetailPage} />
               <Route exact path="/album" component={AlbumPage} />
               <Route exact path="/video" component={VideoPage} />
+              <Route exact path="/chat" component={ChatPage} />
               <Route exact path="/" component={HomePage} />
               <Redirect exact from="*" to="/" />
             </Switch>

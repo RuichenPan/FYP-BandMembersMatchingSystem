@@ -6,13 +6,7 @@ import MyImage from '../MyImage/MyImage';
 const Card = (props) => {
   const context = useContext(UserContext);
   const [, setTimes] = useState(0);
-  const handleVideo = () => {
-    console.log('video');
-  };
-  const handleInformation = () => {
-    console.log('handleInformation');
-    context.switchPage('person');
-  };
+
   const handleChat = () => {
     console.log('handleChat');
   };
@@ -60,7 +54,7 @@ const Card = (props) => {
         <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/video?id=${id}`)}>
           Video
         </div>
-        <div className="col1 margin-5 btn btn-light" onClick={handleChat}>
+        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/chat?id=${id}`)}>
           Chat
         </div>
       </div>

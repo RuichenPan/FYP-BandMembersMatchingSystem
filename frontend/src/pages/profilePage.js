@@ -41,11 +41,7 @@ const PorfilePage = (props) => {
         console.log(ex);
       }
 
-      context.socket.auth.token = HttpHelper.token;
-      context.socket.disconnect().connect();
-      context.socket.on('msg', (data) => {
-        console.log('data:', data);
-      });
+
     };
     api();
     // eslint-disable-next-line
@@ -75,10 +71,7 @@ const PorfilePage = (props) => {
   return (
     <div>
       <SubLogo />
-      {/* <div className="row">
-        <input value={msg} onChange={(e) => setMsg(e.target.value)} />
-        <button onClick={handleSocket}>connect</button>
-      </div> */}
+    
       <div className="row margin-top-20">
         <div className="col1">
           <div className="row">

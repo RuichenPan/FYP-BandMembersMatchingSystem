@@ -9,6 +9,7 @@ export default class SocketService {
   }
 
   initStart() {
+    const self = this;
     this.serverSocket.on('connection', (socket) => {
       this.socketMap[socket.id] = socket;
       ChatService.log(this.serverSocket.engine.clientsCount, socket.id);
@@ -21,10 +22,35 @@ export default class SocketService {
       });
 
       socket.on('message', (data) => {
-        ChatService.log('accept data:', data);
+        self.process_cmd(socket, data);
       });
     });
   }
 
-  socket_msg(client, data) {}
+  sendMsg(socket, data) {
+    data.ts = new Date();
+    socket.send(data);
+  }
+
+  process_cmd(socket, data) {
+    ChatService.log('accept data:', data);
+    const { cmd } = data;
+    const cmd_fun = `CMD_${cmd}`;
+    ChatService.log('cmd func name:', cmd_fun);
+
+    if (this[cmd_fun]) {
+      this[cmd_fun](socket, data);
+    }
+  }
+  CMD_Login(socket, data) {
+    this.sendMsg(socket, { msg: 'login success' });
+  }
+
+  CMD_Msg(socket, data) {
+    // save msg to data base
+    // reply
+    // const {user_id,} = data;
+
+    // this.sendMsg({cmd:'Msg',})
+  }
 }
