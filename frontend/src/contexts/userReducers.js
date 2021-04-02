@@ -66,6 +66,9 @@ const UserReducer = (state = {}, action) => {
     case ConstTypeMap.MAP_REVERSE_GPS_GET_ADDRESS:
       state.reverseGpsAddress = payload;
       break;
+    case ConstTypeMap.CHAT_USER_MSG_MAP:
+      state.userMsgMap = payload;
+      break;
     default:
       state.a = true;
       break;

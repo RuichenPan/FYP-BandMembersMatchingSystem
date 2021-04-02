@@ -7,8 +7,10 @@ export default mongoose.model(
     {
       user_id: { type: String, comment: '' },
       username: { type: String, comment: '' },
-      reply_user_id: { type: String, comment: '' },
-      reply_username: { type: String, comment: '' },
+      avatar: { type: String, comment: '' },
+      to_user_id: { type: String, comment: '' },
+      to_username: { type: String, comment: '' },
+      to_avatar: { type: String, comment: '' },
       msg: { type: String, comment: '' },
       state: { type: Number, default: 1, comment: '1 unread,2 read' },
       create_time: { type: Number, comment: '', default: Date.now },

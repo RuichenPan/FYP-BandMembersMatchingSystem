@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useReducer, createContext, useEffect } from 'react';
 import ConstTypeMap from './typeMap';
 import HttpHelper from '../api/httpHelper';
 import UserReducer from './userReducers';
@@ -7,6 +7,11 @@ import Util from '../util';
 export const UserContext = createContext(null);
 
 const UserContentProvider = (props) => {
+  console.log(new Date(), '-----------enter-------userContent-----');
+  // props.socket.on('message', (data) => {
+  //   console.log('data:', data);
+  // });
+
   const [state, dispatch] = useReducer(UserReducer, {});
 
   const switchPage = (url, params) => {
@@ -147,6 +152,10 @@ const UserContentProvider = (props) => {
     } catch (ex) {
       console.log(ex);
     }
+  };
+
+  const onSaveUserInfo = (userInfo) => {
+    dispatch({ type: ConstTypeMap.USER_INFO, payload: userInfo });
   };
 
   /**
@@ -318,8 +327,17 @@ const UserContentProvider = (props) => {
    */
   const onDeleteComment = async (comment_id) => {
     const info = await HttpHelper.apiDelete('/api/comment/' + comment_id);
-    dispatch({ type: ConstTypeMap.COMMENT_Delete, payload: info });
+    dispatch({ type: ConstTypeMap.COMMENT_DELETE, payload: info });
     return info;
+  };
+
+  /**
+   * save use msg list
+   *
+   * @param {*} userMsgMap
+   */
+  const onSaveUserMsgMap = (userMsgMap) => {
+    dispatch({ type: ConstTypeMap.CHAT_USER_MSG_MAP, payload: userMsgMap });
   };
 
   return (
@@ -327,6 +345,7 @@ const UserContentProvider = (props) => {
       value={{
         ...props,
         state,
+        onSaveUserMsgMap,
         onDeleteComment,
         onReplyComment,
         onGetCommentList,
@@ -343,6 +362,7 @@ const UserContentProvider = (props) => {
         onUpload,
         onAlbum,
         onVideo,
+        onSaveUserInfo,
         checkEmail,
         getUserInfo,
         addFavorites,

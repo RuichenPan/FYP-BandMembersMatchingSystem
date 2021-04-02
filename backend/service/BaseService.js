@@ -267,15 +267,15 @@ export default class BaseService {
    * [
    *   {
    *     $group: {
-   *       _id: { worker_id: '$worker_id' },
+   *       _id: { user_id: '$user_id' },
    *       totalPrice: { $sum: '$price' }
    *     }
    *   },
    *   {
-   *     $project: { worker_id: '$_id.worker_id', total: '$totalPrice' }
+   *     $project: { user_id: '$_id.user_id', total: '$totalPrice' }
    *   },
    *   {
-   *     $match: { worker_id: '5f6eb0eb5025214504cd2377' }
+   *     $match: { user_id: '5f6eb0eb5025214504cd2377' }
    *   }
    * ])
    *
@@ -284,7 +284,7 @@ export default class BaseService {
   async aggregate(aggregations) {
     try {
       const result = await this.modal.aggregate(aggregations);
-      return result && result.length > 0 ? JSON.parse(JSON.stringify(result[0])) : null;
+      return result && result.length > 0 ? JSON.parse(JSON.stringify(result)) : null;
     } catch (ex) {
       this.log(ex);
       return Promise.reject({ msg: `[${this.TableName}]update error :${ex.message}` });

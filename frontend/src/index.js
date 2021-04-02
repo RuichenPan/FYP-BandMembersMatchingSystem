@@ -26,9 +26,10 @@ var host = window.location.host;
 if (!host.includes('herokuapp.com')) {
   host = '127.0.0.1:5300';
 }
-var socket = io(host, { path: '/chat', auth: { token: '' } });
+const socket = io(host, { path: '/chat', auth: { token: '' } });
 
 const App = () => {
+  
   return (
     <Router history={history}>
       <div className="indexPageCss container">

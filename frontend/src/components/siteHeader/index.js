@@ -24,12 +24,14 @@ const SiteHeader = (props) => {
   useEffect(() => {
     const userInfo = httpHelper.userInfo;
     setUserInfo(userInfo);
+    console.log('-->', userInfo);
+    context.onSaveUserInfo(userInfo);
 
     Util.userNofity.subscribe((uInfo) => {
       setUserInfo(uInfo);
       console.log('111');
     });
-  }, [context.userInfo]);
+  }, [context]);
 
   console.log('context.userInfo:', context.userInfo);
 

@@ -3,7 +3,6 @@ import Card from '../components/card/card';
 import { UserContext } from '../contexts/userContext';
 
 const FavoritesPage = (props) => {
-  const [, setTimes] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [fList, setFList] = useState([]);
   const context = useContext(UserContext);
@@ -20,7 +19,7 @@ const FavoritesPage = (props) => {
   }, [context]);
 
   // const { list } = context.state.favorite_mine || {};
-  console.log('isLoading:', isLoading);
+
   return (
     <div>
       {fList && fList.length > 0 ? (
