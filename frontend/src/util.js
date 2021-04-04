@@ -11,6 +11,13 @@ export function excerpt(string) {
 }
 
 export default class Util {
+  static await(times) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      });
+    }, times || 1000);
+  }
   static parseQuery(str) {
     const _str = str || window.location.href;
     const val = _str.split('?')[1]; //.substring(1);

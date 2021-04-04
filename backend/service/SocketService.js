@@ -14,15 +14,16 @@ export default class SocketService {
     this.serverSocket.on('connection', (socket) => {
       // this.socketMap[socket.id] = socket;
       ChatService.log(this.serverSocket.engine.clientsCount, socket.id);
-      socket.on('msg', (data) => {
-        UserService.log('data-->', data);
-        // socket.emit('msg', { msg: data, ts: new Date().getTime() });
-        Object.values(socketMap).forEach((client) => {
-          client.emit('msg', { id: client.id, msg: data.msg, ts: new Date().getTime() });
-        });
-      });
+      // socket.on('msg', (data) => {
+      //   UserService.log('data-->', data);
+      //   // socket.emit('msg', { msg: data, ts: new Date().getTime() });
+      //   Object.values(socketMap).forEach((client) => {
+      //     client.emit('msg', { id: client.id, msg: data.msg, ts: new Date().getTime() });
+      //   });
+      // });
 
       socket.on('message', (data) => {
+        console.log('user_id:', data.user_id);
         self.process_cmd(socket, data);
       });
     });
@@ -40,15 +41,11 @@ export default class SocketService {
     ChatService.log('cmd func name:', cmd_fun);
 
     if (!this.socketMap[user_id]) {
-      const [isExpire, userInfo] = await UserService.CheckToken(token);
-      if (!isExpire) {
-        data.userInfo = userInfo;
-        this.socketMap[user_id] = userInfo;
-        this.socketMap[user_id].socket = socket;
-      }
-    } else {
-      data.userInfo = this.socketMap[user_id];
+      this.socketMap[user_id] = await UserService.findById(user_id);
     }
+
+    this.socketMap[user_id].socket = socket;
+    data.userInfo = this.socketMap[user_id];
 
     delete data.token;
 
@@ -69,8 +66,6 @@ export default class SocketService {
    */
   async CMD_MsgList(socket, data) {
     const { user_id: to_user_id, select_user_id: user_id } = data;
-    console.log({ to_user_id, user_id });
-
     const list = await ChatService.find(
       {
         $or: [
@@ -80,7 +75,9 @@ export default class SocketService {
       },
       { update_time: 0, state: 0, _id: 0 },
     );
+
     // update state , set state = 2
+    await ChatService.updateMany({ to_user_id, user_id }, { state: 2 });
     this.sendMsg(socket, { cmd: 'MsgList', list });
   }
 
@@ -96,11 +93,13 @@ export default class SocketService {
     const condition = [{ $match: { state: 1 } }, { $group: { _id: { user_id: '$user_id', to_user_id: '$to_user_id' }, totalUnread: { $sum: 1 } } }, { $match: { '_id.to_user_id': to_user_id } }];
     const list = await ChatService.aggregate(condition);
     const infoMap = {};
-    list.forEach((item) => {
-      item.user_id = item._id.user_id;
-      delete item._id;
-      infoMap[item.user_id] = item.totalUnread;
-    });
+    if (list) {
+      list.forEach((item) => {
+        item.user_id = item._id.user_id;
+        delete item._id;
+        infoMap[item.user_id] = item.totalUnread;
+      });
+    }
     this.sendMsg(socket, { cmd: 'unReadStati', data: infoMap });
   }
 
@@ -120,8 +119,7 @@ export default class SocketService {
     console.log('to_username:', to_username);
 
     // save msg to data base
-    // const info = await ChatService.save(row);
-    const info = null;
+    const info = await ChatService.save(row);
 
     this.sendMsg(socket, { cmd: 'Msg', data: info || row });
     const { socket: to_socket } = this.socketMap[to_user_id] || {};

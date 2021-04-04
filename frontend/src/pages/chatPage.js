@@ -29,20 +29,30 @@ const ChatPage = (props) => {
    *
    */
   const onSocketListen = () => {
-    // context.socket.removeAllListeners('message');
-    const self = this;
+    context.socket.removeAllListeners('message');
+    context.socket.on('disconnect', async () => {
+      console.log('socket disconnect');
+
+      Util.await(1500);
+      context.socket.connect();
+
+      if (context.socket.connected) {
+        console.log('reconnection success...');
+      }
+    });
+    context.socket.once('connect', () => {
+      console.log('socket reconnect');
+      sendMsg({ cmd: 'Login' });
+    });
     context.socket.on('message', (body) => {
       const { id: login_user_id } = context.state.userInfo || {};
       const { chatSelectUserId } = context.state;
-      console.log(chatWinBodyRef);
-      console.log(self);
-      console.log('body:', body);
+      console.log('body:', JSON.stringify(body));
       switch (body.cmd) {
         case 'unReadStati':
           setUnreadMap(body.data);
           context.state.unReadMap = body.data;
           sendMsg({ cmd: 'MsgList', select_user_id: uid });
-          // console.log('body.data:', JSON.stringify(body));
           break;
         case 'MsgList':
           const tmp1 = context.state.userMsgMap || {};
@@ -50,8 +60,9 @@ const ChatPage = (props) => {
           setUserMsgMap(tmp1);
           context.onSaveUserMsgMap(tmp1);
           setUserMsgMap({ ...context.state.userMsgMap });
-          chatWinBodyRef.current.scrollTop += 1000;
-          // console.log(JSON.stringify(body.list));
+          if (chatWinBodyRef && chatWinBodyRef.current) {
+            chatWinBodyRef.current.scrollTop += 100000;
+          }
           break;
         case 'Msg':
           const tmp = context.state.userMsgMap || {};
@@ -80,7 +91,7 @@ const ChatPage = (props) => {
           setUserMsgMap({ ...context.state.userMsgMap });
 
           // scroll to the end
-          chatWinBodyRef.current.scrollTop += 1000;
+          chatWinBodyRef.current.scrollTop += 1000000;
         default:
           break;
       }
@@ -107,8 +118,12 @@ const ChatPage = (props) => {
    *
    * @param {*} data
    */
-  const sendMsg = (data) => {
-    data.token = HttpHelper.token;
+  const sendMsg = async (data) => {
+    if (context.socket.disconnected) {
+      context.socket.connect();
+      await Util.await(500);
+    }
+    // data.token = HttpHelper.token;
     const { id: user_id } = context.userInfo || context.state.userInfo;
     data.user_id = user_id;
     context.socket.send(data);
@@ -122,6 +137,8 @@ const ChatPage = (props) => {
   const handleMsgList = (item) => {
     setUid(item.id);
     context.state.chatSelectUserId = item.id;
+    // clear unread count
+    unReadMap[item.id] = null;
     sendMsg({ cmd: 'MsgList', select_user_id: item.id });
   };
 
