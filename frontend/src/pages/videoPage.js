@@ -6,14 +6,12 @@ import Util from '../util';
 const VideoPage = (props) => {
   const context = useContext(UserContext);
 
-  const getData = async ({ page = 1, size = 20 } = {}) => {
-    const { id: user_id } = Util.parseQuery();
-    console.log('user_id:', user_id);
-    const info = await context.onVideo({ page, size, user_id });
-    console.log(info);
-  };
   useEffect(() => {
-    getData();
+    const apiCall = async ({ page = 1, size = 20 } = {}) => {
+      const { id: user_id } = Util.parseQuery();
+      await context.onVideo({ page, size, user_id });
+    };
+    apiCall();
   }, [context]);
 
   return (

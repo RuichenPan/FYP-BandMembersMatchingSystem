@@ -13,11 +13,6 @@ const PorfilePage = (props) => {
   const context = useContext(UserContext);
   const [uInfo, setUpdateUserInfo] = useState({});
 
-  const sendData = (data) => {
-    console.log(data);
-    context.socket.send(data);
-  };
-
   const getVideo = async (page, size, user_id) => {
     await context.onVideo({ page, size, user_id });
   };
@@ -40,16 +35,10 @@ const PorfilePage = (props) => {
       } catch (ex) {
         console.log(ex);
       }
-
-
     };
     api();
     // eslint-disable-next-line
   }, [context]);
-
-  const handleSocket = () => {
-    sendData({ msg: 'test' + new Date() });
-  };
 
   const handleChange = async (field, value) => {
     if (props.isView) {
@@ -71,7 +60,7 @@ const PorfilePage = (props) => {
   return (
     <div>
       <SubLogo />
-    
+
       <div className="row margin-top-20">
         <div className="col1">
           <div className="row">

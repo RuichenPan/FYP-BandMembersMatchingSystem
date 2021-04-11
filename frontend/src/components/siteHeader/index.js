@@ -24,13 +24,20 @@ const SiteHeader = (props) => {
   useEffect(() => {
     const userInfo = httpHelper.userInfo;
     setUserInfo(userInfo);
-    console.log('-->', userInfo);
     context.onSaveUserInfo(userInfo);
 
     Util.userNofity.subscribe((uInfo) => {
       setUserInfo(uInfo);
       console.log('111');
+      context.socket.send({ cmd: 'Login', user_id: uInfo.id });
     });
+
+    context.socket.on('msgRemind', (data) => {
+      console.log(data);
+    });
+    if (userInfo && userInfo.id) {
+      context.socket.send({ cmd: 'Login', user_id: userInfo.id });
+    }
   }, [context]);
 
   console.log('context.userInfo:', context.userInfo);

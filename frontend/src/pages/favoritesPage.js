@@ -15,7 +15,13 @@ const FavoritesPage = (props) => {
   };
 
   useEffect(() => {
-    initData();
+    const apiCall = async () => {
+      await context.onGetFavoritesList();
+      const { list } = context.state.favorite_mine || {};
+      setFList(list);
+      setIsLoading(false);
+    };
+    apiCall();
   }, [context]);
 
   // const { list } = context.state.favorite_mine || {};

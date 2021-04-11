@@ -32,7 +32,7 @@ const MapPage = (props) => {
   const initData = async () => {
     const item = Util.parseQuery(props.history.location.search);
     console.log(item);
-    if (item.isEdit == '1') {
+    if (item.isEdit === '1') {
       setIsEdit(true);
     }
   };
@@ -70,7 +70,7 @@ const MapPage = (props) => {
         return val.toFixed(6);
       });
       const [lon, lat] = ll;
-      if (item.isEdit == '1' || !i) {
+      if (item.isEdit === '1' || !i) {
         updateMarkerPosition({ lat, lon }, vectorSource);
         i++;
       }
@@ -98,6 +98,7 @@ const MapPage = (props) => {
     return () => {
       resversGps.unsubscribe();
     };
+    // eslint-disable-next-line
   }, [context]);
 
   const handleSearch = async () => {

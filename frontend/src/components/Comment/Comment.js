@@ -32,7 +32,7 @@ const ComentItem = (props) => {
         <div className="col1">
           <div className="row row-between">
             <span>{Util.format(row.create_time, 'yyyy-MM-dd HH:mm:ss')}</span>
-            {url_user_id == curentUser.id && row.reply_create_time === 0 && <span className="icon icon-reply handle " onClick={() => setIsReply(true)}></span>}
+            {url_user_id === curentUser.id && row.reply_create_time === 0 && <span className="icon icon-reply handle " onClick={() => setIsReply(true)}></span>}
             {/* <span className="icon icon-reply handle " onClick={() => setIsReply(true)}></span> */}
           </div>
           <div className="row">
@@ -96,6 +96,8 @@ const Comment = (props) => {
 
   useEffect(() => {
     getList();
+    
+    // eslint-disable-next-line
   }, [context]);
 
   const handleSave = async () => {

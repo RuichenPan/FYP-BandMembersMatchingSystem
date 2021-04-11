@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useEffect } from 'react';
+import React, { useReducer, createContext } from 'react';
 import ConstTypeMap from './typeMap';
 import HttpHelper from '../api/httpHelper';
 import UserReducer from './userReducers';
@@ -7,11 +7,6 @@ import Util from '../util';
 export const UserContext = createContext(null);
 
 const UserContentProvider = (props) => {
-  console.log(new Date(), '-----------enter-------userContent-----');
-  // props.socket.on('message', (data) => {
-  //   console.log('data:', data);
-  // });
-
   const [state, dispatch] = useReducer(UserReducer, {});
 
   const switchPage = (url, params) => {

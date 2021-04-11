@@ -7,10 +7,6 @@ const Card = (props) => {
   const context = useContext(UserContext);
   const [, setTimes] = useState(0);
 
-  const handleChat = () => {
-    console.log('handleChat');
-  };
-
   const handleFavorites = async () => {
     const { onUpdate, collection, info } = props;
     if (collection) {

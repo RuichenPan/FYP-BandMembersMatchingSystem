@@ -7,17 +7,17 @@ import Util from '../util';
 
 const PersonDetailPage = (props) => {
   const context = useContext(UserContext);
-  const [, setTimes] = useState(0);
   const [info, setInfo] = useState({});
 
-  const initDetail = async () => {
-    const parasm = Util.parseQuery();
-    const { id: user_id } = parasm;
-    await context.onGetPersonDetail(user_id);
-    setInfo(context.state.personDetail);
-  };
+  
   useEffect(() => {
-    initDetail();
+    const apiCall = async () => {
+      const parasm = Util.parseQuery();
+      const { id: user_id } = parasm;
+      await context.onGetPersonDetail(user_id);
+      setInfo(context.state.personDetail);
+    };
+    apiCall();
   }, [context]);
 
   const { username, avatar } = info;

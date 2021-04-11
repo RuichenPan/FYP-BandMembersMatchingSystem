@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import GoBack from '../components/GoBack/GoBack';
 import MyImage from '../components/MyImage/MyImage';
 import { UserContext } from '../contexts/userContext';
-import HttpHelper from '../api/httpHelper';
+
 import Util from '../util';
 
 const ChatPage = (props) => {
@@ -12,16 +12,16 @@ const ChatPage = (props) => {
   const [msg, setMsg] = useState('');
   const [unReadMap, setUnreadMap] = useState({});
   const [userMsgMap, setUserMsgMap] = useState({});
-  const [chatWinBodyRef, setChatWinBodyRef] = useState(React.createRef());
+  const [chatWinBodyRef] = useState(React.createRef());
   const [uid, setUid] = useState(id);
 
   context.state.chatSelectUserId = uid;
 
   useEffect(() => {
     myChatList();
-    sendMsg({ cmd: 'Login' });
-
     onSocketListen();
+
+    // eslint-disable-next-line
   }, [context]);
 
   /**
@@ -44,6 +44,7 @@ const ChatPage = (props) => {
       console.log('socket reconnect');
       sendMsg({ cmd: 'Login' });
     });
+
     context.socket.on('message', (body) => {
       const { id: login_user_id } = context.state.userInfo || {};
       const { chatSelectUserId } = context.state;
@@ -69,7 +70,7 @@ const ChatPage = (props) => {
           const { user_id, to_user_id } = body.data;
           if (login_user_id === to_user_id) {
             // Message received
-            if (user_id != chatSelectUserId) {
+            if (user_id !== chatSelectUserId) {
               context.state.unReadMap[user_id] = (context.state.unReadMap[user_id] || 0) + 1;
               setUnreadMap({ ...context.state.unReadMap });
             } else {
@@ -91,11 +92,15 @@ const ChatPage = (props) => {
           setUserMsgMap({ ...context.state.userMsgMap });
 
           // scroll to the end
-          chatWinBodyRef.current.scrollTop += 1000000;
-        default:
+          if (chatWinBodyRef && chatWinBodyRef.current) {
+            chatWinBodyRef.current.scrollTop += 1000000;
+          }
           break;
+        default:
       }
     });
+
+    sendMsg({ cmd: 'Login' });
   };
 
   /**
@@ -121,7 +126,9 @@ const ChatPage = (props) => {
   const sendMsg = async (data) => {
     if (context.socket.disconnected) {
       context.socket.connect();
-      await Util.await(500);
+      await Util.await(1500);
+      sendMsg(data);
+      return;
     }
     // data.token = HttpHelper.token;
     const { id: user_id } = context.userInfo || context.state.userInfo;
@@ -153,7 +160,7 @@ const ChatPage = (props) => {
           {chatList &&
             chatList.map((item, index) => {
               return (
-                <div key={index} className="row margin-bottom-5 handle" style={{ background: uid == item.id ? '#f0f0f0' : '' }} onClick={() => handleMsgList(item)}>
+                <div key={index} className="row margin-bottom-5 handle" style={{ background: uid === item.id ? '#f0f0f0' : '' }} onClick={() => handleMsgList(item)}>
                   <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
                     <MyImage avatar={item.avatar} />
                   </div>
@@ -174,7 +181,7 @@ const ChatPage = (props) => {
               userMsgMap[uid].map((item, index) => {
                 return (
                   <div key={index}>
-                    {user_id != item.user_id && (
+                    {user_id !== item.user_id && (
                       <div className="row">
                         <div className="chat-avatar margin-right-10">
                           <MyImage avatar={item.avatar} />
@@ -187,7 +194,7 @@ const ChatPage = (props) => {
                       </div>
                     )}
 
-                    {user_id != item.to_user_id && (
+                    {user_id !== item.to_user_id && (
                       <div className="row">
                         <div className="col1"></div>
                         <div className="chat-center">

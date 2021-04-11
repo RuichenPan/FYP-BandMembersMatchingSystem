@@ -18,6 +18,7 @@ const AlbumPage = (props) => {
 
   useEffect(() => {
     initData();
+    // eslint-disable-next-line
   }, [context]);
   return (
     <div className="albumPagebody">
