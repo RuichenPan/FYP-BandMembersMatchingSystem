@@ -15,14 +15,16 @@ const ChatPage = (props) => {
   const [chatWinBodyRef] = useState(React.createRef());
   const [uid, setUid] = useState(id);
 
+
   context.state.chatSelectUserId = uid;
 
   useEffect(() => {
+    handleMsgList({ id });
     myChatList();
     onSocketListen();
-
+    console.log('---useEffect--');
     // eslint-disable-next-line
-  }, [context]);
+  }, [context, props.history.location.key]);
 
   /**
    * listen socket event
@@ -48,7 +50,7 @@ const ChatPage = (props) => {
     context.socket.on('message', (body) => {
       const { id: login_user_id } = context.state.userInfo || {};
       const { chatSelectUserId } = context.state;
-      console.log('body:', JSON.stringify(body));
+      // console.log('body:', JSON.stringify(body));
       switch (body.cmd) {
         case 'unReadStati':
           setUnreadMap(body.data);

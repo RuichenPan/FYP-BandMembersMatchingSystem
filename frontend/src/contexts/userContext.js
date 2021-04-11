@@ -11,9 +11,14 @@ const UserContentProvider = (props) => {
 
   const switchPage = (url, params) => {
     const query = HttpHelper.getQuery(params);
-
     props.history.push(query ? `${url}?${query}` : url, params);
   };
+
+  const replacePage = (url, params) => {
+    const query = HttpHelper.getQuery(params);
+    props.history.replace(query ? `${url}?${query}` : url, params);
+  };
+
   const goBack = () => {
     props.history.goBack();
   };
@@ -370,6 +375,7 @@ const UserContentProvider = (props) => {
         onUpdateProfile,
         alertMsg,
         switchPage,
+        replacePage,
         goBack,
       }}
     >

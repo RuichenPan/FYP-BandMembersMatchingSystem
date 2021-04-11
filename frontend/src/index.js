@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Redirect, Switch } from 'react-router-dom'; // CHANGED
 import io from './libs/socket.io.min.js';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
-// import 'antd/dist/antd.css';
+import 'antd/dist/antd.css';
 import './index.css';
 
 import HomePage from './pages/homePage';

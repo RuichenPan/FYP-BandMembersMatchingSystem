@@ -6,6 +6,7 @@ import SendGrid from '@sendgrid/mail';
 import { ConfigService } from '.';
 import cfg from '../cfg';
 import SourceService from './SourceService';
+import FavoriteService from './FavoriteService';
 
 class UserService extends BaseService {
   constructor() {
@@ -209,11 +210,18 @@ class UserService extends BaseService {
    * @returns
    * @memberof UserService
    */
-  async list({ page, size, keyworld }) {
+  async list({ page, size, keyworld, userInfo = {} }) {
+    const { id: user_id } = userInfo;
     const opt = {};
     if (keyworld) {
       opt.username = { username: { $regex: keyworld, $options: 'i' } };
     }
+    if (user_id) {
+      const favoritesList = await FavoriteService.find({ user_id }, { favorite_user_id: 1 });
+      const ids = favoritesList.map((p) => p.favorite_user_id);
+      opt._id = { $nin: [...ids] };
+    }
+    
     const list = await this.find(opt, { password: 0, salt: 0 }, { limit: size, skip: (page - 1) * size });
     const total = await this.count();
     const totalPage = Math.ceil(total / size);

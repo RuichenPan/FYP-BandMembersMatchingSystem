@@ -3,7 +3,7 @@ import httpHelper from '../../api/httpHelper';
 import { UserContext } from '../../contexts/userContext';
 import Util from '../../util';
 import './siteHeader.css';
-
+import { Button, notification } from 'antd';
 const ItemRow = ({ title, onClick }) => {
   return (
     <button className="btn btn-light" onClick={onClick}>
@@ -21,6 +21,36 @@ const SiteHeader = (props) => {
     alert('Logout！');
   };
 
+  console.log('context.history:', context.history);
+
+
+  const showMsg = (data) => {
+    const { username, user_id } = data;
+    const not_key = `open_${Date.now()}`;
+    notification.open({
+      // message: 'Message',
+      description: `${username} sends you a message`,
+      btn: (
+        <Button
+          size="small"
+          onClick={() => {
+            console.log('aaa');
+            notification.close(not_key);
+            const { pathname } = context.history.location;
+            if (pathname === '/chat') {
+              context.replacePage('/chat?id=' + user_id);
+            } else {
+              context.switchPage('/chat?id=' + user_id);
+            }
+          }}
+        >
+          Look
+        </Button>
+      ),
+      key: not_key,
+    });
+  };
+
   useEffect(() => {
     const userInfo = httpHelper.userInfo;
     setUserInfo(userInfo);
@@ -28,19 +58,23 @@ const SiteHeader = (props) => {
 
     Util.userNofity.subscribe((uInfo) => {
       setUserInfo(uInfo);
-      console.log('111');
       context.socket.send({ cmd: 'Login', user_id: uInfo.id });
     });
 
-    context.socket.on('msgRemind', (data) => {
-      console.log(data);
+    context.socket.on('msgRemind', (body) => {
+      console.log(JSON.stringify(body));
+      const { data } = body;
+      setTimeout(() => {
+        showMsg(data);
+      }, 0);
     });
     if (userInfo && userInfo.id) {
       context.socket.send({ cmd: 'Login', user_id: userInfo.id });
     }
+    // eslint-disable-next-line
   }, [context]);
 
-  console.log('context.userInfo:', context.userInfo);
+  // console.log('context.userInfo:', context.userInfo);
 
   return (
     // bg-dark

@@ -65,7 +65,9 @@ export default class SocketService {
         ],
       },
       { update_time: 0, state: 0, _id: 0 },
+      { sort: { create_time: -1 }, limit: 100 },
     );
+    list.reverse();
 
     // update state , set state = 2
     await ChatService.updateMany({ to_user_id, user_id }, { state: 2 });

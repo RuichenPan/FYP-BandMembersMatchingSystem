@@ -28,6 +28,7 @@ const FavoritesPage = (props) => {
 
   return (
     <div>
+     
       {fList && fList.length > 0 ? (
         <div className="favorite-body">
           {fList.map((row, index) => {
