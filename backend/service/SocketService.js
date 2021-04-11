@@ -12,16 +12,7 @@ export default class SocketService {
   initStart() {
     const self = this;
     this.serverSocket.on('connection', (socket) => {
-      // this.socketMap[socket.id] = socket;
       ChatService.log(this.serverSocket.engine.clientsCount, socket.id);
-      // socket.on('msg', (data) => {
-      //   UserService.log('data-->', data);
-      //   // socket.emit('msg', { msg: data, ts: new Date().getTime() });
-      //   Object.values(socketMap).forEach((client) => {
-      //     client.emit('msg', { id: client.id, msg: data.msg, ts: new Date().getTime() });
-      //   });
-      // });
-
       socket.on('message', (data) => {
         console.log('user_id:', data.user_id);
         self.process_cmd(socket, data);
@@ -126,6 +117,7 @@ export default class SocketService {
     if (to_socket) {
       console.log('--->', row);
       this.sendMsg(to_socket, { cmd: 'Msg', data: info || row });
+      to_socket.emit('msgRemind', { cmd: 'msgRemind', data: info || row });
     }
   }
 }
