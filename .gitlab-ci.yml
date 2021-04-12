@@ -1,0 +1,63 @@
+# Node docker image on which this would be run
+image: node:latest
+
+cache:
+  key:
+    files:
+      - package.json
+  paths:
+    - .npm
+    - frontend/node_modules
+    - frontend/build
+    - backend/node_modules
+    - backend/public
+
+services:
+  - mongo
+
+stages:
+  - build
+  - deploy
+
+Build_api:
+  stage: build
+  before_script:
+    - apt-get update -qy
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    - apt-get install -y yarn
+    - npm install -g create-react-app
+  #   - npm run clean
+  script:
+    - pwd
+    - ls -lh && ls -lh frontend && ls -lh backend
+    # - cd frontend && npm install && npm run build && ls -lh && cd ..
+    - cd frontend && npm install && yarn build --prod && ls -lh && cd ..
+    - cd backend && npm install && ls -lh && cd ..
+    - rm -rf backend/public/*
+    - ls -lh backend/public
+    - echo 'copy build file to backend/public'
+    - cp -r frontend/build/* backend/public
+    - ls -lh backend/public
+    - pwd
+    - echo 'finish...'
+
+continuous_deployment:
+  image: ruby:latest
+  only:
+    - master
+  stage: deploy
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  script:
+    - ls -lh
+    - ls -lh frontend
+    - ls -lh backend
+    # - cp -r frontend/build/* backend/public
+    - cd backend
+    - ls -lh
+    - ls -lh public
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY --skip-cleanup=true
+    - echo "Deployed to production server"
