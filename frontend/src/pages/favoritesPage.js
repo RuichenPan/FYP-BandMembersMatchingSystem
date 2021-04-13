@@ -22,6 +22,7 @@ const FavoritesPage = (props) => {
       setIsLoading(false);
     };
     apiCall();
+    // eslint-disable-next-line
   }, [context]);
 
   // const { list } = context.state.favorite_mine || {};

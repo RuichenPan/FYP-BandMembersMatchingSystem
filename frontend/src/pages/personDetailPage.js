@@ -18,6 +18,7 @@ const PersonDetailPage = (props) => {
       setInfo(context.state.personDetail);
     };
     apiCall();
+    // eslint-disable-next-line
   }, [context]);
 
   const { username, avatar } = info;

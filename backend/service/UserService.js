@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken';
 import ModelUser from '../model/model.user';
 import BaseService from './BaseService';
 import SendGrid from '@sendgrid/mail';
-import { ConfigService } from '.';
+import { ChatService, ConfigService } from '.';
 import cfg from '../cfg';
 import SourceService from './SourceService';
 import FavoriteService from './FavoriteService';
+import CommentService from './CommentService';
 
 class UserService extends BaseService {
   constructor() {
@@ -254,6 +255,17 @@ class UserService extends BaseService {
     }
     if (sourceDocs2 && sourceDocs2.length > 0) {
       await SourceService.create(sourceDocs2);
+    }
+
+    if (body.avatar) {
+      // update comment avatar value
+      await CommentService.updateMany({ comment_user_id: user_id }, { comment_avatar: body.avatar });
+      await CommentService.updateMany({ user_id }, { reply_avatar: body.avatar });
+      // update chat avatar
+      await ChatService.updateMany({ to_user_id: user_id }, { to_avatar: body.avatar });
+      await ChatService.updateMany({ user_id: user_id }, { avatar: body.avatar });
+      // favorite
+      await FavoriteService.updateMany({ favorite_user_id: user_id }, { favorite_avatar: body.avatar });
     }
     return this.success('update success');
   }

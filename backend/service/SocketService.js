@@ -106,10 +106,11 @@ export default class SocketService {
   async CMD_Msg(socket, data) {
     const { id: user_id, username, avatar } = data.userInfo;
     const { to_user_id, msg } = data;
-    const { username: to_username, to_avatar } = this.socketMap[to_user_id] || (await UserService.findById(to_user_id));
+    // const { username: to_username, avatar: to_avatar } = this.socketMap[to_user_id] || (await UserService.findById(to_user_id));
+    const { username: to_username, avatar: to_avatar } = await UserService.findById(to_user_id);
     const row = { user_id, username, avatar, to_user_id, to_username, to_avatar, msg };
 
-    console.log('to_username:', to_username);
+    // console.log('to_username:', user_id, to_user_id, avatar, to_avatar);
 
     // save msg to data base
     const info = await ChatService.save(row);
@@ -117,7 +118,7 @@ export default class SocketService {
     this.sendMsg(socket, { cmd: 'Msg', data: info || row });
     const { socket: to_socket } = this.socketMap[to_user_id] || {};
     if (to_socket) {
-      console.log('--->', row);
+      // console.log('--->', row);
       this.sendMsg(to_socket, { cmd: 'Msg', data: info || row });
       to_socket.emit('msgRemind', { cmd: 'msgRemind', data: info || row });
     }

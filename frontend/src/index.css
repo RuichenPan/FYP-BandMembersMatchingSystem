@@ -316,6 +316,11 @@ textarea {
 .person-portrait {
   width: 300px;
   height: 400px;
+  border: 1px solid #f0f0f0;
+}
+
+.person-portrait .img-cover {
+  background-size: contain !important;
 }
 
 .person-label {

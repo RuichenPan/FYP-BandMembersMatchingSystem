@@ -19,7 +19,7 @@ const ComentItem = (props) => {
   };
 
   const { id: url_user_id } = Util.parseQuery();
-  console.log(url_user_id, curentUser.id);
+  // console.log(url_user_id, curentUser.id);
 
   return (
     <div className="split-line-bottom padding-tb-20">

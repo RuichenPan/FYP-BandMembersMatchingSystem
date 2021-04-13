@@ -16,7 +16,7 @@ const VideoPage = (props) => {
       setList(tmp);
     };
     apiCall();
-    // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [context]);
 
   // style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${row.url}')` }}

@@ -35,7 +35,7 @@ const MovieListPage = () => {
       setTimes(Date.now());
     };
     apiCall();
-    // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [context]);
 
   const handleChange = (opt) => {

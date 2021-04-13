@@ -206,7 +206,7 @@ const ChatPage = (props) => {
                           <div className="chat-msg">{item.msg}</div>
                         </div>
                         <div className="chat-avatar margin-left-10">
-                          <MyImage avatar={item.to_avatar} />
+                          <MyImage avatar={item.avatar} />
                         </div>
                       </div>
                     )}

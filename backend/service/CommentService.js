@@ -30,12 +30,14 @@ class CommentService extends BaseService {
       this.failure('comment content can no be empty.');
     }
 
+    const loginUserInfo = await UserService.findById(userInfo.id);
+
     const doc = {
       user_id,
-      comment_user_id: user_id.id,
+      comment_user_id: userInfo.id,
       comment_username: userInfo.username,
       comment_content: content,
-      comment_avatar: userInfo.avatar,
+      comment_avatar: loginUserInfo.avatar,
       reply_content: '',
       reply_create_time: 0,
     };
