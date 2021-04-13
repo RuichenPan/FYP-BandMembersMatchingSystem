@@ -25,7 +25,7 @@ const SelectItem = ({ label, list, field, onChange }) => {
 const MovieListPage = () => {
   const [, setTimes] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchCondition, setSearchCondition] = useState({ i_am_a: '', music_style: '' });
+  const [searchCondition] = useState({ i_am_a: '', music_style: '' });
   const context = useContext(UserContext);
 
   useEffect(() => {
@@ -35,6 +35,7 @@ const MovieListPage = () => {
       setTimes(Date.now());
     };
     apiCall();
+    // eslint-disable-next-line
   }, [context]);
 
   const handleChange = (opt) => {
