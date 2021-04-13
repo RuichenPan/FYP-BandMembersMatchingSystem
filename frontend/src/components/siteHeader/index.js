@@ -4,6 +4,7 @@ import { UserContext } from '../../contexts/userContext';
 import Util from '../../util';
 import './siteHeader.css';
 import { Button, notification } from 'antd';
+
 const ItemRow = ({ title, onClick }) => {
   return (
     <button className="btn btn-light" onClick={onClick}>
@@ -18,17 +19,15 @@ const SiteHeader = (props) => {
   // Log out function
   const handleClick = () => {
     context.onLogout();
-    alert('Logout！');
+    setUserInfo(null);
+    context.alertMsg('Logout success');
   };
-
-  console.log('context.history:', context.history);
-
 
   const showMsg = (data) => {
     const { username, user_id } = data;
     const not_key = `open_${Date.now()}`;
     notification.open({
-      // message: 'Message',
+      key: not_key,
       description: `${username} sends you a message`,
       btn: (
         <Button
@@ -47,7 +46,6 @@ const SiteHeader = (props) => {
           Look
         </Button>
       ),
-      key: not_key,
     });
   };
 
@@ -81,26 +79,21 @@ const SiteHeader = (props) => {
     <div className="fixed-top ">
       <div className="container">
         <div className="row">
-          <ItemRow title="Home" onClick={() => context.switchPage('/')} />
-          {!userInfo ? (
+          <ItemRow title="Square" onClick={() => context.switchPage('/')} />
+          {userInfo && <ItemRow title="I want you" onClick={() => context.switchPage('favorites')} />}
+          <div className="col1"></div>
+
+          {userInfo ? (
+            <>
+              <div className="btn btn-light">Welcome {userInfo.username}</div>
+              <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
+              <ItemRow title="Logout" onClick={() => handleClick()} />
+            </>
+          ) : (
             <>
               <ItemRow title="Login" onClick={() => context.switchPage('login')} />
               <ItemRow title="Sign Up" onClick={() => context.switchPage('signup')} />
             </>
-          ) : (
-            <>
-              <ItemRow title="I want you" onClick={() => context.switchPage('favorites')} />
-            </>
-          )}
-          <div className="col1"></div>
-          {userInfo ? (
-            <>
-              <div className="btn btn-light">Webclome {userInfo.username}</div>
-              <ItemRow title="Logout" onClick={() => handleClick()} />
-              <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
-            </>
-          ) : (
-            ''
           )}
         </div>
       </div>

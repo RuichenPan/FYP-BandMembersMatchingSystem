@@ -3,6 +3,7 @@ import ConstTypeMap from './typeMap';
 import HttpHelper from '../api/httpHelper';
 import UserReducer from './userReducers';
 import Util from '../util';
+import { Button, notification } from 'antd';
 
 export const UserContext = createContext(null);
 
@@ -24,10 +25,22 @@ const UserContentProvider = (props) => {
   };
 
   const alertMsg = (msg) => {
-    if (!msg) {
-      return;
-    }
-    window.alert(msg);
+    // if (!msg) {
+    //   return;
+    // }
+    // window.alert(msg);
+
+    const not_key = `open_${Date.now()}`;
+    notification.open({
+      // message: 'Message',
+      description: msg,
+      key: not_key,
+      btn: (
+        <Button size="small" onClick={() => notification.close(not_key)}>
+          Confirm
+        </Button>
+      ),
+    });
   };
 
   HttpHelper.initFunction({ switchPage, alertMsg });

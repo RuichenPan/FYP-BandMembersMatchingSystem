@@ -25,9 +25,8 @@ const AlbumPage = (props) => {
       <GoBack />
 
       <div className="row row-wrap">
-        {list &&
+        {list && list.length > 0 ? (
           list.map((row, index) => {
-            
             return (
               <div key={index} className="col-p-20" style={{ height: '300px' }}>
                 <div style={{ padding: '5px', width: '100%', height: '100%' }}>
@@ -35,7 +34,10 @@ const AlbumPage = (props) => {
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <div className="col1 text-center font-size-20">No related pictures</div>  
+        )}
       </div>
     </div>
   );

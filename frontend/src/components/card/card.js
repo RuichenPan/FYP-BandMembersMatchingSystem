@@ -50,9 +50,11 @@ const Card = (props) => {
         <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/video?id=${id}`)}>
           Video
         </div>
-        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/chat?id=${id}`)}>
-          Chat
-        </div>
+        {!props.hideChat && (
+          <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/chat?id=${id}`)}>
+            Chat
+          </div>
+        )}
       </div>
     </div>
   );

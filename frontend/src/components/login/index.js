@@ -46,12 +46,12 @@ const Login = (props) => {
           <InputItem name="username" fieldName="username" onChange={handleChange} />
           <InputItem name="password" fieldName="password" type="password" onChange={handleChange} />
 
-          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-default" onClick={handleSubmit}>
+          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-light" onClick={handleSubmit}>
             Log in
           </button>
           <button
             style={{ marginLeft: '10px' }}
-            className="btn btn-default"
+            className="btn btn-light"
             onClick={() => {
               props.history.push('/signup');
             }}

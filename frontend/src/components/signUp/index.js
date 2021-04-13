@@ -43,10 +43,10 @@ const Signup = (props) => {
           <InputItem name="Password" type="password" fieldName="password" onChange={handleChange} />
           <InputItem name="Email" fieldName="email" onChange={handleChange} />
 
-          <button style={{ marginLeft: '120px' }} className="btn btn-default" onClick={handleSubmit}>
+          <button style={{ marginLeft: '120px' }} className="btn btn-light" onClick={handleSubmit}>
             SignUp
           </button>
-          <button type="submit" style={{ marginLeft: '10px' }} className="btn btn-default" onClick={() => props.history.push('/login')}>
+          <button type="submit" style={{ marginLeft: '10px' }} className="btn btn-light" onClick={() => props.history.push('/login')}>
             Log in
           </button>
           {error && <h4>{error}</h4>}

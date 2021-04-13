@@ -19,7 +19,7 @@ const MovieListPage = () => {
     <div className="home-body">
       {list &&
         list.map((row, index) => {
-          return <Card key={index} info={row} />;
+          return <Card key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
         })}
     </div>
   );

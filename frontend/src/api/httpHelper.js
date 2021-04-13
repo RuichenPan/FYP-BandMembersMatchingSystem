@@ -1,6 +1,12 @@
 import cryptoJS from 'crypto-js';
 
-const baseUrl = 'http://127.0.0.1:5300';
+const cfg = {
+  development: { baseUrl: 'http://127.0.0.1:5300' },
+  production: { baseUrl: '' },
+}[process.env.NODE_ENV || 'development'];
+
+const baseUrl = cfg.baseUrl || '';
+console.log('NODE_ENV:', process.env.NODE_ENV, baseUrl);
 
 class HttpHelper {
   get WebSite() {

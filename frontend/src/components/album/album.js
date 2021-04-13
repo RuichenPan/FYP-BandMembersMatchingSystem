@@ -20,6 +20,7 @@ const Album = (props) => {
     await context.onSourceDelete(row, index, 'album');
     console.log(index, context.state.album.list);
     setTimes(Date.now());
+    context.alertMsg('Delete success');
   };
 
   return (

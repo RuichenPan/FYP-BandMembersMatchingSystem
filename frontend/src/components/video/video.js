@@ -19,6 +19,7 @@ const Video = (props) => {
   const deleteSource = async (row, index) => {
     await context.onSourceDelete(row, index, 'video');
     setTimes(Date.now());
+    context.alertMsg('Delete success');
   };
 
   return (
@@ -27,10 +28,9 @@ const Video = (props) => {
         list.map((row, index) => {
           return (
             <div key={index} className="album-item">
-              <div className="img img-cover" style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${row.url}')` }}>
-                <div className="img-delete handle" onClick={() => deleteSource(row, index)}>
-                  {`x`}
-                </div>
+              <video className="img img-cover" src={`${HttpHelper.WebSite}/uploads/${row.url}`} controls></video>
+              <div className="img-delete handle" onClick={() => deleteSource(row, index)}>
+                {`x`}
               </div>
             </div>
           );

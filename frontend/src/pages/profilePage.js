@@ -7,7 +7,7 @@ import SubLogo from '../components/subLogo/subLogo';
 import Video from '../components/video/video';
 import { UserContext } from '../contexts/userContext';
 
-const PorfilePage = (props) => {
+const ProfilePage = (props) => {
   // eslint-disable-next-line
   const [, setTimes] = useState(0);
   const context = useContext(UserContext);
@@ -28,8 +28,8 @@ const PorfilePage = (props) => {
         await context.getConfigInfo();
         await context.getUserInfo();
         if (context.state.userInfo) {
-          await getVideo(1, 10, context.state.userInfo.id);
-          await getAlbum(1, 10, context.state.userInfo.id);
+          await getVideo(1, 50, context.state.userInfo.id);
+          await getAlbum(1, 50, context.state.userInfo.id);
         }
         setUpdateUserInfo({ ...context.state.userInfo });
       } catch (ex) {
@@ -55,7 +55,7 @@ const PorfilePage = (props) => {
     handleChange('avatar', fileInfo.path);
   };
 
-  const { musicStyles = [], IAmA = [], userInfo = {} } = context.state;
+  const { musicStyles = [], IAmA = [] } = context.state || {};
 
   return (
     <div>
@@ -75,7 +75,7 @@ const PorfilePage = (props) => {
           <div className="row margin-top-10 align-center">
             <div className="col-2 text-right">Name:</div>
             <div className="col-4 ">
-              <span className="padding-left-10">{userInfo.username}</span>
+              <span className="padding-left-10">{uInfo.username}</span>
             </div>
 
             <div className="col-2 text-right">Gender:</div>
@@ -151,8 +151,9 @@ const PorfilePage = (props) => {
                 onUpload={async (type, e) => {
                   const fileInfo = await context.onUpload(e.target.files[0]);
                   await handleChange('files', [{ type, url: fileInfo.path }]);
-                  await getAlbum(1, 10, context.state.userInfo.id);
+                  await getAlbum(1, 50, context.state.userInfo.id);
                   setTimes(Date.now());
+                  context.alertMsg('Upload success');
                 }}
               />
             </div>
@@ -166,8 +167,9 @@ const PorfilePage = (props) => {
                 onUpload={async (type, e) => {
                   const fileInfo = await context.onUpload(e.target.files[0]);
                   await handleChange('files', [{ type, url: fileInfo.path }]);
-                  await getVideo(1, 10, context.state.userInfo.id);
+                  await getVideo(1, 50, context.state.userInfo.id);
                   setTimes(Date.now());
+                  context.alertMsg('Upload success');
                 }}
               />
             </div>
@@ -178,7 +180,7 @@ const PorfilePage = (props) => {
   );
 };
 
-export default PorfilePage;
+export default ProfilePage;
 
 // <div className="row">
 //   <div className="col-10">

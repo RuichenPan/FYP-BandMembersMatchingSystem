@@ -52,6 +52,16 @@ const UserReducer = (state = {}, action) => {
       break;
     case ConstTypeMap.I_WANT_YOU:
       state.favorite = payload;
+      let iwyIndex = -1;
+      state.home.list.forEach((item, index) => {
+        if (item.id === payload.favorite_user_id) {
+          iwyIndex = index;
+        }
+      });
+      state.home.list.splice(iwyIndex, 1);
+      break;
+    case ConstTypeMap.I_WANT_YOU_DELETE:
+      console.log(payload);
       break;
     case ConstTypeMap.FAVORITES_MINE:
       state.favorite_mine = payload;
@@ -69,6 +79,7 @@ const UserReducer = (state = {}, action) => {
     case ConstTypeMap.CHAT_USER_MSG_MAP:
       state.userMsgMap = payload;
       break;
+
     default:
       state.a = true;
       break;

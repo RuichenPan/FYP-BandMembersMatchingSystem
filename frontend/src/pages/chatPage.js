@@ -15,7 +15,6 @@ const ChatPage = (props) => {
   const [chatWinBodyRef] = useState(React.createRef());
   const [uid, setUid] = useState(id);
 
-
   context.state.chatSelectUserId = uid;
 
   useEffect(() => {
@@ -133,7 +132,10 @@ const ChatPage = (props) => {
       return;
     }
     // data.token = HttpHelper.token;
-    const { id: user_id } = context.userInfo || context.state.userInfo;
+    const { id: user_id } = context.userInfo || context.state.userInfo || {};
+    if (!user_id) {
+      return;
+    }
     data.user_id = user_id;
     context.socket.send(data);
   };
@@ -179,7 +181,7 @@ const ChatPage = (props) => {
         </div>
         <div className="col4">
           <div className="padding-20 chat-win-body" ref={chatWinBodyRef}>
-            {userMsgMap[uid] &&
+            {userMsgMap[uid] && userMsgMap[uid].length > 0 ? (
               userMsgMap[uid].map((item, index) => {
                 return (
                   <div key={index}>
@@ -210,7 +212,12 @@ const ChatPage = (props) => {
                     )}
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <div className="row">
+                <div className="col1 text-center font-size-20">No chat record</div>
+              </div>
+            )}
           </div>
           <div className="row padding-0" style={{ border: '1px solid #f0f0f0' }}>
             <input className="col1" value={msg} onChange={(e) => setMsg(e.target.value)} />

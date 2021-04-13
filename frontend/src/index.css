@@ -383,7 +383,8 @@ textarea {
 
 .chat-win-body {
   border: 1px solid #f0f0f0;
-  max-height: 300px;
+  max-height: 430px;
+  min-height: 300px;
   overflow-y: auto;
 }
 
