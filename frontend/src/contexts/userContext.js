@@ -222,8 +222,8 @@ const UserContentProvider = (props) => {
    * get home data
    * @param {*} param0
    */
-  const onHomeData = async ({ page = 1, size = 20, keyworld } = {}) => {
-    const info = await HttpHelper.apiGet('/api/open/home', { page, size, keyworld });
+  const onHomeData = async ({ page = 1, size = 20, keyword , i_am_a, music_style } = {}) => {
+    const info = await HttpHelper.apiGet('/api/open/home', { page, size, keyword , i_am_a, music_style });
     dispatch({ type: ConstTypeMap.HOME_USER_LIST, payload: info });
     return info;
   };

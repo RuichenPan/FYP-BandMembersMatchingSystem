@@ -210,18 +210,25 @@ class UserService extends BaseService {
    * @returns
    * @memberof UserService
    */
-  async list({ page, size, keyworld, userInfo = {} }) {
+  async list({ page, size, keyword, i_am_a, music_style, userInfo = {} }) {
     const { id: user_id } = userInfo;
     const opt = {};
-    if (keyworld) {
-      opt.username = { username: { $regex: keyworld, $options: 'i' } };
+    if (keyword) {
+      opt.username = { $regex: keyword, $options: 'i' };
+    }
+    if (i_am_a) {
+      opt.i_am_a = i_am_a;
+    }
+    if (music_style) {
+      opt.music_style = music_style;
     }
     if (user_id) {
       const favoritesList = await FavoriteService.find({ user_id }, { favorite_user_id: 1 });
       const ids = favoritesList.map((p) => p.favorite_user_id);
       opt._id = { $nin: [...ids] };
     }
-    
+
+    this.log(opt);
     const list = await this.find(opt, { password: 0, salt: 0 }, { limit: size, skip: (page - 1) * size });
     const total = await this.count();
     const totalPage = Math.ceil(total / size);
