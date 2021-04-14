@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../contexts/userContext';
 import Card from '../components/card/card';
-import { Spin } from 'antd';
+import { Spin, Pagination } from 'antd';
 
 const SelectItem = ({ label, list, field, onChange }) => {
   return (
@@ -23,6 +23,8 @@ const SelectItem = ({ label, list, field, onChange }) => {
 };
 
 const MovieListPage = () => {
+  const [page, setPage] = useState(1);
+  const [size] = useState(12);
   const [, setTimes] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchCondition] = useState({ i_am_a: '', music_style: '' });
@@ -43,14 +45,15 @@ const MovieListPage = () => {
     console.log(JSON.stringify(searchCondition));
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async ({ page } = {}) => {
+    setPage(page);
     setIsLoading(true);
-    await context.onHomeData(searchCondition);
+    await context.onHomeData({ ...searchCondition, page, size });
     setIsLoading(false);
   };
 
   const { musicStyles = [], IAmA = [], home } = context.state || {};
-  const { list = [] } = home || {};
+  const { list = [], total = 1 } = home || {};
   return (
     <div className="homePageCss">
       <div className="row" style={{ marginBottom: '5px' }}>
@@ -84,6 +87,7 @@ const MovieListPage = () => {
             return <Card key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
           })}
       </div>
+      <Pagination pageSize={size} defaultCurrent={page} total={total} onChange={(page) => handleSearch({ page, size })} />
 
       {list && list.length === 0 && !isLoading && (
         <div className="not-found text-center margin-top-40">
