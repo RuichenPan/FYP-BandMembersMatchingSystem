@@ -31,7 +31,7 @@ const MapPage = (props) => {
 
   const initData = async () => {
     const item = Util.parseQuery(props.history.location.search);
-    console.log(item);
+    // console.log(item);
     if (item.isEdit === '1') {
       setIsEdit(true);
     }
@@ -64,7 +64,7 @@ const MapPage = (props) => {
     const item = Util.parseQuery(props.history.location.search);
 
     map.on('moveend', (e) => {
-      console.log('-----------');
+      // console.log('-----------');
       const connr = e.map.getView().getCenter();
       const ll = toLonLat(connr).map(function (val) {
         return val.toFixed(6);
@@ -77,7 +77,7 @@ const MapPage = (props) => {
     });
 
     const urlParams1 = Util.parseQuery(props.history.location.search);
-    console.log(latLon, Object.assign({}, latLon, urlParams1));
+    // console.log(latLon, Object.assign({}, latLon, urlParams1));
     const llData = {
       lat: urlParams1.lat || latLon.lat,
       lon: urlParams1.lon || latLon.lon,
@@ -91,7 +91,7 @@ const MapPage = (props) => {
     initMap();
 
     resversGps.pipe(debounceTime(2000)).subscribe((data) => {
-      console.log(new Date().toLocaleString(), data);
+      // console.log(new Date().toLocaleString(), data);
       reverseGPS(data);
     });
 
@@ -111,7 +111,7 @@ const MapPage = (props) => {
     setCurrentAddress(context.state.reverseGpsAddress);
     const { display_name } = context.state.reverseGpsAddress;
     setKeyword(display_name);
-    console.log(context.state.reverseGpsAddress);
+    // console.log(context.state.reverseGpsAddress);
   };
 
   const updateMarkerPosition = (item, source) => {
@@ -157,8 +157,17 @@ const MapPage = (props) => {
       {isEdit && (
         <div className="row align-center">
           <div className="col2 row">
-            <input type="text" className="margin-right-10" value={q || ''} placeholder="Please enter address" onChange={(e) => setKeyword(e.target.value.trim())} />
-            <button className="margin-left-10 btn btn-light" onClick={handleSearch}>
+            <input
+              type="text"
+              className="margin-right-10"
+              value={q || ''}
+              placeholder="Please enter address"
+              onChange={(e) => {
+                console.log(e.target.value);
+                setKeyword(e.target.value.trim());
+              }}
+            />
+            <button className="margin-left-10 btn btn-dark" onClick={handleSearch}>
               Search
             </button>
           </div>
@@ -170,7 +179,7 @@ const MapPage = (props) => {
             Lon: {latLon.lon}
           </div>
           <div className="col0">
-            <button className="btn btn-light" onClick={handleSaveAddress}>
+            <button className="btn btn-dark" onClick={handleSaveAddress}>
               Save Address
             </button>
           </div>

@@ -158,13 +158,15 @@ const ChatPage = (props) => {
     <div>
       <GoBack />
 
-      <div className="row">
-        <div className="col1 " style={{ border: '1px solid #f0f0f0', marginRight: '5px ', minWidth: '190px' }}>
-          <h5 className="text-center">I Want you list</h5>
+      <div className="row text-white">
+        {/* <div className="col1 " style={{ border: '1px solid #f0f0f0', marginRight: '5px ', minWidth: '190px' }}> */}
+        <div className="col1 " style={{ border: '1px solid #999999', marginRight: '5px ', minWidth: '190px' }}>
+          <h5 className="text-center text-white">I Want you list</h5>
           {chatList &&
             chatList.map((item, index) => {
               return (
-                <div key={index} className="row margin-bottom-5 handle" style={{ background: uid === item.id ? '#f0f0f0' : '' }} onClick={() => handleMsgList(item)}>
+                // <div key={index} className="row margin-bottom-5 handle" style={{ background: uid === item.id ? '#f0f0f0' : '' }} onClick={() => handleMsgList(item)}>
+                <div key={index} className={`row margin-bottom-5 handle ${uid === item.id ? 'bg-info' : ''}`} onClick={() => handleMsgList(item)}>
                   <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
                     <MyImage avatar={item.avatar} />
                   </div>
@@ -192,7 +194,7 @@ const ChatPage = (props) => {
                         </div>
                         <div className="chat-center">
                           <div>{Util.format(item.create_time, 'yyyy-mm-dd HH:MM:ss.S')}</div>
-                          <div className="chat-msg">{item.msg}</div>
+                          <div className=" bg-dark chat-msg">{item.msg}</div>
                         </div>
                         <div className="col1"></div>
                       </div>
@@ -203,7 +205,7 @@ const ChatPage = (props) => {
                         <div className="col1"></div>
                         <div className="chat-center">
                           <div className="text-right">{Util.format(item.create_time, 'yyyy-mm-dd HH:MM:ss.S')}</div>
-                          <div className="chat-msg">{item.msg}</div>
+                          <div className=" bg-dark chat-msg">{item.msg}</div>
                         </div>
                         <div className="chat-avatar margin-left-10">
                           <MyImage avatar={item.avatar} />
@@ -215,13 +217,18 @@ const ChatPage = (props) => {
               })
             ) : (
               <div className="row">
-                <div className="col1 text-center font-size-20">No chat record</div>
+                <div className="col1"></div>
+                <div className="col0 text-center font-size-20  bg-dark " style={{ padding: '5px 20px', borderRadius: '5px' }}>
+                  No chat record
+                </div>
+                <div className="col1"></div>
               </div>
             )}
           </div>
-          <div className="row padding-0" style={{ border: '1px solid #f0f0f0' }}>
-            <input className="col1" value={msg} onChange={(e) => setMsg(e.target.value)} />
-            <button className="btn btn-light" onClick={handleSocket} style={{ width: '100px' }}>
+          {/* <div className="row padding-0" style={{ border: '1px solid #f0f0f0' }}> */}
+          <div className="row padding-0" style={{ border: '1px solid #999999' }}>
+            <input className="col1 bg-dark " value={msg} onChange={(e) => setMsg(e.target.value)} />
+            <button className="btn btn-dark" onClick={handleSocket} style={{ width: '100px' }}>
               Send
             </button>
           </div>

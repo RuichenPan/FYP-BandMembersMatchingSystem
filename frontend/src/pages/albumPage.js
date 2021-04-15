@@ -36,7 +36,7 @@ const AlbumPage = (props) => {
             );
           })
         ) : (
-          <div className="col1 text-center font-size-20">No related pictures</div>  
+          <div className="col1 text-center font-size-20">No related pictures</div>
         )}
       </div>
     </div>

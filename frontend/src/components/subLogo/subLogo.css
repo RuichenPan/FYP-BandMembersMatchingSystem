@@ -1,0 +1,16 @@
+.sublogoCss {
+    font-size: 26px;
+    cursor: default;
+    padding: 40px 0px;
+  }
+  
+  .hurricane {
+    font-weight: bold;
+    color: #C81C1C;
+    font-size: 50px;
+    text-shadow: 10px 5px 5px #C81C1C;
+    transform: rotate(-3deg);
+    /* margin-left: -200px; */
+    
+  }
+  

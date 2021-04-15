@@ -48,10 +48,10 @@ const ComentItem = (props) => {
                 <textarea value={content} onChange={(e) => setContent(e.target.value)}></textarea>
               </div>
               <div>
-                <button disabled={!content} className="btn btn-light" onClick={handleReply}>
+                <button disabled={!content} className="btn btn-dark" onClick={handleReply}>
                   Reply
                 </button>
-                <button className="btn btn-light margin-left-10" onClick={() => setIsReply(false)}>
+                <button className="btn btn-dark margin-left-10" onClick={() => setIsReply(false)}>
                   Cancel
                 </button>
               </div>
@@ -132,7 +132,7 @@ const Comment = (props) => {
       <div className="row margin-top-10">
         <div className="person-label"></div>
         <div className="col1">
-          <button disabled={!content} className="btn btn-light" onClick={handleSave}>
+          <button disabled={!content} className="btn btn-dark" onClick={handleSave}>
             Save
           </button>
         </div>

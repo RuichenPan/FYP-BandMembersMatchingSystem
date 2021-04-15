@@ -1,3 +1,15 @@
+@import '~antd/dist/antd.dark.css';
+@import '~antd/dist/antd.compact.css';
+
+#root {
+  background-image: url('./images/BGImage.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  overflow: auto;
+}
+
 .indexPageCss {
   position: relative;
   padding-top: 50px;
@@ -126,6 +138,10 @@
 
 .padding-left-10 {
   padding-left: 10px;
+}
+
+.padding-right-100 {
+  padding-right: 100px;
 }
 
 /**************************Margin****************************/
@@ -292,16 +308,23 @@
 }
 
 select,
+input[type="password"],
 input[type="text"] {
   flex: 1;
   border-radius: 5px;
-  border: 1px solid #e0e0e0
+  /* border: 1px solid #e0e0e0; */
+  border: 1px solid #2e2e2e;
+  /* color: #000; */
+  background: #2e2e2e;
 }
 
 select,
 textarea,
 input[type="text"]:focus {
-  outline: 1px solid #e0e0e0;
+  /* outline: 1px solid #e0e0e0; */
+  border: 1px solid #2e2e2e;
+  /* color: #000; */
+  background: #2e2e2e;
 }
 
 textarea {
@@ -333,7 +356,6 @@ textarea {
   border: 1px solid #f0f0f0;
   margin-bottom: 5px;
   padding: 3px 5px;
-
 }
 
 .comment-avatar {
@@ -388,7 +410,8 @@ textarea {
 
 
 .chat-win-body {
-  border: 1px solid #f0f0f0;
+  /* border: 1px solid #f0f0f0; */
+  border: 1px solid #999999;
   max-height: 430px;
   min-height: 300px;
   overflow-y: auto;

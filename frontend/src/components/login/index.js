@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react';
 import './index.css';
 import InputItem from '../../components/InputItem/InputItem';
-import SubLogo from '../subLogo/subLogo';
-
 import { UserContext } from '../../contexts/userContext';
 
 const image3 = require('../../images/login-03.png');
@@ -37,7 +35,6 @@ const Login = (props) => {
 
   return (
     <div className="loginCss ">
-      <SubLogo />
       <div className="g-center">
         <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
           <h1 className="text-center">
@@ -45,13 +42,12 @@ const Login = (props) => {
           </h1>
           <InputItem name="username" fieldName="username" onChange={handleChange} />
           <InputItem name="password" fieldName="password" type="password" onChange={handleChange} />
-
-          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-light" onClick={handleSubmit}>
+          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-dark" onClick={handleSubmit}>
             Log in
           </button>
           <button
             style={{ marginLeft: '10px' }}
-            className="btn btn-light"
+            className="btn btn-dark"
             onClick={() => {
               props.history.push('/signup');
             }}

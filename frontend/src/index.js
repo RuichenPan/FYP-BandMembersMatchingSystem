@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Redirect, Switch } from 'react-router-dom'; // CHANGED
 import io from './libs/socket.io.min.js';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
+
 import './index.css';
 
 import HomePage from './pages/homePage';
 import SiteHeader from './components/siteHeader';
 import { createBrowserHistory } from 'history';
 import UserContentProvider from './contexts/userContext';
+import SubLogo from './components/subLogo/subLogo.js';
 const history = createBrowserHistory({ basename: '/' });
 const SignUp = lazy(() => import('./components/signUp'));
 const Login = lazy(() => import('./components/login'));
@@ -35,6 +37,7 @@ const App = () => {
         <UserContentProvider history={history} socket={socket}>
           <Suspense fallback={<h1>Loading page....</h1>}>
             <SiteHeader />
+            <SubLogo />
             <Switch>
               <Route exact path="/signup" component={SignUp} />
               <Route exact path="/login" component={Login} />

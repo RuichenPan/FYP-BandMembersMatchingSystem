@@ -7,7 +7,7 @@ const Album = (props) => {
   const [, setTimes] = useState(0);
   const [list, setList] = useState([]);
   const context = useContext(UserContext);
-  console.log('album:', context.state);
+  // console.log('album:', context.state);
   useEffect(() => {
     const { album } = context.state;
     const { list = [] } = album || {};
@@ -30,7 +30,7 @@ const Album = (props) => {
           return (
             <div key={index} className="album-item">
               <div className="img img-cover" style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${row.url}')` }}>
-                <div className="img-delete handle" onClick={() => deleteSource(row, index)}>
+                <div className="img-delete handle bg-dark" onClick={() => deleteSource(row, index)}>
                   {`x`}
                 </div>
               </div>

@@ -6,7 +6,7 @@ const cfg = {
 }[process.env.NODE_ENV || 'development'];
 
 const baseUrl = cfg.baseUrl || '';
-console.log('NODE_ENV:', process.env.NODE_ENV, baseUrl);
+// console.log('NODE_ENV:', process.env.NODE_ENV, baseUrl);
 
 class HttpHelper {
   get WebSite() {

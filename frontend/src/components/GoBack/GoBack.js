@@ -6,7 +6,7 @@ const GoBack = (props) => {
   return (
     <div className="row">
       <div className="col1"></div>
-      <div className="col0 btn btn-light" onClick={context.goBack}>
+      <div className="col0 btn btn-dark" onClick={context.goBack}>
         Back
       </div>
     </div>

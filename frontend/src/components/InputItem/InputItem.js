@@ -4,9 +4,9 @@ import './InputItem.css';
 const InputItem = ({ onChange, name, fieldName, type = 'text' }) => {
   return (
     <div>
-      <div className="input-group mb-3">
+      <div className="input-group mb-3 dark">
         <div className="input-group-prepend">
-          <span className="input-group-text">{name}</span>
+          <span className="input-group-text bg-dark text-white">{name}</span>
         </div>
         <input
           type={type}

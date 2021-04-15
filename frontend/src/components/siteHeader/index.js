@@ -7,7 +7,7 @@ import { Button, notification } from 'antd';
 
 const ItemRow = ({ title, onClick }) => {
   return (
-    <button className="btn btn-light" onClick={onClick}>
+    <button className="btn btn-dark" onClick={onClick}>
       {title}
     </button>
   );
@@ -85,7 +85,7 @@ const SiteHeader = (props) => {
 
           {userInfo ? (
             <>
-              <div className="btn btn-light">Welcome {userInfo.username}</div>
+              <div className="btn btn-dark">Welcome {userInfo.username}</div>
               <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
               <ItemRow title="Logout" onClick={() => handleClick()} />
             </>

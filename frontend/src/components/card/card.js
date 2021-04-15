@@ -44,14 +44,14 @@ const Card = (props) => {
         </div>
       </div>
       <div className="row text-center">
-        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/album?id=${id}`)}>
+        <div className="col1 margin-5 btn btn-dark" onClick={() => context.switchPage(`/album?id=${id}`)}>
           Album
         </div>
-        <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/video?id=${id}`)}>
+        <div className="col1 margin-5 btn btn-dark" onClick={() => context.switchPage(`/video?id=${id}`)}>
           Video
         </div>
         {!props.hideChat && (
-          <div className="col1 margin-5 btn btn-light" onClick={() => context.switchPage(`/chat?id=${id}`)}>
+          <div className="col1 margin-5 btn btn-dark" onClick={() => context.switchPage(`/chat?id=${id}`)}>
             Chat
           </div>
         )}

@@ -3,7 +3,6 @@ import HttpHelper from '../api/httpHelper';
 import Album from '../components/album/album';
 import Radio from '../components/radio/radio';
 import RadioGroup from '../components/radio/radio-group';
-import SubLogo from '../components/subLogo/subLogo';
 import Video from '../components/video/video';
 import { UserContext } from '../contexts/userContext';
 
@@ -59,8 +58,6 @@ const ProfilePage = (props) => {
 
   return (
     <div>
-      <SubLogo />
-
       <div className="row margin-top-20">
         <div className="col1">
           <div className="row">

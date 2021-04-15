@@ -27,6 +27,15 @@ router
       res.status(400).json({ code: 400, msg: ex.message || ex });
     }
   })
+  .get('/carousel', async (req, res) => {
+    try {
+      const condition = [{ $match: { avatar: { $ne: '' } } }, { $project: { username: 1, avatar: 1, gender: 1, i_am_a: 1, music_style: 1, address: 1 } }, { $sample: { size: 5 } }];
+      const list = await UserService.aggregate(condition);
+      res.json(UserService.success(list));
+    } catch (ex) {
+      res.status(400).json({ code: 400, msg: ex.message || ex });
+    }
+  })
   .get('/home', async (req, res) => {
     try {
       const { userInfo } = req;

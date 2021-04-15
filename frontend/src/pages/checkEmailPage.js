@@ -1,6 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import SubLogo from '../components/subLogo/subLogo';
-
 import { UserContext } from '../contexts/userContext';
 import Util from '../util';
 
@@ -24,7 +22,6 @@ const CheckEmailPage = (props) => {
 
   return (
     <div className="container">
-      <SubLogo />
       <div className="g-center">{email}</div>
       Email Check Page
       <div>{msg}</div>

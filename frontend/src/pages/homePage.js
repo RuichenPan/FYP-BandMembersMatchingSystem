@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../contexts/userContext';
 import Card from '../components/card/card';
-import { Spin, Pagination } from 'antd';
+import { Spin, Pagination, Carousel } from 'antd';
+import MyImage from '../components/MyImage/MyImage';
 
 const SelectItem = ({ label, list, field, onChange }) => {
   return (
@@ -32,6 +33,7 @@ const MovieListPage = () => {
 
   useEffect(() => {
     const apiCall = async () => {
+      await context.onCarousel();
       await handleSearch();
       await context.getConfigInfo();
       setTimes(Date.now());
@@ -52,48 +54,63 @@ const MovieListPage = () => {
     setIsLoading(false);
   };
 
-  const { musicStyles = [], IAmA = [], home } = context.state || {};
+  const { musicStyles = [], IAmA = [], home, carousel = [] } = context.state || {};
   const { list = [], total = 1 } = home || {};
+  
+  const contentStyle = { height: '260px' };
   return (
     <div className="homePageCss">
-      <div className="row" style={{ marginBottom: '5px' }}>
-        <div className="col0">
-          <SelectItem label="Type" list={IAmA} field="i_am_a" onChange={handleChange} />
-        </div>
-        <div className="col0" style={{ marginLeft: '10px' }}>
-          <SelectItem label="Music Style" list={musicStyles} field="music_style" onChange={handleChange} />
-        </div>
-        <div className="col0" style={{ marginLeft: '10px' }}>
-          <input type="text" placeholder="Please enter username" onChange={(e) => handleChange({ field: 'keyword', value: e.target.value })} />
-        </div>
-        <div className="col0" style={{ marginLeft: '10px' }}>
-          <button className="btn btn-sm btn-light" onClick={handleSearch}>
-            Search
-          </button>
-        </div>
-      </div>
+      <Carousel autoplay>
+        {carousel.map((row, index) => {
+          return (
+            <div className="row" key={index}>
+              <div className="col-12" style={contentStyle}>
+                <MyImage avatar={row.avatar} />
+              </div>
+            </div>
+          );
+        })}
+      </Carousel>
 
-      {isLoading && (
-        <div className="row">
-          <div className="col1 text-center">
-            <Spin />
+      <div style={{ marginLeft: '15px' }}>
+        <div className="row" style={{ marginTop: '20px', marginBottom: '5px' }}>
+          <div className="col0">
+            <SelectItem label="Type" list={IAmA} field="i_am_a" onChange={handleChange} />
+          </div>
+          <div className="col0" style={{ marginLeft: '10px' }}>
+            <SelectItem label="Music Style" list={musicStyles} field="music_style" onChange={handleChange} />
+          </div>
+          <div className="col0" style={{ marginLeft: '10px' }}>
+            <input type="text" placeholder="Please enter username" onChange={(e) => handleChange({ field: 'keyword', value: e.target.value })} />
+          </div>
+          <div className="col0" style={{ marginLeft: '10px' }}>
+            <button className="btn btn-sm btn-dark" onClick={handleSearch}>
+              Search
+            </button>
           </div>
         </div>
-      )}
+        {isLoading && (
+          <div className="row">
+            <div className="col1 text-center">
+              <Spin />
+            </div>
+          </div>
+        )}
 
-      <div className="home-body">
-        {list &&
-          list.map((row, index) => {
-            return <Card key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
-          })}
-      </div>
-      <Pagination pageSize={size} defaultCurrent={page} total={total} onChange={(page) => handleSearch({ page, size })} />
-
-      {list && list.length === 0 && !isLoading && (
-        <div className="not-found text-center margin-top-40">
-          <div className="font-size-20 margin-top-40">Not found result</div>
+        <div className="home-body">
+          {list &&
+            list.map((row, index) => {
+              return <Card key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
+            })}
         </div>
-      )}
+        <Pagination size="small" pageSize={size} defaultCurrent={page} total={total} onChange={(page) => handleSearch({ page, size })} />
+
+        {list && list.length === 0 && !isLoading && (
+          <div className="not-found text-center margin-top-40">
+            <div className="font-size-20 margin-top-40">Not found result</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

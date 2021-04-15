@@ -79,6 +79,9 @@ const UserReducer = (state = {}, action) => {
     case ConstTypeMap.CHAT_USER_MSG_MAP:
       state.userMsgMap = payload;
       break;
+    case ConstTypeMap.HOME_CAROUSEL:
+      state.carousel = payload;
+      break;
 
     default:
       state.a = true;

@@ -29,7 +29,7 @@ const Video = (props) => {
           return (
             <div key={index} className="album-item">
               <video className="img img-cover" src={`${HttpHelper.WebSite}/uploads/${row.url}`} controls></video>
-              <div className="img-delete handle" onClick={() => deleteSource(row, index)}>
+              <div className="img-delete handle bg-dark" onClick={() => deleteSource(row, index)}>
                 {`x`}
               </div>
             </div>

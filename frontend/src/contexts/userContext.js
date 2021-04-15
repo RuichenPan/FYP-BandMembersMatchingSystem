@@ -222,8 +222,8 @@ const UserContentProvider = (props) => {
    * get home data
    * @param {*} param0
    */
-  const onHomeData = async ({ page = 1, size = 20, keyword , i_am_a, music_style } = {}) => {
-    const info = await HttpHelper.apiGet('/api/open/home', { page, size, keyword , i_am_a, music_style });
+  const onHomeData = async ({ page = 1, size = 20, keyword, i_am_a, music_style } = {}) => {
+    const info = await HttpHelper.apiGet('/api/open/home', { page, size, keyword, i_am_a, music_style });
     dispatch({ type: ConstTypeMap.HOME_USER_LIST, payload: info });
     return info;
   };
@@ -353,11 +353,23 @@ const UserContentProvider = (props) => {
     dispatch({ type: ConstTypeMap.CHAT_USER_MSG_MAP, payload: userMsgMap });
   };
 
+  /**
+   * get home page carousel data
+   *
+   * @return {*} 
+   */
+  const onCarousel = async () => {
+    const list = await HttpHelper.apiGet('/api/open/carousel');
+    dispatch({ type: ConstTypeMap.HOME_CAROUSEL, payload: list });
+    return list;
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...props,
         state,
+        onCarousel,
         onSaveUserMsgMap,
         onDeleteComment,
         onReplyComment,

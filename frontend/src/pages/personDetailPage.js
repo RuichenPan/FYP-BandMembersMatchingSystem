@@ -31,12 +31,12 @@ const PersonDetailPage = (props) => {
           <MyImage avatar={avatar} />
           <div className="row margin-top-10 text-center">
             <div className="col1 ">
-              <span className="btn btn-light" onClick={() => context.switchPage(`album`, { id: info.id })}>
+              <span className="btn btn-dark" onClick={() => context.switchPage(`album`, { id: info.id })}>
                 Album
               </span>
             </div>
             <div className="col1">
-              <span className="btn btn-light" onClick={() => context.switchPage(`video`, { id: info.id })}>
+              <span className="btn btn-dark" onClick={() => context.switchPage(`video`, { id: info.id })}>
                 Video
               </span>
             </div>
