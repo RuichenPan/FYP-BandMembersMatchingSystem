@@ -3,6 +3,7 @@ import { UserContext } from '../contexts/userContext';
 import Card from '../components/card/card';
 import { Spin, Pagination, Carousel } from 'antd';
 import MyImage from '../components/MyImage/MyImage';
+import './homePage.css';
 
 const SelectItem = ({ label, list, field, onChange }) => {
   return (
@@ -56,11 +57,12 @@ const MovieListPage = () => {
 
   const { musicStyles = [], IAmA = [], home, carousel = [] } = context.state || {};
   const { list = [], total = 1 } = home || {};
-  
+  console.log(size, 'total:', total);
+
   const contentStyle = { height: '260px' };
   return (
     <div className="homePageCss">
-      <Carousel autoplay>
+      {/* <Carousel autoplay>
         {carousel.map((row, index) => {
           return (
             <div className="row" key={index}>
@@ -70,10 +72,16 @@ const MovieListPage = () => {
             </div>
           );
         })}
-      </Carousel>
+      </Carousel> */}
 
-      <div style={{ marginLeft: '15px' }}>
-        <div className="row" style={{ marginTop: '20px', marginBottom: '5px' }}>
+      <div className="home-bg g-center">
+        <div className="home-bg-content">Once I heard rocks, all of a sudden I understood what life was about</div>
+        <div className="home-bg-gradient"></div>
+      </div>
+      <div className="split-line"></div>
+
+      <div className="home-body-content">
+        <div className="row home-body-condition">
           <div className="col0">
             <SelectItem label="Type" list={IAmA} field="i_am_a" onChange={handleChange} />
           </div>
@@ -84,7 +92,7 @@ const MovieListPage = () => {
             <input type="text" placeholder="Please enter username" onChange={(e) => handleChange({ field: 'keyword', value: e.target.value })} />
           </div>
           <div className="col0" style={{ marginLeft: '10px' }}>
-            <button className="btn btn-sm btn-dark" onClick={handleSearch}>
+            <button className="btn btn-dark" onClick={handleSearch}>
               Search
             </button>
           </div>
@@ -100,7 +108,7 @@ const MovieListPage = () => {
         <div className="home-body">
           {list &&
             list.map((row, index) => {
-              return <Card key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
+              return <Card style={{ width: '16.6%' }} key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
             })}
         </div>
         <Pagination size="small" pageSize={size} defaultCurrent={page} total={total} onChange={(page) => handleSearch({ page, size })} />

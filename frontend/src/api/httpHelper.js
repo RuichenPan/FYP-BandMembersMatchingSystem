@@ -179,14 +179,14 @@ class HttpHelper {
 
   setStorage(key, value) {
     if (!value) {
-      window.localStorage.removeItem(key);
+      window.sessionStorage.removeItem(key);
       return;
     }
-    window.localStorage.setItem(key, JSON.stringify(value));
+    window.sessionStorage.setItem(key, JSON.stringify(value));
   }
 
   getStorage(key) {
-    const info = window.localStorage.getItem(key);
+    const info = window.sessionStorage.getItem(key);
     if (!info) {
       return null;
     }

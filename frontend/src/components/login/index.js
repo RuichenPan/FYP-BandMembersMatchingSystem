@@ -3,7 +3,7 @@ import './index.css';
 import InputItem from '../../components/InputItem/InputItem';
 import { UserContext } from '../../contexts/userContext';
 
-const image3 = require('../../images/login-03.png');
+// const image3 = require('../../images/login-03.png');
 
 const Login = (props) => {
   // User State
@@ -36,18 +36,19 @@ const Login = (props) => {
   return (
     <div className="loginCss ">
       <div className="g-center">
-        <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
-          <h1 className="text-center">
-            <img src={image3} width="80%" alt="" />
+        <div className="LogBody bg-dark">
+          <h1 className="text-center hurricane">
+            {/* <img src={image3} width="80%" alt="" /> */}
+            HURRICANE
           </h1>
           <InputItem name="username" fieldName="username" onChange={handleChange} />
           <InputItem name="password" fieldName="password" type="password" onChange={handleChange} />
-          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-dark" onClick={handleSubmit}>
+          <button type="submit" style={{ marginLeft: '100px' }} className="btn btn-danger" onClick={handleSubmit}>
             Log in
           </button>
           <button
             style={{ marginLeft: '10px' }}
-            className="btn btn-dark"
+            className="btn btn-danger"
             onClick={() => {
               props.history.push('/signup');
             }}

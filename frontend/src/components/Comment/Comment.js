@@ -36,7 +36,7 @@ const ComentItem = (props) => {
             {/* <span className="icon icon-reply handle " onClick={() => setIsReply(true)}></span> */}
           </div>
           <div className="row">
-            <div className="col0 comment-content" style={{ maxWidth: '60%' }}>
+            <div className="col0 comment-content bg-dark" style={{ maxWidth: '60%' }}>
               {row.comment_content}
             </div>
             <div className="col1"></div>
@@ -48,10 +48,10 @@ const ComentItem = (props) => {
                 <textarea value={content} onChange={(e) => setContent(e.target.value)}></textarea>
               </div>
               <div>
-                <button disabled={!content} className="btn btn-dark" onClick={handleReply}>
+                <button disabled={!content} className="btn btn-danger" onClick={handleReply}>
                   Reply
                 </button>
-                <button className="btn btn-dark margin-left-10" onClick={() => setIsReply(false)}>
+                <button className="btn btn-danger margin-left-10" onClick={() => setIsReply(false)}>
                   Cancel
                 </button>
               </div>
@@ -132,7 +132,7 @@ const Comment = (props) => {
       <div className="row margin-top-10">
         <div className="person-label"></div>
         <div className="col1">
-          <button disabled={!content} className="btn btn-dark" onClick={handleSave}>
+          <button disabled={!content} className="btn btn-danger" onClick={handleSave}>
             Save
           </button>
         </div>

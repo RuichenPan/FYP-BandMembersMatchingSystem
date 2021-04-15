@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import 'firebase/auth';
 import InputItem from '../../components/InputItem/InputItem';
 import { UserContext } from '../../contexts/userContext';
-const image3 = require('../../images/login-03.png');
+// const image3 = require('../../images/login-03.png');
 
 const Signup = (props) => {
   // User State
@@ -32,18 +32,19 @@ const Signup = (props) => {
   return (
     <div className="loginCss ">
       <div className="g-center">
-        <div style={{ marginTop: '50px', border: '1px solid #f0f0f0', padding: ' 20px 80px' }}>
-          <h1 className="text-center">
-            <img src={image3} width="80%" alt="" />
+        <div className="LogBody bg-dark">
+          <h1 className="text-center hurricane">
+            {/* <img src={image3} width="80%" alt="" /> */}
+            HURRICANE
           </h1>
           <InputItem name="Username" fieldName="username" onChange={handleChange} />
           <InputItem name="Password" type="password" fieldName="password" onChange={handleChange} />
           <InputItem name="Email" fieldName="email" onChange={handleChange} />
 
-          <button style={{ marginLeft: '120px' }} className="btn btn-dark" onClick={handleSubmit}>
+          <button style={{ marginLeft: '120px' }} className="btn btn-danger" onClick={handleSubmit}>
             SignUp
           </button>
-          <button type="submit" style={{ marginLeft: '10px' }} className="btn btn-dark" onClick={() => props.history.push('/login')}>
+          <button type="submit" style={{ marginLeft: '10px' }} className="btn btn-danger" onClick={() => props.history.push('/login')}>
             Log in
           </button>
           {error && <h4>{error}</h4>}

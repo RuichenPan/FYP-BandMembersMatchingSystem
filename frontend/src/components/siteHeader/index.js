@@ -76,25 +76,38 @@ const SiteHeader = (props) => {
 
   return (
     // bg-dark
-    <div className="fixed-top ">
-      <div className="container">
-        <div className="row">
-          <ItemRow title="Square" onClick={() => context.switchPage('/')} />
-          {userInfo && <ItemRow title="I want you" onClick={() => context.switchPage('favorites')} />}
-          <div className="col1"></div>
+    <div className="fixed-top1 headerCss ">
+      <div className="container1">
+        <div className="row align-center">
+          <div>
+            <div className="logo"></div>
+          </div>
+          <div className="col1">
+            <div className="row margin-right-30">
+              <div className="col1"></div>
 
-          {userInfo ? (
-            <>
-              <div className="btn btn-dark">Welcome {userInfo.username}</div>
-              <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
-              <ItemRow title="Logout" onClick={() => handleClick()} />
-            </>
-          ) : (
-            <>
-              <ItemRow title="Login" onClick={() => context.switchPage('login')} />
-              <ItemRow title="Sign Up" onClick={() => context.switchPage('signup')} />
-            </>
-          )}
+              <ItemRow title="Square" onClick={() => context.switchPage('/')} />
+
+              {userInfo && (
+                <>
+                  <ItemRow title="I want you" onClick={() => context.switchPage('favorites')} />
+                </>
+              )}
+
+              {userInfo ? (
+                <>
+                  <div className="btn btn-dark">Welcome {userInfo.username}</div>
+                  <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
+                  <ItemRow title="Logout" onClick={() => handleClick()} />
+                </>
+              ) : (
+                <>
+                  <ItemRow title="Login" onClick={() => context.switchPage('login')} />
+                  <ItemRow title="Sign Up" onClick={() => context.switchPage('signup')} />
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

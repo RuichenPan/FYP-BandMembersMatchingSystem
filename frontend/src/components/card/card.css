@@ -1,9 +1,9 @@
 .card-info {
-  padding: 5px;
-  /* border: 1px solid #f0f0f0; */
-  border: 1px solid #2e2e2e;
   width: calc(25% - 10px);
-  margin: 0px 5px 15px 0px;
+}
+
+.card-body {
+  padding: 10px;
 }
 
 .card-info .row {

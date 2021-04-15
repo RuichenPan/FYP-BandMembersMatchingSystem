@@ -4,3 +4,16 @@
     /* background-color: #fff; */
 
 }
+
+.headerCss {
+    background: #000;
+}
+
+.logo {
+    background-image: url('../../images/logo.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 90px;
+    width: 200px;
+}
