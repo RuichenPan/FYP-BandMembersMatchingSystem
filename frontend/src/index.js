@@ -9,7 +9,6 @@ import HomePage from './pages/homePage';
 import SiteHeader from './components/siteHeader';
 import { createBrowserHistory } from 'history';
 import UserContentProvider from './contexts/userContext';
-import SubLogo from './components/subLogo/subLogo.js';
 import Footer from './components/footer/footer.js';
 const history = createBrowserHistory({ basename: '/' });
 const SignUp = lazy(() => import('./components/signUp'));

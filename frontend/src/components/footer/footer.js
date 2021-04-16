@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
+import './footer.css';
 
 const Footer = (props) => {
   const context = useContext(UserContext);

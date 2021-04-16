@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../contexts/userContext';
 import Card from '../components/card/card';
-import { Spin, Pagination, Carousel } from 'antd';
-import MyImage from '../components/MyImage/MyImage';
+import { Spin, Pagination } from 'antd';
 import './homePage.css';
 
 const SelectItem = ({ label, list, field, onChange }) => {
@@ -24,9 +23,9 @@ const SelectItem = ({ label, list, field, onChange }) => {
   );
 };
 
-const MovieListPage = () => {
+const HomePage = () => {
   const [page, setPage] = useState(1);
-  const [size] = useState(12);
+  const [size] = useState(18);
   const [, setTimes] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchCondition] = useState({ i_am_a: '', music_style: '' });
@@ -55,25 +54,12 @@ const MovieListPage = () => {
     setIsLoading(false);
   };
 
-  const { musicStyles = [], IAmA = [], home, carousel = [] } = context.state || {};
+  const { musicStyles = [], IAmA = [], home } = context.state || {};
   const { list = [], total = 1 } = home || {};
   console.log(size, 'total:', total);
 
-  const contentStyle = { height: '260px' };
   return (
     <div className="homePageCss">
-      {/* <Carousel autoplay>
-        {carousel.map((row, index) => {
-          return (
-            <div className="row" key={index}>
-              <div className="col-12" style={contentStyle}>
-                <MyImage avatar={row.avatar} />
-              </div>
-            </div>
-          );
-        })}
-      </Carousel> */}
-
       <div className="home-bg g-center">
         <div className="home-bg-content">Once I heard rocks, all of a sudden I understood what life was about</div>
         <div className="home-bg-gradient"></div>
@@ -111,7 +97,9 @@ const MovieListPage = () => {
               return <Card style={{ width: '16.6%' }} key={index} info={row} hideChat onUpdate={() => setTimes(Date.now())} />;
             })}
         </div>
-        <Pagination size="small" pageSize={size} defaultCurrent={page} total={total} onChange={(page) => handleSearch({ page, size })} />
+        <div className="margin-top-10">
+          <Pagination size="small" pageSize={Number(size)} defaultCurrent={Number(page - 1)} total={Number(total)} onChange={(page) => handleSearch({ page, size })} />
+        </div>
 
         {list && list.length === 0 && !isLoading && (
           <div className="not-found text-center margin-top-40">
@@ -123,4 +111,4 @@ const MovieListPage = () => {
   );
 };
 
-export default MovieListPage;
+export default HomePage;

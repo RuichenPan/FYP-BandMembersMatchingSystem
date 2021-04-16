@@ -231,7 +231,7 @@ class UserService extends BaseService {
 
     this.log(opt);
     const list = await this.find(opt, { password: 0, salt: 0 }, { limit: size, skip: (page - 1) * size });
-    const total = await this.count();
+    const total = await this.count(opt);
     const totalPage = Math.ceil(total / size);
     return this.success({ page, size, list, total, totalPage });
   }

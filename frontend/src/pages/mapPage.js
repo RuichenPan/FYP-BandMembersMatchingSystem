@@ -14,10 +14,11 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import './mapPage.css';
 
 const MapPage = (props) => {
   const [q, setKeyword] = useState('');
-  const [addressList, setAddressList] = useState([]);
+  const [setAddressList] = useState([]);
   const [currentAddress, setCurrentAddress] = useState({});
   const [resversGps] = useState(new Subject());
   const [isEdit, setIsEdit] = useState(false);
@@ -150,15 +151,16 @@ const MapPage = (props) => {
       <div className="row">
         <div className="col1"></div>
         <div className="col0 handle" onClick={context.goBack}>
-          Back
+          <div className="btn btn-dark">Back</div>
         </div>
       </div>
 
       {isEdit && (
         <div className="row align-center">
-          <div className="col2 row">
+          <div className="col3 row">
             <input
               type="text"
+              disabled
               className="margin-right-10"
               value={q || ''}
               placeholder="Please enter address"
@@ -188,7 +190,7 @@ const MapPage = (props) => {
       )}
 
       <div className="row margin-top-5">
-        {isEdit && (
+        {/* {isEdit && (
           <div className="col1">
             {addressList &&
               addressList.map((item, index) => {
@@ -201,9 +203,9 @@ const MapPage = (props) => {
                 );
               })}
           </div>
-        )}
+        )} */}
         <div className="col2">
-          <div id="map" tabIndex={0} style={{ height: '500px' }}></div>
+          <div id="map" tabIndex={0} style={{ height: '600px' }}></div>
           <div id="popup"></div>
         </div>
       </div>

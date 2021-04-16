@@ -28,18 +28,21 @@ const Card = (props) => {
           <MyImage avatar={avatar} />
         </div>
 
-        <div className="row text-nowrap padding-5 margin-top-10">
-          <div className="col1 ">
-            <span className="handle" onClick={() => context.switchPage(`/person?id=${id}`)}>
-              {props.info.username}
-            </span>
+        <div className="row text-nowrap padding-5 ">
+          <div className="col1 text-center ">
+            <div className="row align-center">
+              <div className="col1"></div>
+              <div className="col0 handle" onClick={() => context.switchPage(`/person?id=${id}`)}>
+                {props.info.username}
+              </div>
+              <div className="col0 margin-top-10">
+                <div className={`handle margin-left-5 icon icon-collection${props.collection ? '-select' : ''}`} onClick={handleFavorites} />
+              </div>
+              <div className="col1"></div>
+            </div>
           </div>
 
-          <div className="col0 margin-right-10" onClick={handleFavorites}>
-            <div className={`handle icon icon-collection${props.collection ? '-select' : ''}`} />
-          </div>
-
-          <div className="col0 ">
+          <div className="col0  margin-top-10">
             <div className="icon icon-position handle" onClick={() => context.switchPage(`/map?id=${id}&lat=${lat || ''}&lon=${lon || ''}`)}></div>
           </div>
         </div>

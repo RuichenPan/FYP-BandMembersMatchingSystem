@@ -96,8 +96,7 @@ const SiteHeader = (props) => {
 
               {userInfo ? (
                 <>
-                  <div className="btn btn-dark">Welcome {userInfo.username}</div>
-                  <ItemRow title="Profile" onClick={() => context.switchPage('profile')} />
+                  <ItemRow title={`Welcome ${userInfo.username}`} onClick={() => context.switchPage('profile')} />
                   <ItemRow title="Logout" onClick={() => handleClick()} />
                 </>
               ) : (

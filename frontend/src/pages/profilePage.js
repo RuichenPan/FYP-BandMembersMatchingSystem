@@ -5,6 +5,7 @@ import Radio from '../components/radio/radio';
 import RadioGroup from '../components/radio/radio-group';
 import Video from '../components/video/video';
 import { UserContext } from '../contexts/userContext';
+import './profilePage.css';
 
 const ProfilePage = (props) => {
   // eslint-disable-next-line
@@ -57,26 +58,27 @@ const ProfilePage = (props) => {
   const { musicStyles = [], IAmA = [] } = context.state || {};
 
   return (
-    <div>
+    <div className="profileCss">
       <div className="row margin-top-20">
-        <div className="col1">
-          <div className="row">
-            <div className="col-2 text-right">Portrait:</div>
-            <div className="col-8 ">
-              <div className="img img-portrait" style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${uInfo.avatar || ''}')` }}>
-                <input className="file-upload" type="file" accept="image/*" onChange={handleUploadFile} />
-              </div>
+        <div className="col-4 row">
+          <div className="col-3"></div>
+          <div className="col-8">
+            <div className="img img-portrait" style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${uInfo.avatar || ''}')` }}>
+              <input className="file-upload" type="file" accept="image/*" onChange={handleUploadFile} />
             </div>
+            <div className="text-center margin-top-20">Portrait</div>
           </div>
-
+          <div className="col-1"></div>
+        </div>
+        <div className="col-8">
           <div className="row margin-top-10 align-center">
-            <div className="col-2 text-right">Name:</div>
-            <div className="col-4 ">
+            <div className="pp-label">Name:</div>
+            <div className="col-3 ">
               <span className="padding-left-10">{uInfo.username}</span>
             </div>
 
-            <div className="col-2 text-right">Gender:</div>
-            <div className="col-4 ">
+            <div className="pp-label">Gender:</div>
+            <div className="col-3 ">
               <RadioGroup row onChange={handleChange.bind(this, 'gender')} active={uInfo.gender}>
                 {['Male', 'Female'].map((item) => {
                   return (
@@ -90,15 +92,15 @@ const ProfilePage = (props) => {
           </div>
 
           <div className="row margin-top-10 align-center">
-            <div className="col-2 text-right">Address:</div>
-            <div className="row col-10 ">
+            <div className="pp-label">Address:</div>
+            <div className="row col-8 ">
               <input type="text" className="input margin-right-10" disabled value={uInfo.address || ''} />
               {uInfo.id && <div className="handle icon icon-position" onClick={() => context.switchPage(`map/?lat=${uInfo.lat || ''}&lon=${uInfo.lon || ''}&isEdit=1&id=${uInfo.id}`)}></div>}
             </div>
           </div>
           <div className="row margin-top-10">
-            <div className="col-2 text-right">I am a:</div>
-            <div className="col-10 ">
+            <div className="pp-label">I am a:</div>
+            <div className="col-8 ">
               <RadioGroup row onChange={handleChange.bind(this, 'i_am_a')} active={uInfo.i_am_a}>
                 {IAmA &&
                   IAmA.map((item) => {
@@ -124,8 +126,8 @@ const ProfilePage = (props) => {
           </div>
 
           <div className="row margin-top-40">
-            <div className="col-2 text-right">Music Style:</div>
-            <div className="col-10 ">
+            <div className="pp-label">Music Style:</div>
+            <div className="col-8 ">
               <RadioGroup row onChange={handleChange.bind(this, 'music_style')} active={uInfo.music_style}>
                 {musicStyles &&
                   musicStyles.map((item) => {
@@ -140,8 +142,8 @@ const ProfilePage = (props) => {
           </div>
 
           <div className="row margin-top-40">
-            <div className="col-2 text-right">Album:</div>
-            <div className="col-10">
+            <div className="pp-label">Album:</div>
+            <div className="col-8">
               <Album
                 small
                 {...props}
@@ -157,8 +159,8 @@ const ProfilePage = (props) => {
           </div>
 
           <div className="row margin-top-40">
-            <div className="col-2 text-right">Video:</div>
-            <div className="col-10">
+            <div className="pp-label">Video:</div>
+            <div className="col-8">
               <Video
                 small
                 onUpload={async (type, e) => {

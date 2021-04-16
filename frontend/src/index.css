@@ -11,7 +11,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  /* color: #fff; */
+  color: #fff;
   overflow: auto;
   background: #161616;
 }
@@ -22,7 +22,8 @@ body {
 }
 
 .pageBody {
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 160px);
+  color: #fff;
 }
 
 .gCenter,
@@ -238,6 +239,10 @@ body {
   margin-right: 30px;
 }
 
+.margin-left-5 {
+  margin-left: 5px;
+}
+
 .margin-left-10 {
   margin-left: 10px;
 }
@@ -264,12 +269,6 @@ body {
   position: relative;
 }
 
-.img-portrait {
-  height: 80px;
-  width: 80px;
-  position: relative;
-  border: 1px solid #f0f0f0;
-}
 
 .img-delete {
   position: absolute;
@@ -398,8 +397,8 @@ textarea {
 
 /* ***************ICON**************** */
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -437,31 +436,6 @@ textarea {
 }
 
 
-.chat-win-body {
-  /* border: 1px solid #f0f0f0; */
-  border: 1px solid #999999;
-  max-height: 430px;
-  min-height: 300px;
-  overflow-y: auto;
-}
-
-.chat-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.chat-center {
-  max-width: 60%;
-}
-
-.chat-msg {
-  word-break: break-all;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  padding: 5px 10px;
-}
 
 
 .example {

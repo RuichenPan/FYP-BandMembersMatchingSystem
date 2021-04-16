@@ -1,5 +1,15 @@
 .card-info {
   width: calc(25% - 10px);
+  font-size: 24px;
+
+  box-shadow: 0px 0px 2px rgb(0 0 0 / 10%), 0px 4px 8px rgb(0 0 0 / 10%);
+  box-sizing: border-box;
+  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out;
+}
+
+.card-info:hover {
+  transform: scale3d(1.05, 1.05, 1.05);
+  box-shadow: 0px 0px 2px rgb(0 0 0 / 10%), 0px 4px 8px rgb(0 0 0 / 30%);
 }
 
 .card-body {

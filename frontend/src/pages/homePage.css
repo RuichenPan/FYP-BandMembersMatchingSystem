@@ -1,65 +1,64 @@
 .homePageCss {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-  }
-  
-  .homePageCss input,
-  .homePageCss select {
-    padding: 5px;
-    border-radius: 0px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 20px;
-    outline: none;
-  }
-  
-  .homePageCss select:focus {
-    outline: 1px solid #4969E4;
-  }
-  
-  .homePageCss button {
-    font-weight: 700;
-    font-size: 20px;
-  }
-  
-  .home-bg {
-    background-image: url('../images/BGImage.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 60vh;
-    min-height: 600px;
-    width: 100%;
-    position: relative;
-    color: #fff;
-  }
-  
-  .home-bg-content {
-    color: #fff;
-    position: relative;
-    text-align: center;
-    background: rgba(0, 0, 0, .2);
-    padding: 50px;
-    font-size: 3rem;
-    font-weight: 700;
-    max-width: 700px;
-  }
-  
-  
-  .home-bg-gradient {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, .8) 100%);
-  }
-  
-  .home-body-content {
-    /* background: #161616; */
-    padding: 20px;
-  }
-  
-  .home-body-condition {
-    margin-bottom: 20px;
-  }
-  
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.homePageCss input,
+.homePageCss select {
+  padding: 5px;
+  border-radius: 0px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  outline: none;
+}
+
+.homePageCss select:focus {
+  outline: 1px solid #4969E4;
+}
+
+.homePageCss button {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.home-bg {
+  background-image: url('../images/home-bg.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 60vh;
+  min-height: 600px;
+  width: 100%;
+  position: relative;
+  color: #fff;
+}
+
+.home-bg-content {
+  color: #fff;
+  position: relative;
+  text-align: center;
+  background: rgba(0, 0, 0, .2);
+  padding: 50px;
+  font-size: 3rem;
+  font-weight: 700;
+  max-width: 700px;
+}
+
+
+.home-bg-gradient {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, .8) 100%);
+}
+
+.home-body-content {
+  /* background: #161616; */
+  padding: 20px;
+}
+
+.home-body-condition {
+  margin-bottom: 20px;
+}

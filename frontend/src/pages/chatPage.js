@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import GoBack from '../components/GoBack/GoBack';
 import MyImage from '../components/MyImage/MyImage';
 import { UserContext } from '../contexts/userContext';
-
+import './chatPage.css';
 import Util from '../util';
 
 const ChatPage = (props) => {
@@ -155,19 +155,17 @@ const ChatPage = (props) => {
 
   const { id: user_id } = context.state.userInfo || {};
   return (
-    <div>
+    <div className="chatPage">
       <GoBack />
 
-      <div className="row text-white">
-        {/* <div className="col1 " style={{ border: '1px solid #f0f0f0', marginRight: '5px ', minWidth: '190px' }}> */}
-        <div className="col1 " style={{ border: '1px solid #999999', marginRight: '5px ', minWidth: '190px' }}>
+      <div className="row text-white margin-top-20">
+        <div className="col1 friends-list">
           <h5 className="text-center text-white">I Want you list</h5>
           {chatList &&
             chatList.map((item, index) => {
               return (
-                // <div key={index} className="row margin-bottom-5 handle" style={{ background: uid === item.id ? '#f0f0f0' : '' }} onClick={() => handleMsgList(item)}>
                 <div key={index} className={`row margin-bottom-5 handle ${uid === item.id ? 'bg-info' : ''}`} onClick={() => handleMsgList(item)}>
-                  <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
+                  <div className="margin-left-10" style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
                     <MyImage avatar={item.avatar} />
                   </div>
                   <div className="margin-left-10">
@@ -186,7 +184,7 @@ const ChatPage = (props) => {
             {userMsgMap[uid] && userMsgMap[uid].length > 0 ? (
               userMsgMap[uid].map((item, index) => {
                 return (
-                  <div key={index}>
+                  <div key={index} className="margin-bottom-10">
                     {user_id !== item.user_id && (
                       <div className="row">
                         <div className="chat-avatar margin-right-10">
@@ -225,8 +223,8 @@ const ChatPage = (props) => {
               </div>
             )}
           </div>
-          {/* <div className="row padding-0" style={{ border: '1px solid #f0f0f0' }}> */}
-          <div className="row padding-0" style={{ border: '1px solid #999999' }}>
+         
+          <div className="row padding-0" style={{ border: '1px solid #444343' }}>
             <input className="col1 bg-dark " value={msg} onChange={(e) => setMsg(e.target.value)} />
             <button className="btn btn-dark" onClick={handleSocket} style={{ width: '100px' }}>
               Send

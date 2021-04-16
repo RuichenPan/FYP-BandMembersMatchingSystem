@@ -3,6 +3,7 @@ import GoBack from '../components/GoBack/GoBack';
 import MyImage from '../components/MyImage/MyImage';
 import { UserContext } from '../contexts/userContext';
 import Util from '../util';
+import './albumPage.css';
 
 const AlbumPage = (props) => {
   const context = useContext(UserContext);
@@ -24,7 +25,7 @@ const AlbumPage = (props) => {
     <div className="albumPagebody">
       <GoBack />
 
-      <div className="row row-wrap">
+      <div className="row row-wrap margin-top-20">
         {list && list.length > 0 ? (
           list.map((row, index) => {
             return (

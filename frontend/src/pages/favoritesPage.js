@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Card from '../components/card/card';
 import { UserContext } from '../contexts/userContext';
+import './favorites.css';
 
 const FavoritesPage = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,18 +29,17 @@ const FavoritesPage = (props) => {
   // const { list } = context.state.favorite_mine || {};
 
   return (
-    <div>
-     
+    <div className="favorites">
       {fList && fList.length > 0 ? (
         <div className="favorite-body">
           {fList.map((row, index) => {
-            return <Card key={index} info={row} collection onUpdate={() => initData()} />;
+            return <Card style={{ width: '16.6%' }} key={index} info={row} collection onUpdate={() => initData()} />;
           })}
         </div>
       ) : (
         !isLoading && (
           <div className="row margin-top-40">
-            <div className="col1 text-center ggs-font-size-">
+            <div className="col1 text-center font-size-25">
               <h1>The favorite is empty, add it quickly</h1>
             </div>
           </div>
