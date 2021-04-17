@@ -24,7 +24,7 @@ const Card = (props) => {
   return (
     <div className="card-info" style={{ ...(props.style || {}) }}>
       <div className="card-body">
-        <div className="profile-image">
+        <div className="profile-image" onClick={() => context.switchPage(`/person?id=${id}`)}>
           <MyImage avatar={avatar} />
         </div>
 

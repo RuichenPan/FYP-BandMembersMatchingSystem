@@ -1,0 +1,23 @@
+.person-detail-body {
+    padding: 10px 50px;
+    position: relative;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  
+  .person-portrait {
+    width: 300px;
+    height: 400px;
+    border: 1px solid #999999;
+  }
+  
+  .person-portrait .img-cover {
+    /* background-size: contain !important; */
+  }
+  
+  .person-label {
+    width: 130px;
+    text-align: right;
+    padding-right: 10px;
+  }
+  

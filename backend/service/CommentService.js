@@ -58,8 +58,10 @@ class CommentService extends BaseService {
     if (!content) {
       this.failure('reply content can no be empty.');
     }
+    // get current user images;
+    const loginUserInfo = await UserService.findById(userInfo.id);
 
-    const info = await this.findByIdAndUpdate(comment_id, { reply_avatar: userInfo.image, reply_content: content, reply_create_time: Date.now() });
+    const info = await this.findByIdAndUpdate(comment_id, { reply_avatar: loginUserInfo.avatar, reply_content: content, reply_create_time: Date.now() });
     return this.success(info);
   }
 }

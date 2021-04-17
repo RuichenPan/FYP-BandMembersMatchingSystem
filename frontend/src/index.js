@@ -31,7 +31,7 @@ const socket = io(host, { reconnection: true, path: '/chat', auth: { token: '' }
 const App = () => {
   return (
     <Router history={history}>
-      <div className="indexPageCss ">
+      <div className="indexPageCss">
         <UserContentProvider history={history} socket={socket}>
           <Suspense fallback={<h1>Loading page....</h1>}>
             <SiteHeader />

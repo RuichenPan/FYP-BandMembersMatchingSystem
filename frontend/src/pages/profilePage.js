@@ -67,6 +67,9 @@ const ProfilePage = (props) => {
               <input className="file-upload" type="file" accept="image/*" onChange={handleUploadFile} />
             </div>
             <div className="text-center margin-top-20">Portrait</div>
+            <div className="text-center handle margin-top-20" onClick={() => context.switchPage('/person', { id: uInfo.id })}>
+              Message
+            </div>
           </div>
           <div className="col-1"></div>
         </div>

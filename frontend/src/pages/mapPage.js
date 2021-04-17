@@ -18,7 +18,7 @@ import './mapPage.css';
 
 const MapPage = (props) => {
   const [q, setKeyword] = useState('');
-  const [setAddressList] = useState([]);
+  // const [setAddressList] = useState([]);
   const [currentAddress, setCurrentAddress] = useState({});
   const [resversGps] = useState(new Subject());
   const [isEdit, setIsEdit] = useState(false);
@@ -102,10 +102,10 @@ const MapPage = (props) => {
     // eslint-disable-next-line
   }, [context]);
 
-  const handleSearch = async () => {
-    await context.onMapSearch(q);
-    setAddressList(context.state.mapAddress);
-  };
+  // const handleSearch = async () => {
+  //   await context.onMapSearch(q);
+  //   setAddressList(context.state.mapAddress);
+  // };
 
   const reverseGPS = async ({ lat, lon }) => {
     await context.onMapReverse({ lat, lon });
@@ -169,9 +169,9 @@ const MapPage = (props) => {
                 setKeyword(e.target.value.trim());
               }}
             />
-            <button className="margin-left-10 btn btn-dark" onClick={handleSearch}>
+            {/* <button className="margin-left-10 btn btn-dark" onClick={handleSearch}>
               Search
-            </button>
+            </button> */}
           </div>
 
           <div className="col0 margin-left-10" style={{ width: '130px' }}>

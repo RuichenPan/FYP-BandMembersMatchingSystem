@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
-import 'firebase/auth';
 import InputItem from '../../components/InputItem/InputItem';
 import { UserContext } from '../../contexts/userContext';
-// const image3 = require('../../images/login-03.png');
+import './index.css';
 
 const Signup = (props) => {
   // User State
@@ -30,13 +29,10 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="loginCss ">
+    <div className="loginCss image-cover g-center">
       <div className="g-center">
         <div className="LogBody bg-dark">
-          <h1 className="text-center hurricane">
-            {/* <img src={image3} width="80%" alt="" /> */}
-            HURRICANE
-          </h1>
+          <h1 className="text-center hurricane">HURRICANE</h1>
           <InputItem name="Username" fieldName="username" onChange={handleChange} />
           <InputItem name="Password" type="password" fieldName="password" onChange={handleChange} />
           <InputItem name="Email" fieldName="email" onChange={handleChange} />

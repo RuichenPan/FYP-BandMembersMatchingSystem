@@ -6,11 +6,15 @@ body {
   font-weight: 600;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #fff;
+}
+
 #root {
-  /* background-image: url('./images/BGImage.jpg'); */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   color: #fff;
   overflow: auto;
   background: #161616;
@@ -19,11 +23,14 @@ body {
 .indexPageCss {
   position: relative;
   min-height: 100vh;
+  overflow-x: hidden;
+  color: #fff;
 }
 
 .pageBody {
-  min-height: calc(100vh - 160px);
   color: #fff;
+  position: relative;
+  min-height: calc(100vh - 160px);
 }
 
 .gCenter,
@@ -33,12 +40,19 @@ body {
   -webkit-box-pack: center;
 }
 
+.image-cover {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .text-center {
   text-align: center;
 }
 
 .row {
   margin: unset;
+  position: relative;
 }
 
 .row-between {
@@ -72,9 +86,6 @@ body {
 .col-p-66 {
   width: 66.6%;
 }
-
-
-
 
 .col1 {
   flex: 1;
@@ -361,23 +372,6 @@ textarea {
   min-height: 90px;
 }
 
-.person-portrait {
-  width: 300px;
-  height: 400px;
-  /* border: 1px solid #f0f0f0; */
-  border: 1px solid #999999;
-}
-
-.person-portrait .img-cover {
-  background-size: contain !important;
-}
-
-.person-label {
-  width: 110px;
-  text-align: right;
-  padding-right: 10px;
-}
-
 .map-sarch-item {
   border: 1px solid #f0f0f0;
   margin-bottom: 5px;
@@ -447,17 +441,6 @@ textarea {
   border-radius: 4px;
 }
 
-
-.loginCss {
-  position: relative;
-  height: calc(100% - 50px);
-}
-
-.LogBody {
-  margin-top: 50px;
-  border-radius: 20px;
-  padding: 20px 80px
-}
 
 .footerCss {
   padding: 30px;
