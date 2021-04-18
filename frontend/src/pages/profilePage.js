@@ -63,12 +63,12 @@ const ProfilePage = (props) => {
         <div className="col-4 row">
           <div className="col-3"></div>
           <div className="col-8">
-            <div className="img img-portrait" style={{ backgroundImage: `url('${HttpHelper.WebSite}/uploads/${uInfo.avatar || ''}')` }}>
+            <div className="img img-portrait" style={{ border: '1px solid #ddd', backgroundImage: `url('${HttpHelper.WebSite}/uploads/${uInfo.avatar || ''}')` }}>
               <input className="file-upload" type="file" accept="image/*" onChange={handleUploadFile} />
             </div>
             <div className="text-center margin-top-20">Portrait</div>
             <div className="text-center handle margin-top-20" onClick={() => context.switchPage('/person', { id: uInfo.id })}>
-              Message
+              Comment
             </div>
           </div>
           <div className="col-1"></div>
@@ -183,17 +183,3 @@ const ProfilePage = (props) => {
 };
 
 export default ProfilePage;
-
-// <div className="row">
-//   <div className="col-10">
-//   <nav aria-label="Page navigation example">
-//     <ul className="pagination">
-//       <li className="page-item"><a class="page-link" href="#">Previous</a></li>
-//       <li className="page-item"><a class="page-link" href="#">1</a></li>
-//       <li className="page-item"><a class="page-link" href="#">2</a></li>
-//       <li className="page-item"><a class="page-link" href="#">3</a></li>
-//       <li className="page-item"><a class="page-link" href="#">Next</a></li>
-//     </ul>
-//   </nav>
-//   </div>
-// </div>

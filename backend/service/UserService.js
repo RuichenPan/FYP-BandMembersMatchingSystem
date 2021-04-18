@@ -226,7 +226,7 @@ class UserService extends BaseService {
     if (user_id) {
       const favoritesList = await FavoriteService.find({ user_id }, { favorite_user_id: 1 });
       const ids = favoritesList.map((p) => p.favorite_user_id);
-      opt._id = { $nin: [...ids] };
+      opt._id = { $nin: [...ids, user_id] };
     }
 
     this.log(opt);

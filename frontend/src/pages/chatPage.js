@@ -14,6 +14,7 @@ const ChatPage = (props) => {
   const [userMsgMap, setUserMsgMap] = useState({});
   const [chatWinBodyRef] = useState(React.createRef());
   const [uid, setUid] = useState(id);
+  const [pending, setPending] = useState(false);
 
   context.state.chatSelectUserId = uid;
 
@@ -31,20 +32,20 @@ const ChatPage = (props) => {
    */
   const onSocketListen = () => {
     context.socket.removeAllListeners('message');
-    context.socket.on('disconnect', async () => {
-      console.log('socket disconnect');
+    // context.socket.on('disconnect', async () => {
+    //   console.log('socket disconnect');
 
-      Util.await(1500);
-      context.socket.connect();
+    //   Util.await(1500);
+    //   context.socket.connect();
 
-      if (context.socket.connected) {
-        console.log('reconnection success...');
-      }
-    });
-    context.socket.once('connect', () => {
-      console.log('socket reconnect');
-      sendMsg({ cmd: 'Login' });
-    });
+    //   if (context.socket.connected) {
+    //     console.log('reconnection success...');
+    //   }
+    // });
+    // context.socket.once('connect', () => {
+    //   console.log('socket reconnect');
+    //   sendMsg({ cmd: 'Login' });
+    // });
 
     context.socket.on('message', (body) => {
       const { id: login_user_id } = context.state.userInfo || {};
@@ -101,7 +102,7 @@ const ChatPage = (props) => {
       }
     });
 
-    sendMsg({ cmd: 'Login' });
+    // sendMsg({ cmd: 'Login' });
   };
 
   /**
@@ -140,9 +141,18 @@ const ChatPage = (props) => {
     context.socket.send(data);
   };
 
-  const handleSocket = () => {
+  const handleSocket = async () => {
+    if (!!pending) {
+      return;
+    }
+    if (!msg) {
+      return;
+    }
+    setPending(true);
     sendMsg({ cmd: 'Msg', msg, to_user_id: uid });
+    await Util.await(300);
     setMsg('');
+    setPending(false);
   };
 
   const handleMsgList = (item) => {
@@ -191,7 +201,7 @@ const ChatPage = (props) => {
                           <MyImage avatar={item.avatar} />
                         </div>
                         <div className="chat-center">
-                          <div>{Util.format(item.create_time, 'yyyy-mm-dd HH:MM:ss.S')}</div>
+                          <div>{Util.format(item.create_time, 'yyyy-MM-dd HH:mm:ss')}</div>
                           <div className=" bg-dark chat-msg">{item.msg}</div>
                         </div>
                         <div className="col1"></div>
@@ -202,7 +212,7 @@ const ChatPage = (props) => {
                       <div className="row">
                         <div className="col1"></div>
                         <div className="chat-center">
-                          <div className="text-right">{Util.format(item.create_time, 'yyyy-mm-dd HH:MM:ss.S')}</div>
+                          <div className="text-right">{Util.format(item.create_time, 'yyyy-MM-dd HH:mm:ss')}</div>
                           <div className=" bg-dark chat-msg">{item.msg}</div>
                         </div>
                         <div className="chat-avatar margin-left-10">
@@ -223,7 +233,7 @@ const ChatPage = (props) => {
               </div>
             )}
           </div>
-         
+
           <div className="row padding-0" style={{ border: '1px solid #444343' }}>
             <input className="col1 bg-dark " value={msg} onChange={(e) => setMsg(e.target.value)} />
             <button className="btn btn-dark" onClick={handleSocket} style={{ width: '100px' }}>

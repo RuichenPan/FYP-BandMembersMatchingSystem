@@ -13,9 +13,23 @@ export default class SocketService {
     const self = this;
     this.serverSocket.on('connection', (socket) => {
       ChatService.log(this.serverSocket.engine.clientsCount, socket.id);
+      const { id: socket_id } = socket;
       socket.on('message', (data) => {
-        console.log('user_id:', data.user_id);
+        UserService.log('Data received:', 'user_id:', data.user_id);
         self.process_cmd(socket, data);
+      });
+
+      socket.on('disconnect', () => {
+        UserService.log('socket_id:', socket_id, ' disconnect');
+        const userIds = Object.keys(self.socketMap);
+        for (let i = 0; i < userIds.length; i += 1) {
+          const user_id = userIds[i];
+          const userInfo = self.socketMap[user_id];
+          if (userInfo.socket.id == socket_id) {
+            delete self.socketMap[user_id];
+            UserService.log('user_id', user_id, 'socket_id', socket_id, 'username', userInfo.username);
+          }
+        }
       });
     });
   }
