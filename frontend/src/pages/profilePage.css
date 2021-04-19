@@ -1,17 +1,20 @@
 .profileCss {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  
-  
-  .img-portrait {
-    height: 380px;
-    position: relative;
-    background-size: cover;
-  }
-  
-  .pp-label {
-    width: 110px;
-  }
-  
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+
+.img-portrait {
+  height: 380px;
+  position: relative;
+  background-size: cover;
+}
+
+.pp-label {
+  width: 110px;
+}
+
+.profileCss .other input {
+  color: #000;
+}

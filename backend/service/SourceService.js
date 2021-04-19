@@ -7,7 +7,7 @@ class SourceService extends BaseService {
   }
 
   async list({ page, size, user_id, type }) {
-    const list = await this.find({ type, user_id }, {}, { skip: (page - 1) * size, limit: size });
+    const list = await this.find({ type, user_id }, {}, {}); //
     const total = await this.count({ type, user_id });
     const info = { page, size, total, totalPage: Math.ceil(total / size), list };
     return this.success(info);

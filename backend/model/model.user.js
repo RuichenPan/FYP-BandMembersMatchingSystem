@@ -13,6 +13,7 @@ export default mongoose.model(
       avatar: { type: String, default: '' },
       state: { type: Number, default: 1, comment: '1 : verification, 2: normal' },
       i_am_a: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },
+      i_am_a_other: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },
       music_style: { type: String, default: '', comment: 'Hard Rock, Pop Music, Thrash Metal, Death Metal, Punk, Electronic Music, Jazz, Blues' },
       address: { type: String, default: '' },
       lat: { type: Number, default: '' },

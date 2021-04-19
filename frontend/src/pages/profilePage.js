@@ -111,11 +111,16 @@ const ProfilePage = (props) => {
                       <Radio key={item.value} value={item.value}>
                         {item.value}
                         {'Other' === item.value && (
-                          <div className="margin-top-0">
+                          <div className="margin-top-0 other">
                             <input
                               value={uInfo.i_am_a_other || ''}
                               disabled={item.value !== uInfo.i_am_a}
                               onChange={(e) => {
+                                const newObj = { ...uInfo };
+                                newObj.i_am_a_other = e.target.value;
+                                setUpdateUserInfo({ ...newObj });
+                              }}
+                              onBlur={(e) => {
                                 handleChange('i_am_a_other', e.target.value);
                               }}
                             />

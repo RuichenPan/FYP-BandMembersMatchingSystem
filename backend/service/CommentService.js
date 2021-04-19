@@ -7,7 +7,7 @@ class CommentService extends BaseService {
     super(ModelComment);
   }
 
-  async list({ user_id } = {}) {
+  async list({ page, size, user_id } = {}) {
     const list = await this.find({ user_id }, {}, {});
     const total = await this.count({ user_id });
     const data = {
