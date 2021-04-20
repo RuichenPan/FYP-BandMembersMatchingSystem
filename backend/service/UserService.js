@@ -81,22 +81,29 @@ class UserService extends BaseService {
   }
 
   async signUpSendEmail(to) {
-    const token = jwt.sign({ info: { to } }, cfg.jwtKey, { expiresIn: '24h' });
+    // const token = jwt.sign({ info: { to } }, cfg.jwtKey, { expiresIn: '24h' });
 
-    const url = `${cfg.webSite}/emailCheck?email=${to}&token=${encodeURIComponent(token)}`;
+    // const url = `${cfg.webSite}/emailCheck?email=${to}&token=${encodeURIComponent(token)}`;
     const html = `
-    <div style="text-align: center; display: -webkit-box;-webkit-box-align: center;-webkit-box-pack: center;">
-    <div style="border: 1px solid #f0f0f0; border-radius: 5px; padding: 10px;">
-      <div>
-      Click here <a href="${url}" target="_blank">
-        Email Verification
+    <div>
+      <h2>
+        Hi, musician!
+      </h2>
+      <div style="margin-top: 10px;">
+        Welcome to be a new member of HURRICANE!
+      </div>
+      <div style="margin-top: 0px;">
+        Click here to enter in HURRICANE again: <a href="https://fyp-bandmembersmatchingsystem.herokuapp.com/" target="_blank">
+          https://fyp-bandmembersmatchingsystem.herokuapp.com/
         </a>
       </div>
-      <div>
-        ${url}
+      <div style="margin-top: 30px;">
+        Best Regard
+      </div>
+      <div style="margin-top: 5px;">
+        HURRICANE
       </div>
     </div>
-  </div>
     `;
 
     return await this.sendEmail({ to, title: 'Email verification', content: html });

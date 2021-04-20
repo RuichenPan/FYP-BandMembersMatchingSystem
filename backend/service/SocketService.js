@@ -78,7 +78,7 @@ export default class SocketService {
           { user_id: to_user_id, to_user_id: user_id },
         ],
       },
-      { update_time: 0, state: 0, _id: 0 },
+      { update_time: 0, state: 0 },
       { sort: { create_time: -1 }, limit: 100 },
     );
     list.reverse();
