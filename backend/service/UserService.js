@@ -225,10 +225,10 @@ class UserService extends BaseService {
       opt.username = { $regex: keyword, $options: 'i' };
     }
     if (i_am_a) {
-      opt.i_am_a = i_am_a;
+      opt.i_am_a = { $regex: i_am_a };
     }
     if (music_style) {
-      opt.music_style = music_style;
+      opt.music_style = { $regex: music_style };
     }
     if (user_id) {
       const favoritesList = await FavoriteService.find({ user_id }, { favorite_user_id: 1 });

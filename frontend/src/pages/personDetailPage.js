@@ -43,32 +43,36 @@ const PersonDetailPage = (props) => {
           </div>
         </div>
         <div className="col1 padding-left-10">
-          <div className="row margin-bottom-10 align-center">
+          <div className="row margin-bottom-20 align-center">
             <div className="person-label">Name:</div>
             <div className="col1">{username}</div>
           </div>
-          <div className="row margin-bottom-10 align-center">
+          <div className="row margin-bottom-20 align-center">
             <div className="person-label">Gender:</div>
             <div className="col1">{info.gender}</div>
           </div>
-          <div className="row margin-bottom-10 align-center">
+          <div className="row margin-bottom-20 align-center">
             <div className="person-label">Address:</div>
             <div className="col1 handle" onClick={() => context.switchPage('map', { id: info.id, lat: info.lat || '', lon: info.lon || '' })}>
               <span className="margin-right-10">{info.address}</span>
               <div className=" icon icon-position"></div>
             </div>
           </div>
-          <div className="row margin-bottom-10">
+          <div className="row margin-bottom-20">
             <div className="person-label">Music Style:</div>
             <div className="col1">{info.music_style}</div>
           </div>
-          <div className="row margin-bottom-10">
+          <div className="row margin-bottom-20">
             <div className="person-label">Email:</div>
             <div className="col1">{info.email}</div>
           </div>
-          <div className="row margin-bottom-10">
+          <div className="row margin-bottom-20">
             <div className="person-label">I Am A:</div>
             <div className="col1">{info.i_am_a}</div>
+          </div>
+          <div className="row margin-bottom-20">
+            <div className="person-label">Description:</div>
+            <div className="col1">{info.description}</div>
           </div>
 
           <div className=" margin-bottom-30" desc="Comment">

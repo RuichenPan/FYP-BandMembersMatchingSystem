@@ -56,7 +56,7 @@ const HomePage = () => {
 
   const { musicStyles = [], IAmA = [], home } = context.state || {};
   const { list = [], total = 1 } = home || {};
-  console.log(size, 'total:', total);
+  // console.log(size, 'total:', total);
 
   return (
     <div className="homePageCss">

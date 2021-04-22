@@ -15,7 +15,7 @@ const ComentItem = (props) => {
     await context.onReplyComment({ comment_id, content });
     onReply && onReply();
     setIsReply(false);
-    context.alertMsg('Reply success');
+    // context.alertMsg('Reply success');
   };
 
   const { id: url_user_id } = Util.parseQuery();
@@ -103,7 +103,7 @@ const Comment = (props) => {
   const handleSave = async () => {
     const { id: user_id } = Util.parseQuery();
     await context.onAddComment({ content, user_id });
-    context.alertMsg('Add Success');
+    // context.alertMsg('Add Success');
     setList([]);
     getList();
   };

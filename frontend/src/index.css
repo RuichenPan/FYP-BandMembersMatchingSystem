@@ -210,6 +210,14 @@ h5 {
   margin-top: 40px;
 }
 
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.margin-top-60 {
+  margin-top: 60px;
+}
+
 .margin-bottom_5 {
   margin-bottom: -5px;
 }
@@ -317,6 +325,11 @@ h5 {
   margin: 5px;
 }
 
+.album-body .a-none {
+  /* border: unset; */
+  border: 1px solid #444;
+}
+
 .album-body .album-item-small {
   position: relative;
   width: calc(25% - 5px);
@@ -334,6 +347,10 @@ h5 {
 
 .font-size-20 {
   font-size: 20px;
+}
+
+.font-size-24 {
+  font-size: 24px;
 }
 
 /*********************************************/

@@ -20,7 +20,7 @@ const Album = (props) => {
     await context.onSourceDelete(row, index, 'album');
     console.log(index, context.state.album.list);
     setTimes(Date.now());
-    context.alertMsg('Delete success');
+    // context.alertMsg('Delete success');
   };
 
   return (
@@ -37,8 +37,8 @@ const Album = (props) => {
             </div>
           );
         })}
-      <div className="g-center album-item handle">
-        Upload
+      <div className="g-center album-item handle a-none">
+        <div className="btn btn-dark">Upload</div>
         <input
           className="file-upload"
           type="file"

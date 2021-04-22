@@ -9,8 +9,8 @@ const RadioGroup = (props) => {
         return React.cloneElement(child, {
           label: child.props.children,
           value: child.props.value,
-          active: isActive,
-          onClick: (val) => props.onChange && props.onChange(val),
+          active: child.props.active || isActive,
+          onClick: (val) => (child.props.onClick && child.props.onClick(val)) || (props.onChange && props.onChange(val)),
         });
       })}
     </div>

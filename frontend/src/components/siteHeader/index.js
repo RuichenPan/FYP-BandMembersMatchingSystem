@@ -20,7 +20,7 @@ const SiteHeader = (props) => {
   const handleClick = () => {
     context.onLogout();
     setUserInfo(null);
-    context.alertMsg('Logout success');
+    // context.alertMsg('Logout success');
   };
 
   const showMsg = (data) => {
@@ -84,13 +84,11 @@ const SiteHeader = (props) => {
           </div>
           <div className="col1">
             <div className="row margin-right-30">
-              <div className="col1"></div>
-
+              <div className="col1 text-center font-size-24">HURRICANE - Band Members Matching System</div>
               <ItemRow title="Square" onClick={() => context.switchPage('/')} />
-
               {userInfo && (
                 <>
-                  <ItemRow title="I want you" onClick={() => context.switchPage('favorites')} />
+                  <ItemRow title="I Want You" onClick={() => context.switchPage('favorites')} />
                 </>
               )}
 

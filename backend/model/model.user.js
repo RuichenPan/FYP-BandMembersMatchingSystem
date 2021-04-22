@@ -11,6 +11,7 @@ export default mongoose.model(
       salt: { type: String, default: '' },
       gender: { type: String, default: 'Male', comment: 'male, female' },
       avatar: { type: String, default: '' },
+      description: { type: String, default: '' },
       state: { type: Number, default: 1, comment: '1 : verification, 2: normal' },
       i_am_a: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },
       i_am_a_other: { type: String, default: '', comment: 'Guitarist, Bassist, Drummer, Keyboard Player, Leader Singer，Other' },

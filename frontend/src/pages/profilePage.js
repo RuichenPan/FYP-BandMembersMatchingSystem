@@ -56,7 +56,7 @@ const ProfilePage = (props) => {
   };
 
   const { musicStyles = [], IAmA = [] } = context.state || {};
-
+  console.log(' uInfo.id :', uInfo.id);
   return (
     <div className="profileCss">
       <div className="row margin-top-20">
@@ -68,7 +68,7 @@ const ProfilePage = (props) => {
             </div>
             <div className="text-center margin-top-20">Portrait</div>
             <div className="text-center handle margin-top-20" onClick={() => context.switchPage('/person', { id: uInfo.id })}>
-              Comment
+              <div className="btn btn-dark">Comment</div>
             </div>
           </div>
           <div className="col-1"></div>
@@ -94,31 +94,54 @@ const ProfilePage = (props) => {
             </div>
           </div>
 
-          <div className="row margin-top-10 align-center">
+          <div className="row margin-top-30 align-center">
             <div className="pp-label">Address:</div>
             <div className="row col-8 ">
               <input type="text" className="input margin-right-10" disabled value={uInfo.address || ''} />
               {uInfo.id && <div className="handle icon icon-position" onClick={() => context.switchPage(`map/?lat=${uInfo.lat || ''}&lon=${uInfo.lon || ''}&isEdit=1&id=${uInfo.id}`)}></div>}
             </div>
           </div>
-          <div className="row margin-top-10">
+
+          <div className="row margin-top-30">
             <div className="pp-label">I am a:</div>
             <div className="col-8 ">
-              <RadioGroup row onChange={handleChange.bind(this, 'i_am_a')} active={uInfo.i_am_a}>
+              <RadioGroup row>
                 {IAmA &&
                   IAmA.map((item) => {
+                    // onChange={handleChange.bind(this, 'i_am_a')} active={uInfo.i_am_a}
+                    const mStyleList = (uInfo.i_am_a || '').split(',');
+                    const isActive = mStyleList.includes(item.value);
+
                     return (
-                      <Radio key={item.value} value={item.value}>
+                      <Radio
+                        active={isActive}
+                        key={item.value}
+                        value={item.value}
+                        onClick={() => {
+                          const newValue = isActive ? mStyleList.filter((p) => p !== item.value).join(',') : [...new Set([...mStyleList, item.value])].join(',');
+                          console.log('newValue:', newValue);
+                          if (item.value === 'Other' && isActive) {
+                            uInfo.i_am_a_other = '';
+                            // setUpdateUserInfo({ ...uInfo, i_am_a: newValue });
+                          }
+                          handleChange('i_am_a', newValue);
+                          // setUpdateUserInfo({ ...uInfo, i_am_a: newValue });
+                        }}
+                      >
                         {item.value}
                         {'Other' === item.value && (
-                          <div className="margin-top-0 other">
+                          <div
+                            className="margin-top-0 other"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                          >
                             <input
                               value={uInfo.i_am_a_other || ''}
-                              disabled={item.value !== uInfo.i_am_a}
+                              disabled={!isActive}
                               onChange={(e) => {
-                                const newObj = { ...uInfo };
-                                newObj.i_am_a_other = e.target.value;
-                                setUpdateUserInfo({ ...newObj });
+                                setUpdateUserInfo({ ...uInfo, i_am_a_other: e.target.value });
                               }}
                               onBlur={(e) => {
                                 handleChange('i_am_a_other', e.target.value);
@@ -133,14 +156,24 @@ const ProfilePage = (props) => {
             </div>
           </div>
 
-          <div className="row margin-top-40">
+          <div className="row margin-top-50">
             <div className="pp-label">Music Style:</div>
             <div className="col-8 ">
-              <RadioGroup row onChange={handleChange.bind(this, 'music_style')} active={uInfo.music_style}>
+              <RadioGroup row>
                 {musicStyles &&
                   musicStyles.map((item) => {
+                    const mStyleList = (uInfo.music_style || '').split(',');
+                    const isActive = mStyleList.includes(item.value);
                     return (
-                      <Radio key={item.value} value={item.value}>
+                      <Radio
+                        active={isActive}
+                        key={item.value}
+                        value={item.value}
+                        onClick={() => {
+                          const newValue = isActive ? mStyleList.filter((p) => p !== item.value).join(',') : [...new Set([...mStyleList, item.value])].join(',');
+                          handleChange('music_style', newValue);
+                        }}
+                      >
                         {item.value}
                       </Radio>
                     );
@@ -149,7 +182,22 @@ const ProfilePage = (props) => {
             </div>
           </div>
 
-          <div className="row margin-top-40">
+          <div className="row margin-top-30">
+            <div className="pp-label">Description</div>
+            <div className="col-8">
+              <textarea
+                value={uInfo.description}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setUpdateUserInfo({ ...uInfo, description: e.target.value });
+                }}
+                onBlur={(e) => {
+                  handleChange('description', e.target.value);
+                }}
+              ></textarea>
+            </div>
+          </div>
+          <div className="row margin-top-30">
             <div className="pp-label">Album:</div>
             <div className="col-8">
               <Album
@@ -160,7 +208,7 @@ const ProfilePage = (props) => {
                   await handleChange('files', [{ type, url: fileInfo.path }]);
                   await getAlbum(1, 50, context.state.userInfo.id);
                   setTimes(Date.now());
-                  context.alertMsg('Upload success');
+                  // context.alertMsg('Upload success');
                 }}
               />
             </div>
@@ -176,7 +224,7 @@ const ProfilePage = (props) => {
                   await handleChange('files', [{ type, url: fileInfo.path }]);
                   await getVideo(1, 50, context.state.userInfo.id);
                   setTimes(Date.now());
-                  context.alertMsg('Upload success');
+                  // context.alertMsg('Upload success');
                 }}
               />
             </div>

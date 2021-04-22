@@ -11,10 +11,10 @@ const Card = (props) => {
     const { onUpdate, collection, info } = props;
     if (collection) {
       await context.onDeleteFavorites(info.id);
-      context.alertMsg('delete success');
+      // context.alertMsg('delete success');
     } else {
       await context.onAddFavorites(info.id);
-      context.alertMsg('add success');
+      // context.alertMsg('add success');
     }
     setTimes(Date.now());
     onUpdate && onUpdate();

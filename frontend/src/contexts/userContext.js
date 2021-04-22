@@ -57,7 +57,7 @@ const UserContentProvider = (props) => {
       bodyData.password = HttpHelper.md5(bodyData.password);
       const info = await HttpHelper.apiPost('/api/user/signup', bodyData);
       dispatch({ type: ConstTypeMap.USER_SING_UP, payload: info });
-      alertMsg('successful');
+      // alertMsg('successful');
       switchPage('login');
       return info;
     } catch (ex) {

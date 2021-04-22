@@ -23,7 +23,8 @@ const AlbumPage = lazy(() => import('./pages/albumPage'));
 const ChatPage = lazy(() => import('./pages/chatPage'));
 
 var host = window.location.host;
-if (!host.includes('herokuapp.com')) {
+if (host.includes('herokuapp.com') || host.includes('35.246.100.122')) {
+} else {
   host = '127.0.0.1:5300';
 }
 const socket = io(host, { reconnection: true, path: '/chat', auth: { token: '' } });

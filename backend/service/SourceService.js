@@ -21,7 +21,7 @@ class SourceService extends BaseService {
    * @memberof SourceService
    */
   async deleteSource({ user_id, id, userInfo }) {
-    if (user_id != userInfo.id) {
+    if (user_id !== userInfo.id) {
       this.failure('Permission not allowed');
     }
     // find file path

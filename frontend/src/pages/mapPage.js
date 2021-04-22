@@ -143,7 +143,7 @@ const MapPage = (props) => {
     const { display_name = '' } = currentAddress || {};
     const data = { lat, lon, address: q || display_name || '' };
     await context.onUpdateProfile(data);
-    context.alertMsg('update success');
+    // context.alertMsg('update success');
   };
 
   return (

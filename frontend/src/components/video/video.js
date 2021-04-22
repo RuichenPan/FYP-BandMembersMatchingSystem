@@ -19,7 +19,7 @@ const Video = (props) => {
   const deleteSource = async (row, index) => {
     await context.onSourceDelete(row, index, 'video');
     setTimes(Date.now());
-    context.alertMsg('Delete success');
+    // context.alertMsg('Delete success');
   };
 
   return (
@@ -35,8 +35,8 @@ const Video = (props) => {
             </div>
           );
         })}
-      <div className="g-center album-item handle">
-        Upload
+      <div className="g-center album-item a-none">
+        <div className="btn btn-dark handle">Upload</div>
         <input
           className="file-upload"
           type="file"
