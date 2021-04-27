@@ -66,7 +66,7 @@ const ProfilePage = (props) => {
             <div className="img img-portrait" style={{ border: '1px solid #ddd', backgroundImage: `url('${HttpHelper.WebSite}/uploads/${uInfo.avatar || ''}')` }}>
               <input className="file-upload" type="file" accept="image/*" onChange={handleUploadFile} />
             </div>
-            <div className="text-center margin-top-20">Portrait</div>
+            <div className="text-center margin-top-20">Upload your Profile Photo<input className="btn btn-dark" type="file" accept="image/*" onChange={handleUploadFile} /></div>
             <div className="text-center handle margin-top-20" onClick={() => context.switchPage('/person', { id: uInfo.id })}>
               <div className="btn btn-dark">Comment</div>
             </div>
@@ -75,7 +75,7 @@ const ProfilePage = (props) => {
         </div>
         <div className="col-8">
           <div className="row margin-top-10 align-center">
-            <div className="pp-label">Name:</div>
+            <div className="pp-label">UserName:</div>
             <div className="col-3 ">
               <span className="padding-left-10">{uInfo.username}</span>
             </div>

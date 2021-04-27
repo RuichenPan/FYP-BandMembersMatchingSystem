@@ -32,25 +32,9 @@ const ChatPage = (props) => {
    */
   const onSocketListen = () => {
     context.socket.removeAllListeners('message');
-    // context.socket.on('disconnect', async () => {
-    //   console.log('socket disconnect');
-
-    //   Util.await(1500);
-    //   context.socket.connect();
-
-    //   if (context.socket.connected) {
-    //     console.log('reconnection success...');
-    //   }
-    // });
-    // context.socket.once('connect', () => {
-    //   console.log('socket reconnect');
-    //   sendMsg({ cmd: 'Login' });
-    // });
-
     context.socket.on('message', (body) => {
       const { id: login_user_id } = context.state.userInfo || {};
       const { chatSelectUserId } = context.state;
-      // console.log('body:', JSON.stringify(body));
       switch (body.cmd) {
         case 'unReadStati':
           setUnreadMap(body.data);

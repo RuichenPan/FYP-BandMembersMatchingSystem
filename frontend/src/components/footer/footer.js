@@ -17,7 +17,10 @@ const Footer = (props) => {
             Square
           </div>
           <div className="col-4 handle" onClick={() => context.switchPage('/favorites')}>
-            I want you
+            I Want You
+          </div>
+          <div className="col-4 handle" onClick={() => context.switchPage('/profile')}>
+            Profile 
           </div>
           <div className="col-4"></div>
         </div>

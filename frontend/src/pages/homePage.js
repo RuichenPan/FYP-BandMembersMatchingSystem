@@ -53,6 +53,12 @@ const HomePage = () => {
     await context.onHomeData({ ...searchCondition, page, size });
     setIsLoading(false);
   };
+  const handleReset = async ({ page } = {}) => {
+    setPage(page);
+    setIsLoading(true);
+    await context.onHomeData({page, size });
+    setIsLoading(false);
+  };
 
   const { musicStyles = [], IAmA = [], home } = context.state || {};
   const { list = [], total = 1 } = home || {};
@@ -80,6 +86,11 @@ const HomePage = () => {
           <div className="col0" style={{ marginLeft: '10px' }}>
             <button className="btn btn-dark" onClick={handleSearch}>
               Search
+            </button>
+          </div>
+          <div className="col0" style={{ marginLeft: '10px' }}>
+            <button className="btn btn-dark" onClick={handleReset}>
+              Reset
             </button>
           </div>
         </div>

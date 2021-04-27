@@ -43,7 +43,7 @@ const SiteHeader = (props) => {
             }
           }}
         >
-          Look
+          View
         </Button>
       ),
     });
