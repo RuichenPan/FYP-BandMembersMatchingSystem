@@ -93,8 +93,8 @@ class UserService extends BaseService {
         Welcome to be a new member of HURRICANE!
       </div>
       <div style="margin-top: 0px;">
-        Click here to enter in HURRICANE again: <a href="https://fyp-bandmembersmatchingsystem.herokuapp.com/" target="_blank">
-          https://fyp-bandmembersmatchingsystem.herokuapp.com/
+        Click here to enter in HURRICANE again: <a href="http://35.246.100.122/" target="_blank">
+        http://35.246.100.122/
         </a>
       </div>
       <div style="margin-top: 30px;">
